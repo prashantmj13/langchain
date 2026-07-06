@@ -1,0 +1,14 @@
+Title: Frontend Engineer
+
+We need a Frontend Engineer to build responsive, accessible interfaces in React
+and TypeScript for our customer-facing dashboard.
+
+Requirements:
+- 3+ years with React, TypeScript, and modern CSS (Tailwind or similar)
+- Experience with state management (Redux, Zustand, or React Query)
+- Solid understanding of web accessibility (WCAG) and performance optimization
+- Comfortable working closely with designers on pixel-accurate implementations
+
+Nice to have:
+- Experience integrating with streaming APIs (e.g. rendering token-by-token LLM output)
+- Familiarity with Next.js

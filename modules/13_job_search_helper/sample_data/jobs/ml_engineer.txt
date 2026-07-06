@@ -1,0 +1,16 @@
+Title: Machine Learning Engineer
+
+Join our AI platform team building retrieval-augmented generation (RAG) systems on
+top of large language models. You'll design embedding pipelines, evaluate vector
+stores, and ship LLM-powered features end to end.
+
+Requirements:
+- 2+ years working with LLMs (Anthropic Claude, OpenAI, or similar)
+- Hands-on experience with LangChain, LlamaIndex, or a comparable framework
+- Strong Python skills, comfortable with embeddings and vector databases (FAISS,
+  Pinecone, Chroma)
+- Understanding of prompt engineering and evaluation methodology
+
+Nice to have:
+- Experience with LangGraph or building agentic systems
+- Familiarity with LangSmith or similar tracing/observability tools

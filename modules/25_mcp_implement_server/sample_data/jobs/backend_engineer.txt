@@ -1,0 +1,15 @@
+Title: Backend Engineer
+
+We're looking for a Backend Engineer to design and maintain scalable APIs serving
+millions of requests per day. You'll work primarily in Python and Go, with services
+running on Kubernetes and PostgreSQL as the primary datastore.
+
+Requirements:
+- 3+ years building production REST/GraphQL APIs
+- Strong SQL and database design skills (PostgreSQL preferred)
+- Experience with Docker and Kubernetes
+- Familiarity with message queues (Kafka or RabbitMQ)
+
+Nice to have:
+- Experience with LangChain or building LLM-backed features
+- Exposure to observability tooling (Prometheus, Grafana)

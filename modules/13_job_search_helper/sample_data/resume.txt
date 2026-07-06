@@ -1,0 +1,22 @@
+Jordan Rivera
+Software Engineer
+
+Summary:
+Software engineer with 3 years of experience building Python backend services and,
+for the past year, LLM-powered features. Shipped a production RAG chatbot using
+LangChain, FAISS, and Anthropic's Claude models. Comfortable with prompt engineering,
+embedding pipelines, and evaluating retrieval quality.
+
+Experience:
+- Backend Engineer, Acme Corp (2023-present)
+  - Built and maintained REST APIs in Python (FastAPI) backed by PostgreSQL
+  - Designed a document ingestion + embedding pipeline (Voyage AI embeddings, FAISS)
+    powering an internal RAG-based support assistant using Claude
+  - Added LangSmith tracing to debug and evaluate chain quality in production
+
+- Software Engineer, Startup Inc (2021-2023)
+  - Built internal tooling in Python and Go
+  - Worked with Docker and basic Kubernetes deployments
+
+Skills: Python, FastAPI, PostgreSQL, LangChain, LangGraph, FAISS, Claude/Anthropic API,
+prompt engineering, Docker, basic Kubernetes
