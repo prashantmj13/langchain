@@ -37,3 +37,5 @@ Display formatting only touches `BaseMessage` objects, which are identical regar
 2. Write a formatter that redacts anything that looks like an email address before printing the transcript.
 3. Render the transcript as HTML (`<div class="human">...</div>` / `<div class="ai">...</div>`) suitable for embedding in a web page.
 4. Write the JSON transcript to a file and reload it back into a list of `HumanMessage`/`AIMessage` objects.
+
+**Solutions:** see [`solutions.py`](solutions.py) in this folder.

@@ -38,3 +38,5 @@ Prompt templates are provider-agnostic — the same `ChatPromptTemplate` object 
 2. Build a few-shot template with 5 examples that gets Claude to classify support tickets into `bug` / `feature-request` / `question`, then test it on 3 new tickets.
 3. Use `.partial()` to bake in a `current_date` value computed from `datetime.now()`, and confirm the model can answer "what is today's date" correctly.
 4. Serialize a `ChatPromptTemplate` to a dict with `.dict()` and reload it — confirm the reloaded template produces identical output.
+
+**Solutions:** see [`solutions.py`](solutions.py) in this folder.

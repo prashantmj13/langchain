@@ -35,3 +35,5 @@ See [module 10](../10_embedding_models) for the full provider comparison (Voyage
 2. Add a 5th toy vector that's a scaled copy of an existing one (e.g. `2 * v1`) and confirm cosine similarity treats it as identical to `v1` (cosine similarity ignores magnitude).
 3. Embed 6 sentences from 2 different topics (3 sports, 3 cooking) and confirm same-topic pairs score higher than cross-topic pairs.
 4. Truncate a real embedding vector to its first 256 dimensions and compare similarity scores before/after truncation — how much does ranking order change?
+
+**Solutions:** see [`solutions.py`](solutions.py) in this folder.

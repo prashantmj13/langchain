@@ -35,3 +35,5 @@ Swap the embedding provider via `common.embedding_factory.get_embeddings(provide
 2. Implement Euclidean distance ranking alongside cosine similarity and check whether the top-3 ordering changes for your corpus.
 3. Add a similarity-score threshold (e.g. 0.5) below which no results are returned, and test a query that should return zero matches.
 4. Benchmark brute-force search against 10,000 randomly generated vectors and note how latency scales with corpus size.
+
+**Solutions:** see [`solutions.py`](solutions.py) in this folder.

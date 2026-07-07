@@ -31,3 +31,5 @@ An MCP server doesn't know or care which LLM is calling it — this module has n
 2. Make `get_weather` raise a clear error for an empty city string, and check how that surfaces to a client.
 3. Add a `units: str = "celsius"` optional parameter to `get_weather` and test both default and explicit values.
 4. Read the generated tool schema (via a client's `list_tools()`, see module 22) and confirm it matches your function's type hints exactly.
+
+**Solutions:** see [`solutions_server.py`](solutions_server.py) (the extended server) and [`solutions_client.py`](solutions_client.py) (a client that verifies all four exercises) in this folder. Run `python modules/21_mcp_create_server/solutions_client.py` -- it launches `solutions_server.py` automatically over stdio.

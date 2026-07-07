@@ -34,3 +34,5 @@ Different sub-chains can use different providers/temperatures independently, sin
 2. Change the final stage so it also outputs a `priority: high|medium|low` field using `.with_structured_output()`.
 3. Measure whether running `sentiment` and `summary` via `RunnableParallel` is actually faster than running them sequentially with two separate `.invoke()` calls.
 4. Feed 3 different reviews through `.batch()` and print a table of `review | sentiment | reply`.
+
+**Solutions:** see [`solutions.py`](solutions.py) in this folder.

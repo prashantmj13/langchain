@@ -8,13 +8,15 @@ Every module ships with:
 - **Walkthrough** — a runnable `example.py` (or `server.py`/`client.py` pair for MCP)
 - **Using a different model** — the 2-3 line diff to swap providers
 - **Reference Docs** — links to the primary sources
-- **Exercises** — 3-4 tasks to extend what you built
+- **Exercises** — 3-4 tasks to extend what you built, each with a worked solution in `solutions.py`
+
+**New to Python, or new to calling an LLM API at all?** Start with [module 00](modules/00_python_and_llm_basics) — a primer on the Python constructs (functions, dicts, decorators, `async`/`await`) and LLM/API concepts (tokens, API keys, prompts, context windows) every later module assumes you already know.
 
 **Anthropic's Claude is the reference model throughout.** Every example also shows exactly how to swap in OpenAI, Google Gemini, or a local Ollama model — see [Model-agnostic design](#model-agnostic-design) below.
 
 ## Prerequisites
 
-- Python 3.10+
+- Python 3.10-3.13 (this repo pins to the LangChain 0.3.x API family — see [`requirements.txt`](requirements.txt) — which has a known import-time incompatibility on Python 3.14 due to an upstream typing/pydantic interaction bug, unrelated to this repo's code)
 - An [Anthropic API key](https://console.anthropic.com/settings/keys)
 - Optional, for the "other providers" side-notes: an OpenAI key, a Google AI Studio key, and/or a local [Ollama](https://ollama.com) install
 - Optional, for embeddings: a [Voyage AI key](https://dash.voyageai.com/) (Anthropic's recommended embeddings partner — Anthropic does not ship its own embedding model)
@@ -56,6 +58,11 @@ EMBEDDING_PROVIDER=voyage  # voyage (default) | openai | huggingface
 Each module's README also has a "Using a different model" section showing the direct code-level diff, for when you want to compare two providers side by side rather than switch globally.
 
 ## Learning path
+
+### Start here
+| # | Module | Covers |
+|---|--------|--------|
+| 00 | [Python & LLM Basics](modules/00_python_and_llm_basics) | Python constructs (functions, dicts, decorators, async) and LLM/API concepts (tokens, API keys, prompts) used throughout the repo |
 
 ### Foundations
 | # | Module | Covers |

@@ -39,3 +39,5 @@ No model-specific code in the server — same as the rest of the MCP track, the 
 2. Make `search_jobs` reuse `common.embedding_factory` for real semantic search instead of keyword matching, and compare result quality.
 3. Add a `k` bounds check (e.g. reject `k > 10`) that raises `ValueError` with a message explaining the limit.
 4. Add a second resource, `job://{job_id}/summary`, that returns just the first line (title) instead of the full posting.
+
+**Solutions:** see [`solutions_server.py`](solutions_server.py) and [`solutions_client.py`](solutions_client.py) in this folder. Run `python modules/25_mcp_implement_server/solutions_client.py` -- it launches `solutions_server.py` automatically (over stdio, unlike the main `server.py`'s HTTP transport, so the whole demo runs in one process).

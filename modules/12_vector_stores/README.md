@@ -41,3 +41,5 @@ The vector store's embedding function is whatever `common.embedding_factory.get_
 2. Compare `similarity_search` vs. `max_marginal_relevance_search` (`k=4, fetch_k=10`) on a corpus with 3 near-duplicate documents about the same topic.
 3. Persist the Chroma store to disk (`persist_directory=...`), restart the script, and confirm the data survives without re-embedding.
 4. Add a document, update its content in place, and confirm search results reflect the update (Chroma requires delete + re-add, not a true update — verify this).
+
+**Solutions:** see [`solutions.py`](solutions.py) in this folder.

@@ -33,3 +33,5 @@ Each stage can even use a *different* provider if you want (e.g. a cheap/fast mo
 2. Print the intermediate outline separately from the final paragraph (don't just print the end result) to confirm each stage's output.
 3. Rewrite the two-stage chain so stage 1 uses `temperature=0.9` (more creative outlines) and stage 2 uses `temperature=0.2` (more focused prose).
 4. Time how long the composed chain takes vs. calling each stage manually in sequence — they should be about the same, since LCEL doesn't add overhead here.
+
+**Solutions:** see [`solutions.py`](solutions.py) in this folder.

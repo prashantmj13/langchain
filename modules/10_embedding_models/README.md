@@ -44,3 +44,5 @@ local_emb = get_embeddings(provider="huggingface")       # no API key, runs loca
 2. Time `embed_documents()` on 50 short sentences for each available provider and compare latency.
 3. Try `voyage-code-3` instead of the general-purpose Voyage model on a batch of code snippets, and compare similarity rankings against the general-purpose model.
 4. Confirm that `embed_query("some text")` and `embed_documents(["some text"])[0]` return (numerically) the same vector for a given provider.
+
+**Solutions:** see [`solutions.py`](solutions.py) in this folder.

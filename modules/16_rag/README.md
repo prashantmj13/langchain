@@ -41,3 +41,5 @@ Swap the embedding provider (`common.embedding_factory`) and/or the generation m
 2. Add a question that's only answerable by combining facts from two different chunks, and check whether `k=2` retrieval is enough or if you need `k=4`.
 3. Modify the prompt so the model must respond with `"NOT_FOUND"` (not prose) when the context doesn't contain the answer, and test it programmatically.
 4. Swap `RecursiveCharacterTextSplitter` for `CharacterTextSplitter` (naive splitting) and compare chunk boundaries on the same document.
+
+**Solutions:** see [`solutions.py`](solutions.py) in this folder.

@@ -37,3 +37,5 @@ Both the query-rewriting step and the final-answer step accept any `get_chat_mod
 2. Ask a follow-up that requires combining two earlier turns' context (e.g. "compare that to the remote work policy") and see whether it resolves correctly.
 3. Swap the query-rewriting LLM to a cheaper/faster model than the answer-generation LLM and compare latency without losing correctness.
 4. Rebuild this using LangGraph's `create_react_agent` with a retriever exposed as a tool instead of the `create_history_aware_retriever` helper, and compare the two approaches.
+
+**Solutions:** see [`solutions.py`](solutions.py) in this folder.

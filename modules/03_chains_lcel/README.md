@@ -42,3 +42,5 @@ chain = prompt | get_chat_model(provider="openai") | StrOutputParser()
 2. Define a Pydantic model `MovieReview(title: str, rating: int, summary: str)` and use `.with_structured_output()` to extract it from a free-text review.
 3. Call `.batch()` with 5 different questions and time it against calling `.invoke()` in a plain Python `for` loop — compare wall-clock time.
 4. Use `.stream()` on the full 3-stage chain and print output as it arrives, not just at the end.
+
+**Solutions:** see [`solutions.py`](solutions.py) in this folder.

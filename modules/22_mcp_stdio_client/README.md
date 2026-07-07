@@ -36,3 +36,5 @@ This module is pure protocol plumbing — no LLM involved yet. [Module 26](../26
 2. Call `get_weather` with a city not in the mocked dataset and confirm the fallback message comes through unchanged.
 3. Add error handling for the case where the server script path is wrong, and confirm you get a clear failure rather than a hang.
 4. Modify the client to call both tools concurrently with `asyncio.gather` instead of sequentially.
+
+**Solutions:** see [`solutions.py`](solutions.py) in this folder.

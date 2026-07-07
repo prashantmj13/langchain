@@ -45,3 +45,5 @@ MCP matters once you want to reuse the same tool/data integration across multipl
 2. Read the MCP spec's tool schema definition and identify what a tool definition requires beyond a name and a Python function signature.
 3. Compare the primitives (tools/resources/prompts) to what a plain REST API would look like for the same use case — what does MCP standardize that you'd otherwise have to design yourself?
 4. Decide, for a server you might build, whether stdio or HTTP is the right transport, and write down why.
+
+**Solutions:** see [`solutions.md`](solutions.md) in this folder (these exercises are conceptual, so there's no `solutions.py`).

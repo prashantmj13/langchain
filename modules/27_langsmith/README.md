@@ -42,3 +42,5 @@ Tracing/evaluation are provider-agnostic — they capture whatever `get_chat_mod
 2. Add a second `@traceable` function and confirm it nests correctly under the parent chain's trace in the UI.
 3. Expand the evaluation dataset to 10 examples and add a second grading function that also checks response length.
 4. Compare two prompt variants (e.g. different system messages) against the same evaluation dataset and decide which performs better.
+
+**Solutions:** see [`solutions.py`](solutions.py) in this folder.

@@ -43,3 +43,5 @@ OpenAI's GPT-4o multimodal content-block shape differs slightly (`{"type": "imag
 2. Send two images in one message (e.g. two different placeholder colors) and ask Claude to compare them.
 3. Ask Claude to transcribe text drawn on the placeholder image and verify the transcription is exact.
 4. Try the same multimodal message with `get_chat_model(provider="openai", model="gpt-4o-mini")` and compare the response format/quality.
+
+**Solutions:** see [`solutions.py`](solutions.py) in this folder.

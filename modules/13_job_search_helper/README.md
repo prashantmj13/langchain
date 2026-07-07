@@ -39,3 +39,5 @@ This is a realistic shape for a "matching" feature: recommend jobs to a candidat
 2. Add a second sample resume for a different role and verify it matches a *different* job than the first resume.
 3. Change the generation step to also output a `match_score: 0-100` and a bullet list of missing skills, using `.with_structured_output()`.
 4. Extend the pipeline to accept a resume PDF (via `pypdf`) instead of a plain `.txt` file.
+
+**Solutions:** see [`solutions.py`](solutions.py) in this folder.

@@ -39,3 +39,5 @@ Still pure transport/protocol — no model involved. See [module 26](../26_mcp_i
 2. Start the server, then start two separate client processes calling it concurrently, and confirm both get correct independent responses.
 3. Add basic error handling to the client for "server not running" (connection refused) with a clear error message.
 4. Compare startup/teardown behavior: kill the client process (Ctrl+C) and confirm the HTTP server keeps running, unlike the stdio case in module 22 where the server dies with the client.
+
+**Solutions:** see [`solutions.py`](solutions.py) in this folder (start `server_http.py` first for exercises 1-2).

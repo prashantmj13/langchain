@@ -36,3 +36,5 @@ Tool-calling quality varies by provider and model size; swap via `get_chat_model
 2. Print each intermediate `ToolMessage` in the trace to see exactly what arguments the model chose to pass.
 3. Give the agent a bad tool (one that raises an exception for certain inputs) and observe how it recovers (or doesn't) from a tool error.
 4. Rebuild the calculator tool as `add`, `subtract`, `multiply`, `divide` (four separate tools) and ask a multi-step arithmetic question requiring several calls.
+
+**Solutions:** see [`solutions.py`](solutions.py) in this folder.

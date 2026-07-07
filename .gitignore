@@ -12,6 +12,14 @@ venv/
 **/faiss_index/
 **/*.index
 **/chroma_db/
+**/chroma_db_demo/
+**/chat_history_demo.json
+**/transcript_demo.json
+**/my_photo.jpg
+
+# Local verification venv
+.venv312/
+**/server.log
 
 # Editors / OS
 .vscode/

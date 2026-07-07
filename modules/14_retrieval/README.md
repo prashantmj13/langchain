@@ -37,3 +37,5 @@ The retriever itself only depends on the embedding provider (via the underlying 
 2. Add a `score_threshold` to the retriever and test a query that should return zero documents.
 3. Wrap the base retriever with `MultiQueryRetriever.from_llm()` using Claude to generate query variations, and compare recall against the base retriever on a vaguely-worded query.
 4. Print the `context` documents returned by `create_retrieval_chain` alongside the `answer` to verify the answer is actually grounded in them.
+
+**Solutions:** see [`solutions.py`](solutions.py) in this folder.

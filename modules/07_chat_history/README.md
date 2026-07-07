@@ -36,3 +36,5 @@ Chat history management is entirely model-agnostic — `RunnableWithMessageHisto
 2. Cap history to the last 6 messages (trim older ones) so token usage doesn't grow unbounded in a long conversation -- use `trim_messages`.
 3. Swap the in-memory store for a JSON-file-backed store that persists across process restarts.
 4. Run two sessions concurrently (interleaved calls) and confirm Alice's and Bob's histories never cross-contaminate.
+
+**Solutions:** see [`solutions.py`](solutions.py) in this folder.

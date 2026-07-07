@@ -37,3 +37,5 @@ Resources and prompts are just structured data returned by the server — whiche
 2. Add a prompt parameter (`tone: str = "neutral"`) to `summarize_section` and confirm both default and explicit values produce different generated messages.
 3. List all resources the server exposes and fetch each one in a loop, printing byte length of each.
 4. Extend the client to actually send a fetched prompt's messages to Claude ([common/model_factory.py](../../common/model_factory.py)) and print the model's response.
+
+**Solutions:** see [`solutions_server.py`](solutions_server.py) and [`solutions_client.py`](solutions_client.py) in this folder. Run `python modules/24_mcp_hosting_resources_prompts/solutions_client.py` -- it launches `solutions_server.py` automatically.

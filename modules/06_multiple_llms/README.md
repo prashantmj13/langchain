@@ -38,3 +38,5 @@ This entire module *is* the "different model" note — it directly instantiates 
 2. Change the routing chain's condition so anything containing the word "code" always goes to Claude, regardless of the "reasoning"/"simple lookup" tag.
 3. Build a simple voting ensemble: ask 3 models the same yes/no question and print the majority answer.
 4. Measure the actual cost difference between the draft-and-polish pipeline and just asking Claude directly, using each provider's token usage metadata.
+
+**Solutions:** see [`solutions.py`](solutions.py) in this folder.

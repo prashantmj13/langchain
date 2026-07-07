@@ -43,3 +43,5 @@ Swap `get_chat_model(provider=...)` exactly as in every other module — `MultiS
 2. Print the tool schemas returned by `get_tools()` to confirm they match the server's `@mcp.tool()` definitions exactly.
 3. Ask the agent a question that requires calling `search_jobs` twice with different queries, and check whether it does so correctly.
 4. Compare this agent's behavior to the module 19 local-tools agent on an equivalent task — does going through MCP add noticeable latency?
+
+**Solutions:** see [`solutions.py`](solutions.py) in this folder (start `modules/25_mcp_implement_server/server.py` first).

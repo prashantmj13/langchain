@@ -54,3 +54,5 @@ All four implement the exact same `.invoke(messages)` / `.stream(messages)` inte
 2. Print `response.usage_metadata` and calculate the approximate cost of your call using Anthropic's published per-token pricing.
 3. Replace `.invoke()` with `.stream()` in the second example and print each chunk as it arrives instead of the final message.
 4. Swap `LLM_PROVIDER` to `ollama` in your `.env` (with a local model pulled) and confirm the same script runs unmodified.
+
+**Solutions:** see [`solutions.py`](solutions.py) in this folder.
