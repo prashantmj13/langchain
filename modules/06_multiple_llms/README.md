@@ -27,7 +27,7 @@ Requires `ANTHROPIC_API_KEY`; `OPENAI_API_KEY` and a running local Ollama daemon
 
 `example.py`:
 1. Sends the identical prompt to Claude, GPT-4o-mini, and (optionally) a local Ollama model, printing each response side by side.
-2. Builds a `RunnableBranch` that routes a request to Claude for anything tagged "reasoning" and to a cheaper model for anything tagged "simple lookup."
+2. Builds a `RunnableBranch` that routes a request to Claude for anything tagged "reasoning" and to a cheaper model for anything tagged "simple lookup." For exactly how `RunnableBranch` decides which chain to call, see [module 03's Execution Internals](../03_chains_lcel#execution-internals-the-runnable-protocol).
 3. Demonstrates a draft-and-polish pipeline: a fast/cheap model drafts, Claude edits.
 
 ## Using a different model

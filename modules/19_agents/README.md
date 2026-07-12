@@ -13,6 +13,17 @@ A **chain** follows a fixed sequence of steps you wrote in advance. An **agent**
 
 Anything requiring the model to take real actions or fetch live data mid-conversation: look up today's weather, run a calculation, query a database, call an internal API, search the web — then reason over the result before answering. [Module 26](../26_mcp_implement_client) extends this exact pattern to tools served over MCP instead of defined locally.
 
+## Execution Internals: why `agent.invoke()` isn't a single pass
+
+This is a meaningfully different execution model from [module 03's `RunnableSequence`](../03_chains_lcel#execution-internals-the-runnable-protocol), worth calling out explicitly: a plain LCEL chain's `.invoke()` runs each step exactly once, in a fixed order you wrote. `create_react_agent(...)` instead returns a LangGraph graph whose `.invoke({"messages": [...]})` runs a **loop with an unknown number of iterations**:
+
+1. Call the LLM with the current message list (plus each tool's schema attached, so the model knows what it *can* call).
+2. If the response is plain text with no tool calls, stop and return it — this is the exit condition.
+3. If the response contains one or more tool calls, actually execute those Python functions locally (in-process, synchronously — no network call, unlike step 1), and append their results as `ToolMessage`s to the message list.
+4. Go back to step 1 with the now-longer message list.
+
+This is why `result["messages"]` after `agent.invoke(...)` often contains 4+ messages (human question → AI tool call → tool result → AI tool call → tool result → final AI answer) even though you only made one top-level call — each loop iteration is its own real LLM call (and its own cost/latency), which `message.pretty_print()` on every entry in that list makes visible.
+
 ## How to Run
 
 ```bash

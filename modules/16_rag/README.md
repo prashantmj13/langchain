@@ -30,7 +30,7 @@ Requires an embeddings key and `ANTHROPIC_API_KEY`. The FAISS index is rebuilt i
 1. Loads a sample "company handbook" text (`sample_data/handbook.txt`).
 2. Splits it with `RecursiveCharacterTextSplitter` (chunk_size=400, overlap=50).
 3. Embeds chunks into a fresh FAISS index (in-memory, no local persistence needed for this demo).
-4. Builds a RAG chain: retriever → prompt (instructed to cite chunk numbers) → Claude.
+4. Builds a RAG chain: `{"context": retriever | format_docs, "question": RunnablePassthrough()} | prompt | llm | StrOutputParser()`. For what that dict literal and `RunnablePassthrough()` actually do at runtime, see [module 03's Execution Internals](../03_chains_lcel#execution-internals-the-runnable-protocol).
 5. Asks 2 questions, one answerable from the handbook and one that isn't, to demonstrate the model correctly saying "I don't know" for the latter.
 
 ## Using a different model

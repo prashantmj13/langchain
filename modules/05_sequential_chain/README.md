@@ -26,6 +26,8 @@ Requires `ANTHROPIC_API_KEY` in `.env`. Running `example.py` builds the pipeline
 1. From the raw `review` text, compute `sentiment` (one sub-chain) and `summary` (another sub-chain) **in parallel**.
 2. A final stage receives `review`, `sentiment`, and `summary` together and drafts a reply — something no single-input chain could do, since it genuinely needs all three.
 
+For exactly what `RunnablePassthrough.assign()` and the `RunnableParallel(...)` dict do at runtime — including why the `sentiment`/`summary` branches actually run concurrently rather than one after another — see [module 03's Execution Internals](../03_chains_lcel#execution-internals-the-runnable-protocol).
+
 ## Using a different model
 
 Different sub-chains can use different providers/temperatures independently, since each is just `prompt | get_chat_model(...) | parser` — see [module 06](../06_multiple_llms).

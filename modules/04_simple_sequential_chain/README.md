@@ -24,7 +24,7 @@ Requires `ANTHROPIC_API_KEY` in `.env`. The script builds `stage_1` and `stage_2
 1. **Stage 1** — given a topic, generate a short blog post outline.
 2. **Stage 2** — given that outline (and nothing else), write an opening paragraph.
 
-Both stages are `prompt | llm | StrOutputParser()` chains; they're composed with a single `|` into one end-to-end chain, and also run manually step-by-step so you can see the intermediate output.
+Both stages are `prompt | llm | StrOutputParser()` chains; they're composed with a single `|` into one end-to-end chain, and also run manually step-by-step so you can see the intermediate output. The composed chain uses a bare `lambda` between the two stages (`stage_1 | (lambda outline_text: {"outline": outline_text}) | stage_2`) — see [module 03's Execution Internals](../03_chains_lcel#execution-internals-the-runnable-protocol) for exactly what happens when a raw function like that gets auto-wrapped into a `RunnableLambda` and dropped into a `|` pipe.
 
 ## Using a different model
 
