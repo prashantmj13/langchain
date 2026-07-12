@@ -14,6 +14,14 @@ Pipeline:
 
 This is a realistic shape for a "matching" feature: recommend jobs to a candidate, recommend candidates to a recruiter, match support tickets to the right knowledge-base article, match resumes to job descriptions in an ATS. Anywhere you need "find the most relevant items, then explain the match in natural language."
 
+## How to Run
+
+```bash
+python modules/13_job_search_helper/example.py
+python modules/13_job_search_helper/solutions.py   # exercise solutions
+```
+Requires both an embeddings key (`VOYAGE_API_KEY`) and `ANTHROPIC_API_KEY`. The FAISS index here is built fresh in memory on every run from `sample_data/jobs/*.txt` — nothing is persisted to disk, so there's no state to clean up between runs.
+
 ## Walkthrough
 
 `example.py`:

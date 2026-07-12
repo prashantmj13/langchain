@@ -17,6 +17,14 @@ This module uses an in-memory `Chroma` collection as a general-purpose introduct
 
 Any RAG system, semantic search feature, or recommendation engine that needs to search over more documents than comfortably fit in a Python list, or needs the results to persist across process restarts.
 
+## How to Run
+
+```bash
+python modules/12_vector_stores/example.py
+python modules/12_vector_stores/solutions.py   # exercise solutions
+```
+Requires an embeddings provider key. The Chroma collection here is in-memory by default (the `solutions.py` persistence exercise writes a `chroma_db_demo/` folder into this directory — gitignored, safe to delete).
+
 ## Walkthrough
 
 `example.py`:

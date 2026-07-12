@@ -12,6 +12,14 @@ A chat model call is stateless — Claude has no memory of your previous message
 
 Any multi-turn chatbot or assistant. Without this, "what did I just ask you?" always fails — the model has zero context beyond the single message it was just sent.
 
+## How to Run
+
+```bash
+python modules/07_chat_history/example.py
+python modules/07_chat_history/solutions.py   # exercise solutions
+```
+Requires `ANTHROPIC_API_KEY` in `.env`. The `_store` dict lives only in the running process's memory — history resets every time you re-run the script. Watch the third question in Alice's session ("What did I just ask you?") to confirm history is actually being carried between calls.
+
 ## Walkthrough
 
 `example.py`:

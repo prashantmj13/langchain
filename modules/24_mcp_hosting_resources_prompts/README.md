@@ -13,6 +13,14 @@ Why this split matters: tools are for the model to *act*, resources are data for
 
 A documentation server that exposes each doc page as a resource (so a host can let a user "attach" a specific page as context) and exposes a `"summarize_page"` prompt template (so any client gets a consistent, well-tuned summarization prompt without re-authoring it).
 
+## How to Run
+
+```bash
+python modules/24_mcp_hosting_resources_prompts/client.py
+python modules/24_mcp_hosting_resources_prompts/solutions_client.py   # exercise solutions
+```
+No API key needed for the base walkthrough (exercise 4's Claude call needs `ANTHROPIC_API_KEY`). Same one-command pattern as module 22 — the client launches `server.py`/`solutions_server.py` itself over stdio, no second terminal required.
+
 ## Walkthrough
 
 `server.py` extends the module 21 server with:

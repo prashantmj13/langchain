@@ -33,6 +33,10 @@ graph LR
 
 MCP matters once you want to reuse the same tool/data integration across multiple LLM apps/agents without rewriting glue code for each: one MCP server for "our internal ticketing system" can be plugged into Claude Desktop, a custom LangGraph agent, and a CI bot, unchanged.
 
+## How to Run
+
+Nothing to run here — this module is conceptual (architecture/transports/primitives), with no `example.py`. The exercises are worked through on paper/in discussion; see [`solutions.md`](solutions.md).
+
 ## Reference Docs
 
 - MCP specification: https://modelcontextprotocol.io/

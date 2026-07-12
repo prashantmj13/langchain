@@ -13,6 +13,14 @@ A **retriever** is LangChain's abstraction for "given a query string, return rel
 
 This is the "R" in RAG: any time an LLM needs facts beyond its training data or system prompt (your internal docs, a knowledge base, current data), you retrieve relevant context first, then generate. Retrieval is also useful standalone — e.g. "show me the 3 most relevant support articles" without ever calling an LLM.
 
+## How to Run
+
+```bash
+python modules/14_retrieval/example.py
+python modules/14_retrieval/solutions.py   # exercise solutions
+```
+Requires an embeddings key and `ANTHROPIC_API_KEY`. `raw_retriever_demo()` only embeds and searches (no LLM call); `retrieval_chain_demo()` additionally calls Claude to generate the final `answer`.
+
 ## Walkthrough
 
 `example.py`:

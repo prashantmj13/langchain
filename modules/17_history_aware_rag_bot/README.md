@@ -14,6 +14,14 @@ The fix is **query reformulation**: before retrieving, use the LLM (with chat hi
 
 Any conversational assistant over a knowledge base — a docs chatbot, an internal support bot — where users naturally ask follow-up questions ("what about X", "and if Y instead") that only make sense in light of the prior turn.
 
+## How to Run
+
+```bash
+python modules/17_history_aware_rag_bot/example.py
+python modules/17_history_aware_rag_bot/solutions.py   # exercise solutions
+```
+Requires an embeddings key and `ANTHROPIC_API_KEY`. Conversation history lives in the same in-memory `_store` pattern as module 07 — it resets each time you re-run the script. Watch the 2nd and 3rd questions: neither repeats "PTO" or "remote work" by name, yet both get answered correctly because the history-aware retriever rewrites them first.
+
 ## Walkthrough
 
 `example.py` reuses the handbook corpus from module 16:

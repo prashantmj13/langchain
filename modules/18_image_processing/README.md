@@ -21,6 +21,14 @@ Key points:
 
 Document/receipt/form understanding, UI review ("does this screenshot match the design spec"), accessibility (auto-generating alt text), and any workflow where the input is fundamentally visual rather than textual.
 
+## How to Run
+
+```bash
+python modules/18_image_processing/example.py
+python modules/18_image_processing/solutions.py   # exercise solutions
+```
+Requires `ANTHROPIC_API_KEY`. No image file is needed — `generate_placeholder_image()` draws one in memory with Pillow and base64-encodes it before sending it to Claude, so the whole demo is self-contained.
+
 ## Walkthrough
 
 `example.py`:

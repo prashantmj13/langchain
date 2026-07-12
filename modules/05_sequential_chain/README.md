@@ -12,6 +12,14 @@ A general "sequential chain" differs from the [simple sequential chain (module 0
 
 Anything where a later stage needs *more than one* piece of earlier context — e.g. a customer-support pipeline that needs both the original message *and* a separately-computed sentiment label to draft a reply, or a document pipeline that needs both a summary and extracted keywords to generate a title.
 
+## How to Run
+
+```bash
+python modules/05_sequential_chain/example.py
+python modules/05_sequential_chain/solutions.py   # exercise solutions
+```
+Requires `ANTHROPIC_API_KEY` in `.env`. Running `example.py` builds the pipeline and calls `.invoke()` once on a hardcoded sample review, then prints the `sentiment`, `summary`, and `reply` fields it computed.
+
 ## Walkthrough
 
 `example.py` builds a 3-key pipeline for handling a customer review:

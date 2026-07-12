@@ -15,6 +15,14 @@ Templates are `Runnable`s themselves — they implement `.invoke()` and can be p
 
 Any prompt that's reused across requests with different inputs (support bot answering different questions, a summarizer given different documents) should be a template, not a string you `.format()` by hand. Few-shot templates are the cheapest way to get a model to follow a specific output format (e.g. strict JSON, a particular tone) without fine-tuning.
 
+## How to Run
+
+```bash
+python modules/02_prompt_templates/example.py
+python modules/02_prompt_templates/solutions.py   # exercise solutions
+```
+Requires `ANTHROPIC_API_KEY` in `.env`. `example.py` runs `basic_template()`, `partial_template()`, then `few_shot_template()` in sequence, each making one or more `.invoke()` calls and printing the model's response.
+
 ## Walkthrough
 
 `example.py`:

@@ -14,6 +14,14 @@ Once you have a `BaseChatMessageHistory` ([module 07](../07_chat_history)), you 
 
 Debugging a multi-turn agent (dumping the full transcript when something goes wrong), building a chat UI (rendering messages as bubbles), and audit logging (persisting conversations for compliance/analytics) all need a formatter over the same underlying message list.
 
+## How to Run
+
+```bash
+python modules/08_display_history/example.py
+python modules/08_display_history/solutions.py   # exercise solutions
+```
+Requires `ANTHROPIC_API_KEY` in `.env`. The exercise solutions write a couple of small demo files (`transcript_demo.json`, etc.) into this folder — already covered by `.gitignore`, safe to delete anytime.
+
 ## Walkthrough
 
 `example.py`:

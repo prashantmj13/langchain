@@ -13,6 +13,14 @@ An **embedding** is a fixed-length vector of floats (e.g. 1024 dimensions) that 
 
 Semantic search, recommendation ("find me articles like this one"), clustering/deduplication, and — most importantly for this repo — **retrieval** ([module 14](../14_retrieval)), the "R" in RAG ([module 16](../16_rag)).
 
+## How to Run
+
+```bash
+python modules/09_embeddings_theory/example.py
+python modules/09_embeddings_theory/solutions.py   # exercise solutions
+```
+`toy_vector_demo()` needs no API key (plain `numpy` math). `real_embedding_demo()` needs an embeddings provider key — `VOYAGE_API_KEY` by default, or set `EMBEDDING_PROVIDER` in `.env` to switch.
+
 ## Walkthrough
 
 `example.py` (no API key required for the core demo):

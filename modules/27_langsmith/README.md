@@ -18,6 +18,14 @@ LangSmith is LangChain's observability/evaluation platform: it traces every step
 
 Debugging why a RAG chain ([module 16](../16_rag)) retrieved the wrong chunk, understanding an agent's ([module 19](../19_agents)) tool-calling decisions step by step, and regression-testing a prompt change against a fixed dataset before deploying it.
 
+## How to Run
+
+```bash
+python modules/27_langsmith/example.py
+python modules/27_langsmith/solutions.py   # exercise solutions
+```
+Requires `ANTHROPIC_API_KEY`. `LANGSMITH_TRACING`/`LANGSMITH_API_KEY` are optional — `check_tracing_configured()` runs first and prints a clear message if they're unset, then the script continues untraced rather than failing.
+
 ## Walkthrough
 
 `example.py`:

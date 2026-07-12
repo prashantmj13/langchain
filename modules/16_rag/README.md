@@ -16,6 +16,14 @@ RAG exists because of two hard limits on any LLM: a **fixed knowledge cutoff** (
 
 Answering questions over an internal knowledge base, a product's documentation, a company's policies, or any corpus too large/private to bake into the model itself — while reducing hallucination by forcing the model to ground answers in retrieved text.
 
+## How to Run
+
+```bash
+python modules/16_rag/example.py
+python modules/16_rag/solutions.py   # exercise solutions
+```
+Requires an embeddings key and `ANTHROPIC_API_KEY`. The FAISS index is rebuilt in memory from `sample_data/handbook.txt` on every run (nothing persisted to disk); the second question is intentionally unanswerable from the handbook, to confirm the model says so instead of guessing.
+
 ## Walkthrough
 
 `example.py`:

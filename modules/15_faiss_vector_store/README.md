@@ -13,6 +13,14 @@ FAISS (Facebook AI Similarity Search) is a **library**, not a database server â€
 
 FAISS shines for local prototyping, offline batch jobs, and any scenario where you want vector search with zero external services (e.g. bundling a small search index inside a CLI tool or a serverless function). [Module 13](../13_job_search_helper) and [module 16](../16_rag) both use FAISS for exactly this reason.
 
+## How to Run
+
+```bash
+python modules/15_faiss_vector_store/example.py
+python modules/15_faiss_vector_store/solutions.py   # exercise solutions
+```
+Requires an embeddings provider key. Writes a `faiss_index/` (or `faiss_index_solutions/`) folder into this directory containing `index.faiss` + `index.pkl` â€” gitignored; delete it anytime to force a clean rebuild (exercise 1 does this explicitly).
+
 ## Walkthrough
 
 `example.py`:

@@ -102,6 +102,14 @@ JSON is the universal format LLM APIs speak: your messages get serialized to JSO
 
 This module has no "use case" of its own — it's the shared vocabulary the rest of the repo assumes you have.
 
+## How to Run
+
+```bash
+python modules/00_python_and_llm_basics/example.py
+python modules/00_python_and_llm_basics/solutions.py   # exercise solutions
+```
+No API key needed — everything in this module runs offline. Each script executes top to bottom and prints one labeled section per concept (`--- f-strings ---`, `--- decorators ---`, etc.) as it goes.
+
 ## Walkthrough
 
 `example.py` is a short, dependency-free (no API key needed) script that exercises the Python constructs above in isolation — f-strings, a dict, a list comprehension, a class with a method, a decorator, and an `async` function — so you can run it, read it, and confirm you understand each piece before module 01 puts them to work against a real model.

@@ -10,6 +10,14 @@ The defining trait vs. the more general [Sequential Chain (module 05)](../05_seq
 
 Multi-stage text transformations where each stage only needs the previous stage's result: generate an outline → expand the outline into prose → summarize the prose. Any "assembly line" of one-shot LLM calls.
 
+## How to Run
+
+```bash
+python modules/04_simple_sequential_chain/example.py
+python modules/04_simple_sequential_chain/solutions.py   # exercise solutions
+```
+Requires `ANTHROPIC_API_KEY` in `.env`. The script builds `stage_1` and `stage_2` as separate chains, calls them manually one after another (printing each intermediate result), then composes them into a single chain and calls that too — so you see both the step-by-step and the one-shot version of the same pipeline.
+
 ## Walkthrough
 
 `example.py` builds a two-stage pipeline:

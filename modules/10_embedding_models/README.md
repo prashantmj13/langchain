@@ -14,6 +14,14 @@ All three implement LangChain's `Embeddings` interface (`.embed_query(text)` for
 
 Choosing an embedding model is mostly about the trade-off between quality, cost, and where the data can live: Voyage/OpenAI need to send your text to a third-party API; a local HuggingFace model keeps everything on-device (important for regulated/sensitive data) at the cost of embedding quality and speed.
 
+## How to Run
+
+```bash
+python modules/10_embedding_models/example.py
+python modules/10_embedding_models/solutions.py   # exercise solutions
+```
+Each provider is tried independently and wrapped in `try/except` — set whichever of `VOYAGE_API_KEY`/`OPENAI_API_KEY` you have; the HuggingFace provider needs no key but downloads a small model to your machine on first run (via `sentence-transformers`).
+
 ## Walkthrough
 
 `example.py`:

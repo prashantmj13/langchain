@@ -12,6 +12,14 @@ LangChain is a framework for building applications on top of LLMs by composing s
 
 Every LangChain app — a chatbot, a RAG pipeline, an agent — bottoms out in one of these primitives. Understanding `invoke`/`stream`/messages here means every later module is just "more pipes."
 
+## How to Run
+
+```bash
+python modules/01_langchain_basics/example.py
+python modules/01_langchain_basics/solutions.py   # exercise solutions
+```
+Requires `ANTHROPIC_API_KEY` in `.env`. Running `example.py` executes `basic_invoke()`, `system_plus_human()`, then `streaming()` in order — each prints its own `--- section ---` header, and the script exits after the last one (no server, no loop).
+
 ## Walkthrough
 
 `example.py`:

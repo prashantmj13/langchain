@@ -12,17 +12,23 @@ Unlike stdio ([modules 21](../21_mcp_create_server)/[22](../22_mcp_stdio_client)
 
 A shared MCP server used by multiple people/agents (e.g. a company-wide "internal docs" MCP server), or any deployment where the server needs to live on different infrastructure than the client (a container, a separate host, behind a load balancer).
 
+## How to Run
+
+This is the one module in the repo that genuinely needs **two terminals**, because — unlike stdio — the HTTP server is a long-lived, independent process, not something the client spawns for you:
+```bash
+# terminal 1 -- starts and blocks, serving on localhost:8000
+python modules/23_mcp_http_client/server_http.py
+
+# terminal 2 -- connects to it and exits when done
+python modules/23_mcp_http_client/client_http.py
+python modules/23_mcp_http_client/solutions.py   # exercise solutions (needs the server running too)
+```
+No API key needed. Leave terminal 1 running for as long as you want to keep issuing client calls against it.
+
 ## Walkthrough
 
 1. `server_http.py` — the same `get_weather`/`word_count` tools from module 21, now served over `streamable-http` on `localhost:8000`.
 2. `client_http.py` — connects via `streamablehttp_client("http://127.0.0.1:8000/mcp")` instead of spawning a subprocess, then runs the identical `list_tools`/`call_tool` sequence as module 22.
-
-Run the server first in one terminal, then the client in another:
-```bash
-python modules/23_mcp_http_client/server_http.py
-# in a second terminal:
-python modules/23_mcp_http_client/client_http.py
-```
 
 ## Using a different model
 

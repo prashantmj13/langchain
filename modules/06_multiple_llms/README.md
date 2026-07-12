@@ -15,6 +15,14 @@ LangChain makes this trivial because every chat model is a `Runnable` with the s
 
 Cost control (route simple queries away from your most expensive model), redundancy (fail over to a second provider if one is down/rate-limited), and quality benchmarking (which model handles your specific domain best) all require running more than one model in the same app.
 
+## How to Run
+
+```bash
+python modules/06_multiple_llms/example.py
+python modules/06_multiple_llms/solutions.py   # exercise solutions
+```
+Requires `ANTHROPIC_API_KEY`; `OPENAI_API_KEY` and a running local Ollama daemon are optional — each provider call is wrapped in `try/except`, so if a provider isn't configured the script prints `skipped (...)` for it and keeps going instead of crashing.
+
 ## Walkthrough
 
 `example.py`:

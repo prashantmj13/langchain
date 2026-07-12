@@ -13,6 +13,14 @@ A **chain** follows a fixed sequence of steps you wrote in advance. An **agent**
 
 Anything requiring the model to take real actions or fetch live data mid-conversation: look up today's weather, run a calculation, query a database, call an internal API, search the web — then reason over the result before answering. [Module 26](../26_mcp_implement_client) extends this exact pattern to tools served over MCP instead of defined locally.
 
+## How to Run
+
+```bash
+python modules/19_agents/example.py
+python modules/19_agents/solutions.py   # exercise solutions
+```
+Requires `ANTHROPIC_API_KEY`. `agent.invoke(...)` runs the full reasoning loop internally (the model decides which tools to call, the tools execute locally in-process, results feed back to the model) — `message.pretty_print()` on each message in the result is what lets you see every step of that loop instead of just the final answer.
+
 ## Walkthrough
 
 `example.py`:

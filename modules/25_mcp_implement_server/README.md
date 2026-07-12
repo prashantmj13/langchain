@@ -13,6 +13,14 @@ This module consolidates everything from the MCP track so far — tools ([21](..
 
 This is the shape of a real internal MCP server: several related tools/resources/prompts around one domain (here, job postings), with the logging and error handling you'd want before letting an LLM-driven agent call it unsupervised.
 
+## How to Run
+
+```bash
+python modules/25_mcp_implement_server/server.py       # starts and blocks, serving HTTP on localhost:8100
+python modules/25_mcp_implement_server/solutions_client.py   # exercise solutions -- self-contained, one command
+```
+`server.py` itself needs no API key (keyword-matching search). `solutions_server.py` (launched automatically by `solutions_client.py`, no server terminal needed) upgrades to real semantic search and therefore needs an embeddings key (`VOYAGE_API_KEY`). To exercise `server.py` directly, leave it running in one terminal and drive it from [module 26](../26_mcp_implement_client)'s client in a second.
+
 ## Walkthrough
 
 `server.py`:

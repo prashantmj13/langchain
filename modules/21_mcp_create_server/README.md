@@ -12,6 +12,14 @@ The Python MCP SDK's `FastMCP` class is the fast path to a working server: decor
 
 The starting point for *any* MCP server: wrapping a handful of functions (a calculator, a lookup, an internal API call) so any MCP-compatible client can use them without custom integration code.
 
+## How to Run
+
+```bash
+python modules/21_mcp_create_server/server.py       # starts and blocks, listening on stdin/stdout (Ctrl+C to stop)
+python modules/21_mcp_create_server/solutions_client.py   # exercise solutions -- launches solutions_server.py itself
+```
+No API key needed (no LLM calls here, just the MCP protocol). You normally don't run `server.py` on its own for output — it's meant to be *launched* by a client as a subprocess, which is exactly what [module 22](../22_mcp_stdio_client)'s `client.py` and this module's `solutions_client.py` do automatically; running it directly just confirms it starts without error.
+
 ## Walkthrough
 
 `server.py` defines a tiny "utilities" server with two tools: `get_weather(city)` (a canned/mocked response — no real API call, to keep the example dependency-free) and `word_count(text)`. Run it directly to confirm it starts (`python modules/21_mcp_create_server/server.py`); [module 22](../22_mcp_stdio_client) builds the client that actually talks to it.

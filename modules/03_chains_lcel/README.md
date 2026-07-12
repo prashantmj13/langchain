@@ -15,6 +15,14 @@ This is the modern replacement for the older `LLMChain` class, which is deprecat
 
 Any multi-step LLM workflow: "template the input, call the model, parse the output" is the single most common pattern in LangChain apps, from a one-shot classifier to the first stage of a RAG pipeline.
 
+## How to Run
+
+```bash
+python modules/03_chains_lcel/example.py
+python modules/03_chains_lcel/solutions.py   # exercise solutions
+```
+Requires `ANTHROPIC_API_KEY` in `.env`. Each function builds a small `prompt | llm | parser` chain and calls `.invoke()`/`.batch()` on it; the script runs all four demo functions back to back and prints each result under its own header.
+
 ## Walkthrough
 
 `example.py`:

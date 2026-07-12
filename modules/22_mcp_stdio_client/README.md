@@ -14,6 +14,14 @@ This is the client-side counterpart to [module 21](../21_mcp_create_server)'s se
 
 Local tool integrations where the "server" is really just a local script/binary you want the LLM host to be able to invoke — most desktop MCP integrations (e.g. Claude Desktop's local tool servers) use exactly this transport.
 
+## How to Run
+
+```bash
+python modules/22_mcp_stdio_client/client.py
+python modules/22_mcp_stdio_client/solutions.py   # exercise solutions
+```
+No API key needed, and no second terminal either: `stdio_client(server_params)` spawns [module 21](../21_mcp_create_server)'s `server.py` as a subprocess itself (using `sys.executable`, so it works regardless of how Python is aliased on your system), talks to it over its stdin/stdout, and tears it down automatically when the `async with` block exits.
+
 ## Walkthrough
 
 `client.py`:

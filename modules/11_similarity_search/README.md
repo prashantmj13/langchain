@@ -12,6 +12,14 @@ Before reaching for a full vector store ([module 12](../12_vector_stores)), it's
 
 Small, in-memory candidate sets (a FAQ list, a handful of product descriptions) don't need a full vector database — a `numpy` argsort over cosine similarities is simpler, faster to reason about, and has zero infrastructure.
 
+## How to Run
+
+```bash
+python modules/11_similarity_search/example.py
+python modules/11_similarity_search/solutions.py   # exercise solutions
+```
+Requires an embeddings provider key (`VOYAGE_API_KEY` by default). The script embeds the whole document list once per query, ranks by cosine similarity in plain Python/`numpy` (no vector database involved), and prints the top-k matches with their scores.
+
 ## Walkthrough
 
 `example.py`:
