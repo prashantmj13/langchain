@@ -2,13 +2,13 @@
 
 ## Theory
 
-Plain RAG ([module 16](../16_rag)) breaks down in a multi-turn conversation. If a user asks "How much PTO do I get?" then follows up with "How much of that carries over?", a bare retriever embeds "How much of that carries over?" in isolation — "that" resolves to nothing, and retrieval fails.
+Plain RAG ([module 16](../16_rag)) breaks in an ordinary conversation. Say a user asks "How much PTO do I get?" and then follows up with "How much of that carries over?" — if you search your documents using the literal words "how much of that carries over," the word "that" refers to nothing on its own, and the search comes back useless. Humans understand "that" from context; a plain retriever doesn't.
 
-The fix is **query reformulation**: before retrieving, use the LLM (with chat history) to rewrite the follow-up into a standalone question ("How much unused PTO carries over to the next year?"), *then* retrieve with the rewritten query, and finally generate the answer using both the retrieved context and the original conversation history. LangChain packages this as:
+The fix: before searching, first ask the model to *rewrite* the follow-up question into a standalone one — turning "how much of that carries over?" into "how much unused PTO carries over to the next year?" using the earlier conversation as context. *Then* search using that rewritten question, and finally answer using both what was found and the original conversation. LangChain gives you ready-made pieces for each part of this:
 
-- **`create_history_aware_retriever`** — wraps a retriever with an LLM step that rewrites the incoming question using chat history before searching.
-- **`create_retrieval_chain`** — combines the history-aware retriever with a "combine documents" answer-generation step (same helper as module 14, now history-aware upstream).
-- **`RunnableWithMessageHistory`** ([module 07](../07_chat_history)) — wraps the whole thing so history is loaded/saved automatically per session.
+- **A step that rewrites the question first.** This is a small model call that happens before the actual search, using chat history to turn a vague follow-up into a clear, standalone question.
+- **The same "search then answer" combo from module 14**, just with the rewriting step bolted on in front of it.
+- **The same conversation-memory wrapper from [module 07](../07_chat_history)**, so history is loaded and saved automatically without you managing it by hand.
 
 ## Use Case
 

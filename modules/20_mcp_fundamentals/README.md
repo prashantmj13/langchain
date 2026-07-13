@@ -2,9 +2,9 @@
 
 ## Theory
 
-The **Model Context Protocol (MCP)** is an open standard (originally from Anthropic) for connecting LLM applications to external tools, data, and prompts through a single, consistent protocol — instead of every app writing bespoke integration code for every tool/data source it needs.
+In [module 19](../19_agents), the tools a model could use were plain Python functions living right there in the same file. **MCP (Model Context Protocol)** solves a different problem: what if you want the *same* tools to be usable by several different apps, without copy-pasting the code into each one? MCP is a standard, shared way for an AI app to talk to a separate program that offers up tools, data, or ready-made prompts — so you build the tool once, as its own small server, and any MCP-compatible app can use it.
 
-**Architecture:**
+**The three players involved:**
 ```mermaid
 graph LR
     Host["Host application<br/>(Claude Desktop, your agent, an IDE)"]
@@ -16,18 +16,18 @@ graph LR
     Server -->|wraps| DataSource["Database, API, filesystem, ..."]
 ```
 
-- **Host** — the LLM-facing application (Claude Desktop, your own agent, an IDE assistant).
-- **Client** — lives inside the host, holds a 1:1 connection to one server, speaks the protocol on the host's behalf.
-- **Server** — a lightweight process that exposes capabilities. A server doesn't know or care which LLM is on the other end.
+- **Host** — the app the person is actually using (Claude Desktop, your own agent, a code editor's AI assistant).
+- **Client** — a small piece living inside the host that's in charge of talking to one specific server.
+- **Server** — a separate, small program that offers up some capability (a tool, some data, a prompt). It doesn't know or care which AI model is using it.
 
-**Transports** (how client and server actually exchange bytes):
-- **stdio** — the host launches the server as a local subprocess and talks over stdin/stdout. Simplest option, zero network config, used for local tools ([modules 21](../21_mcp_create_server), [22](../22_mcp_stdio_client)).
-- **Streamable HTTP** — the server runs independently (possibly remote) and the client connects over HTTP, with responses streamed back ([module 23](../23_mcp_http_client)). Needed when the server isn't a local subprocess (shared team server, hosted service).
+**Two ways the client and server can talk to each other:**
+- **stdio** — the simplest option: the host starts the server as a small program on the same machine and talks to it directly, no networking involved. Good for local tools ([modules 21](../21_mcp_create_server), [22](../22_mcp_stdio_client)).
+- **Streamable HTTP** — the server runs on its own, possibly on a different machine entirely, and the client connects to it over the internet/network, the same way a web browser connects to a website ([module 23](../23_mcp_http_client)). Needed when many people/apps need to share one server.
 
-**Primitives** (what a server can expose):
-- **Tools** — functions the model can call, with typed arguments (the MCP equivalent of the `@tool`-decorated functions from [module 19](../19_agents), but served over the wire instead of defined in-process).
-- **Resources** — read-only data the host can fetch and inject as context (a file, a database row, an API response) — think of these as addressable, fetchable context rather than actions.
-- **Prompts** — reusable, parameterized prompt templates the server exposes, so prompt engineering for a given data source lives with that data source instead of being copy-pasted into every client. Covered in [module 24](../24_mcp_hosting_resources_prompts).
+**Three kinds of things a server can offer:**
+- **Tools** — actions the model can choose to take, just like module 19's tools, except now they live in a separate server instead of your own code.
+- **Resources** — read-only pieces of data the app can fetch and show the model as background information (a file, a database entry) — these aren't "actions," just information to look at.
+- **Prompts** — ready-made, fill-in-the-blank prompts that the server provides, so good prompt-writing for a particular kind of data lives in one place instead of being copied into every app that uses it. Covered in [module 24](../24_mcp_hosting_resources_prompts).
 
 ## Use Case
 

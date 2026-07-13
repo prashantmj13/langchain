@@ -2,11 +2,11 @@
 
 ## Theory
 
-Before reaching for a full vector store ([module 12](../12_vector_stores)), it's worth building "search" by hand once: embed a query, embed a set of candidate documents, rank candidates by similarity to the query, take the top-k. This is exactly what a vector store does internally — the store just makes it fast at scale (via approximate-nearest-neighbor indexing) and persistent.
+Before reaching for a dedicated search tool ([module 12](../12_vector_stores)), it's worth doing "search" by hand once, so you can see exactly what's happening: turn your search question into an embedding, turn every candidate document into an embedding too, measure how close each candidate is to the question, and keep the closest few. That's genuinely all a vector database does internally — it just does this same simple idea much faster and at a much bigger scale.
 
-- **Top-k ranking** — sort candidates by similarity score, descending, take the first `k`.
-- **Cosine similarity vs. dot product vs. Euclidean distance** — cosine is most common for text embeddings since it ignores vector magnitude; some models (already normalized) let you use a plain dot product as a shortcut for the same ranking.
-- **Brute-force vs. approximate** — comparing a query against every document (`O(n)`) is fine for hundreds/thousands of documents; millions need approximate-nearest-neighbor structures like FAISS's indexes ([module 15](../15_faiss_vector_store)).
+- **Keeping the top few, not everything.** Once every candidate has a similarity score, you sort them from most similar to least, and just keep the top handful (say, the top 3) — those are your search results.
+- **Different ways to measure "closeness."** Cosine similarity (from module 09) is the most common way to compare two embeddings for text search. There are other formulas too, but they usually agree closely enough that it rarely matters which one you pick.
+- **Checking every candidate works fine — until it doesn't.** Comparing your question against every single document one by one is perfectly fast for a few hundred or thousand documents. Once you have millions, that becomes too slow, and you need smarter, index-based search structures instead (that's what [FAISS in module 15](../15_faiss_vector_store) is for).
 
 ## Use Case
 

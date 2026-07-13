@@ -2,11 +2,11 @@
 
 ## Theory
 
-This is where the MCP track connects back to [module 19 (Agents)](../19_agents): instead of defining tools locally with `@tool`, the agent's tools are **discovered at runtime from an MCP server** and exposed to a LangGraph agent, via the community package `langchain-mcp-adapters`. The pattern:
+This is where the MCP track connects back to [module 19 (Agents)](../19_agents). In module 19, the agent's tools were plain Python functions written right there in the same file. Here, instead, the agent asks an MCP server "what tools do you have?", automatically turns whatever it finds into tools the agent can use, and then works exactly the same way as module 19 from that point on.
 
-- **`MultiServerMCPClient`** — configured with one or more MCP servers (each with its own transport: stdio command, or an HTTP URL), handles connecting to all of them.
-- **`client.get_tools()`** — returns each server's MCP tools already wrapped as LangChain `BaseTool` objects, ready to hand straight to `create_react_agent(llm, tools)` exactly like the local tools in module 19.
-- **The agent doesn't know or care** that its tools live in a separate process/server instead of being plain Python functions — that's the entire value of standardizing on MCP: the same `create_react_agent` code works whether tools are local or remote.
+- **One client, possibly several servers.** You can point at more than one MCP server at once — maybe one for job postings, another for something else entirely — and this piece handles connecting to all of them.
+- **Turning MCP tools into LangChain tools automatically.** One function call fetches every tool from every connected server and converts them into the exact same kind of tool object module 19 used — so they can be handed straight to the same agent-building function, no extra work needed.
+- **The agent can't tell the difference.** Whether a tool is a local Python function (module 19) or lives on a separate server somewhere else (this module), the agent uses it exactly the same way — that's the whole point of MCP: it hides *where* a tool lives, so your agent code doesn't need to know or care.
 
 ## Use Case
 

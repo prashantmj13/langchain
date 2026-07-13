@@ -2,13 +2,13 @@
 
 ## Theory
 
-This module is a small end-to-end project that ties together everything from modules 09-12: embeddings, similarity, and vector stores, plus Claude for generation. There's no new concept here — the point is seeing the pieces work together on a realistic task before formalizing the pattern as "RAG" in [module 16](../16_rag).
+Nothing new to learn here — this module just takes everything from modules 09-12 (embeddings, similarity search, vector stores) and Claude, and puts them together on one realistic task, so you can see how they combine before we give this combination a name ("RAG") in [module 16](../16_rag).
 
-Pipeline:
-1. **Load** a handful of job postings from `sample_data/jobs/*.txt`.
-2. **Embed** each posting and store it in a FAISS vector store ([module 15](../15_faiss_vector_store) covers FAISS specifically).
-3. **Embed** a candidate resume (`sample_data/resume.txt`) and run similarity search against the job postings to find the best matches.
-4. **Generate** — hand the top match and the resume to Claude and ask it to explain *why* this job is a good fit and what skills gap (if any) the candidate should address.
+Here's the full pipeline, step by step:
+1. **Load** a handful of sample job postings from text files.
+2. **Turn each posting into an embedding** and store all of them in a FAISS vector store ([module 15](../15_faiss_vector_store) explains FAISS specifically).
+3. **Turn a candidate's resume into an embedding too**, and search the stored job postings to find which ones are the closest match.
+4. **Ask Claude to explain the match** — hand it the resume and the best-matching job, and have it write a short explanation of why this job fits, and what skills (if any) the candidate is missing.
 
 ## Use Case
 

@@ -2,12 +2,12 @@
 
 ## Theory
 
-A **retriever** is LangChain's abstraction for "given a query string, return relevant `Document`s" — it's the interface that turns a vector store ([module 12](../12_vector_stores)) into something a chain can call with `.invoke(query)`, no different from any other `Runnable`.
+A **retriever** is just "something you can ask a question, and it hands you back the documents that seem relevant." It's a thin wrapper around a vector store ([module 12](../12_vector_stores)) that makes it behave exactly like everything else in module 03 — you `.invoke(query)` it just like you'd invoke a model or a prompt, and it snaps into a `|` chain the same way.
 
-- **`vector_store.as_retriever()`** — the most common retriever, backed by similarity or MMR search.
-- **Search type & kwargs** — `search_type="similarity"` vs `"mmr"`, plus `k`, `score_threshold`, `fetch_k`.
-- **`create_retrieval_chain`** — a prebuilt LangChain helper that wires a retriever and a "combine documents" chain together: it retrieves, stuffs the retrieved docs into a prompt, and calls the LLM, returning both the `answer` and the source `context` documents.
-- **Retrievers are composable** — `MultiQueryRetriever` (generates several rephrased queries to widen recall), `ContextualCompressionRetriever` (re-ranks/trims retrieved docs before they reach the LLM) all wrap a base retriever with the same `Runnable` interface.
+- **Turning a vector store into a retriever.** `vector_store.as_retriever()` is the easiest way to get one — under the hood it's still doing the same similarity search from module 12, just wrapped so it fits into chains.
+- **Tuning how it searches.** You can control how many results come back, whether it avoids near-duplicates, and whether it filters out weak matches entirely.
+- **A ready-made "search then answer" combo.** `create_retrieval_chain` is a shortcut that does the whole thing for you: search for relevant documents, hand them to the model along with the question, and return both the model's answer and which documents it used.
+- **Fancier retrievers wrap simpler ones.** Some retrievers add extra smarts on top of a basic one — for example, rephrasing a vague question into several different search queries to catch more relevant results. They all still work with the same `.invoke(query)` pattern, so you can swap a fancier one in without changing anything else.
 
 ## Use Case
 

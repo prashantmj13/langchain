@@ -2,13 +2,13 @@
 
 ## Theory
 
-Anthropic does not train or serve its own embedding model — Claude is a generation model. For embeddings, [Anthropic's own docs recommend Voyage AI](https://docs.anthropic.com/en/docs/build-with-claude/embeddings), a partner that offers domain-tuned embedding models (general purpose, code, finance, law). Other common choices:
+Claude is great at reading and writing text, but it doesn't make embeddings (the number-lists from module 09) — that's a different kind of model, made by a different company. [Anthropic's own docs point you to Voyage AI](https://docs.anthropic.com/en/docs/build-with-claude/embeddings) for this. Your main choices:
 
-- **Voyage AI** (`voyage-3.5`, `voyage-code-3`, ...) — Anthropic's recommended partner; strong general + domain-specific models; API-based.
-- **OpenAI** (`text-embedding-3-small`/`large`) — widely used, cheap, API-based; a common default outside the Anthropic ecosystem.
-- **Local/HuggingFace** (`sentence-transformers/all-MiniLM-L6-v2` and similar) — runs on your own machine, no API key or network call, lower quality than the hosted options but free and private.
+- **Voyage AI** — Anthropic's recommended partner for embeddings. You send them text over the internet, they send back the number-list. Has general-purpose models plus specialized ones (for code, finance, legal text, etc.).
+- **OpenAI** — another popular internet-based option, often cheaper, widely used outside the Anthropic ecosystem.
+- **A model that runs on your own computer** — slower to set up and generally a bit less accurate than the internet-based options, but free, private (your text never leaves your machine), and works without an API key.
 
-All three implement LangChain's `Embeddings` interface (`.embed_query(text)` for a single string, `.embed_documents(list[str])` for many) — see [`common/embedding_factory.py`](../../common/embedding_factory.py).
+Whichever one you pick, you use it the exact same way in code — `.embed_query(one_piece_of_text)` for a single piece of text, or `.embed_documents(a_list_of_texts)` for many at once. See [`common/embedding_factory.py`](../../common/embedding_factory.py) for how this repo lets you switch between them.
 
 ## Use Case
 

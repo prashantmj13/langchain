@@ -2,13 +2,12 @@
 
 ## Theory
 
-A stdio client connects to an MCP server by **launching it as a subprocess** and communicating over its stdin/stdout pipes — no ports, no network config, and the server's lifetime is scoped to the client's. The Python SDK's client pieces:
+Module 21 built the server; this module builds the other half — the client that actually talks to it. A "stdio client" connects to a server by starting it up as its own little program and exchanging messages directly with it, without any networking involved. When the client shuts down, the server it started shuts down too — they're tied together.
 
-- **`StdioServerParameters(command, args)`** — describes how to launch the server process (e.g. `python server.py`).
-- **`stdio_client(params)`** — an async context manager that spawns the subprocess and returns `(read, write)` streams.
-- **`ClientSession(read, write)`** — wraps those streams with the actual MCP protocol: `.initialize()` (handshake), `.list_tools()`, `.call_tool(name, arguments)`.
-
-This is the client-side counterpart to [module 21](../21_mcp_create_server)'s server.
+Three pieces work together to make this happen:
+- **A description of how to start the server** — basically "run this command" (e.g. `python server.py`).
+- **Something that actually starts it** and hands you back a way to send and receive messages.
+- **A "session" object** that wraps those messages with the real MCP conversation: say hello and agree on capabilities, ask "what tools do you have?", and "please run this tool with these arguments."
 
 ## Use Case
 

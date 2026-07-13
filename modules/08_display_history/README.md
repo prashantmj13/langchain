@@ -2,13 +2,13 @@
 
 ## Theory
 
-Once you have a `BaseChatMessageHistory` ([module 07](../07_chat_history)), you need to *do something* with it: print it for debugging, render it in a chat UI, or export it for logging/analytics. This module is purely about the presentation layer over a message list — turning `list[BaseMessage]` into:
+Once you're storing a conversation ([module 07](../07_chat_history)), you'll want to actually look at it — for debugging, for showing it in a chat window, or for saving it somewhere. This module is just about turning that list of messages into something readable:
 
-- A readable console transcript (`role: content`).
-- A markdown chat log.
-- A JSON-serializable structure (for storing in a database or sending to a frontend).
+- A plain transcript you can print to the screen, like `HUMAN: hello` / `AI: hi there`.
+- A nicely formatted chat log you could drop into a document.
+- A format you can save to a file or a database and load back later.
 
-`BaseMessage` objects expose `.type` (`"human"`/`"ai"`/`"system"`), `.content`, and `.model_dump()` for exactly this purpose.
+Every message object already tells you who sent it (human, AI, or system) and what it says — this module is just different ways of formatting that same information for different purposes.
 
 ## Use Case
 

@@ -2,20 +2,15 @@
 
 ## Theory
 
-Claude is multimodal: a `HumanMessage` can carry both text and image content blocks in the same call, and Claude reasons over the image directly (no separate OCR/vision pipeline needed). The message shape:
+So far, every message we've sent Claude has been plain text. Claude can also "see" — you can include an image in the same message as your question, and Claude looks at it directly, the same way it reads text. No separate tool is needed to first extract the text or describe the picture; you just hand Claude the image and ask about it.
 
-```python
-HumanMessage(content=[
-    {"type": "text", "text": "What's in this image?"},
-    {"type": "image", "source_type": "base64", "data": base64_str, "mime_type": "image/png"},
-])
-```
+To do this, instead of a message being one plain string, it becomes a small list with two parts: one part is your text question, and the other part is the image itself, converted into a long text string (called base64) so it can travel inside the same request as everything else.
 
-Key points:
-- **Images are base64-encoded** and embedded directly in the request (or referenced by URL, for providers/setups that support it).
-- **Size/token limits** — large images cost more tokens and may be downscaled by the API; resizing to a reasonable resolution before sending is good practice.
-- **Multiple images per message** are supported — useful for "compare these two screenshots" style prompts.
-- Claude's vision use cases: reading charts/screenshots, describing scenes, transcribing handwritten or printed text, comparing UI mockups.
+A few practical things to know:
+- **The image gets encoded as text before sending**, using a standard method called base64 — you don't need to understand how that encoding works, just that Pillow (or any image library) can produce it for you.
+- **Bigger images cost more** — just like longer text costs more tokens, a larger image uses more of your budget, so it's worth shrinking an image to a reasonable size before sending it.
+- **You can send more than one image at once** — handy for "compare these two screenshots" or "what changed between these two pictures" type questions.
+- **What this is good for:** reading text out of a photo or scanned document, describing what's in a picture, and comparing two images side by side.
 
 ## Use Case
 

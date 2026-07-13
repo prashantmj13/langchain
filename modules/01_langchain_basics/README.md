@@ -2,11 +2,11 @@
 
 ## Theory
 
-LangChain is a framework for building applications on top of LLMs by composing small, standard building blocks — models, prompts, output parsers, retrievers, tools — into pipelines called **Runnables**. Three ideas matter before anything else:
+Think of LangChain as a box of LEGO pieces for building things with AI models. Each piece — a model, a prompt, a way to parse the output — snaps together with the others the same way. Three things to know before anything else:
 
-- **Chat models vs. legacy LLMs.** Modern providers (Claude, GPT-4o, Gemini) are *chat* models: they take a list of role-tagged **messages** (`SystemMessage`, `HumanMessage`, `AIMessage`) and return an `AIMessage`. The old plain-text "LLM" interface (`llm.predict("...")`) still exists for a few completion-style APIs but is not how you should talk to Claude.
-- **The Runnable interface.** Every LangChain component — a model, a prompt template, a parser — implements `.invoke()`, `.batch()`, and `.stream()`. This uniform interface is what lets you pipe them together with `|` (covered in [module 03](../03_chains_lcel)).
-- **Messages carry the conversation.** A `SystemMessage` sets behavior/persona, `HumanMessage` is user input, `AIMessage` is model output. You build up a `list[BaseMessage]` and pass the whole thing to `.invoke()`.
+- **You talk to Claude using "messages", not a single block of text.** A conversation is a list of messages, each one labeled with who it's from: a `SystemMessage` (your instructions to the model, like "you are a helpful assistant"), a `HumanMessage` (what the user typed), and an `AIMessage` (what the model replied). You send the whole list, and the model replies with one more `AIMessage`. (Older, simpler AI tools just took one block of text and returned one block of text back — that style still exists, but it's not how you should work with Claude.)
+- **Every LangChain piece is used the same way.** Whether it's a model, a prompt, or something that reformats the model's answer, they all share the same three buttons: `.invoke()` (give it input, get one output), `.batch()` (do that for a list of inputs at once), and `.stream()` (get the answer back piece by piece, as it's generated, instead of waiting for the whole thing). Because every piece has the same three buttons, you can snap them together with the `|` symbol — that's covered in [module 03](../03_chains_lcel).
+- **A conversation is just a growing list.** Each time you or the model says something, that becomes one more item in a `list[BaseMessage]`. You hand the whole list to `.invoke()` every time — the model has no memory of its own, so *you* carry the conversation forward by keeping this list around.
 
 ## Use Case
 

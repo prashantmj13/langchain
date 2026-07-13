@@ -2,9 +2,11 @@
 
 ## Theory
 
-A "simple sequential chain" is the classic pattern where **one chain's single output feeds directly into the next chain's single input** — step 1's answer is step 2's question, nothing more. LangChain used to have a dedicated `SimpleSequentialChain` class for this; it's deprecated in favor of just piping LCEL chains together, because a sequential chain *is* an LCEL chain — `chain_1 | chain_2`.
+This is the simplest possible chain shape: step 1 produces one thing, and that one thing becomes the entire input to step 2 — nothing else is added or mixed in along the way. Think of a factory line with two stations, where each station only ever sees what the station before it handed over.
 
-The defining trait vs. the more general [Sequential Chain (module 05)](../05_sequential_chain) is **single in, single out** at every stage: no branching, no merging multiple upstream outputs.
+LangChain used to have a class literally called `SimpleSequentialChain` for this. It isn't needed anymore — connecting two chains with `chain_1 | chain_2` (from module 03) does the exact same thing, more simply.
+
+The one thing that makes this "simple" (versus the more flexible [Sequential Chain in module 05](../05_sequential_chain)) is that each step takes exactly one input and produces exactly one output. There's no combining information from two earlier steps, and no step that needs more than what the previous step gave it.
 
 ## Use Case
 

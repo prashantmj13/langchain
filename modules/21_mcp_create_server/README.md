@@ -2,11 +2,11 @@
 
 ## Theory
 
-The Python MCP SDK's `FastMCP` class is the fast path to a working server: decorate a function with `@mcp.tool()` and it's automatically exposed, with its type hints and docstring turned into the tool's schema/description for the model to read. `mcp.run(transport="stdio")` starts the server listening on stdin/stdout — the simplest possible transport, since the client just launches this script as a subprocess.
+Building your first MCP server is easier than it sounds. The `FastMCP` class does most of the work: you write a normal Python function, add one line (`@mcp.tool()`) right above it, and it becomes something any MCP client can discover and call — no protocol code to write by hand.
 
-- **`@mcp.tool()`** — registers a function as a callable tool; argument types and the docstring become what the LLM sees when deciding whether/how to call it.
-- **Type hints matter** — `def get_weather(city: str) -> str` gives the client enough schema to validate arguments before ever calling your code.
-- **stdio transport** — no ports, no networking; the server's lifecycle is tied to the client process that spawned it.
+- **`@mcp.tool()` turns a function into a tool.** LangChain's `@tool` decorator (from module 19) did something similar for local, in-process tools; this is the MCP version, for a function that's going to be served to other programs.
+- **Your type hints and docstring do double duty.** They're not just documentation for other programmers anymore — `FastMCP` reads them automatically to tell any connecting client exactly what arguments the tool needs and what it does. That's why writing clear type hints and a clear docstring (module 00) actually matters here, not just as a nice habit.
+- **This server uses the simplest connection method (stdio).** No network setup at all — a client just starts this script as a small program and talks to it directly.
 
 ## Use Case
 

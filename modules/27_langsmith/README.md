@@ -2,17 +2,11 @@
 
 ## Theory
 
-LangSmith is LangChain's observability/evaluation platform: it traces every step of a chain or agent run (each prompt, each LLM call with full input/output and token counts, each tool call) so you can debug *why* an answer came out the way it did, not just see the final output. Core pieces:
+When a chain gives a weird answer, "what actually happened inside there?" is a hard question to answer just by staring at the final output. LangSmith is a tool that records every single step along the way — every prompt that got built, every call to the model with its exact input and output, every tool that got called — so you can go back afterward and see exactly what happened and why.
 
-- **Tracing** — turned on globally with two env vars, no code changes to your chains required:
-  ```bash
-  LANGSMITH_TRACING=true
-  LANGSMITH_API_KEY=...
-  LANGSMITH_PROJECT=my-project
-  ```
-  Every `Runnable.invoke()` call anywhere in the process gets traced automatically once these are set.
-- **`@traceable`** — a decorator for tracing plain Python functions that aren't LangChain `Runnable`s (e.g. custom pre/post-processing logic) so they show up in the same trace tree.
-- **Evaluation** — LangSmith lets you define a small dataset of `(input, expected_output)` pairs and run a chain against it, scoring each output (exact match, an LLM-as-judge grader, or a custom Python function), to catch regressions before shipping a prompt change.
+- **Turning it on needs no code changes.** Just set a couple of settings (an on/off switch and your LangSmith account key), and every chain/model call in your program starts getting recorded automatically — you don't have to add any tracking code yourself.
+- **Recording your own custom functions too.** If you have a plain Python function (not a LangChain chain) that's part of your pipeline, adding one line above it lets LangSmith record it alongside everything else, so you get the complete picture in one place.
+- **Testing your chain against known examples.** You can build a small set of "here's a question, here's what a good answer looks like" pairs, run your chain against all of them, and get a score — a fast way to check whether a prompt change made things better or worse before you actually ship it.
 
 ## Use Case
 

@@ -2,16 +2,15 @@
 
 ## Theory
 
-A **vector store** is a database purpose-built to store embeddings alongside their source text/metadata, and to answer "give me the k most similar vectors to this query vector" efficiently — the same operation you did by hand in [module 11](../11_similarity_search), but indexed for speed and persisted to disk/a server instead of recomputed in a Python list every time.
+A **vector store** is just a database built specifically for the "find the most similar items" search from [module 11](../11_similarity_search) — except it's fast even with millions of documents, and it remembers everything even after your program stops running (module 11's version forgot everything the moment the script ended).
 
-LangChain's `VectorStore` interface standardizes this across dozens of backends:
-- `add_texts(texts, metadatas)` / `add_documents(documents)` — ingest.
-- `similarity_search(query, k)` — plain nearest-neighbor search.
-- `similarity_search_with_score(query, k)` — same, with distance/similarity scores attached.
-- `max_marginal_relevance_search` (MMR) — nearest-neighbor search that also penalizes redundancy, so results aren't all near-duplicates of each other.
-- `.as_retriever()` — wraps the store as a `Runnable` retriever, the bridge into chains ([module 14](../14_retrieval)).
+LangChain gives every vector store the same set of buttons, no matter which one you use underneath:
+- **Add documents to it** — hand it your texts (and any extra info about them), and it embeds and stores them for you.
+- **Search it** — give it a question, get back the most similar documents, optionally along with a similarity score for each.
+- **Search it while avoiding near-duplicates** — sometimes the top results are all nearly the same document repeated; this search mode deliberately picks a more varied set of results instead.
+- **Plug it into a chain** — turn the vector store into something that fits directly into the `|` pipelines from module 03, which is the bridge into [module 14 (Retrieval)](../14_retrieval).
 
-This module uses an in-memory `Chroma` collection as a general-purpose introduction; [module 15](../15_faiss_vector_store) does a dedicated deep dive on FAISS specifically (a library rather than a full database, optimized for raw ANN search speed).
+This module uses Chroma (a simple, general-purpose vector store) to introduce the ideas; [module 15](../15_faiss_vector_store) goes deep on FAISS specifically, a related but different tool built purely for very fast search.
 
 ## Use Case
 

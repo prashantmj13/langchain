@@ -2,12 +2,12 @@
 
 ## Theory
 
-FAISS (Facebook AI Similarity Search) is a **library**, not a database server — it's an in-process, highly optimized nearest-neighbor search index that you save to / load from local disk as flat files. That makes it the simplest possible way to get real vector search without standing up any infrastructure. Key concepts specific to FAISS:
+FAISS is different from Chroma (module 12) in one important way: it's not a database program you run separately — it's just a code library that does very fast similarity search, directly inside your own Python program. There's no server to install or manage; you just save its data as a couple of files on disk when you're done, and load them back later.
 
-- **Index types** — `IndexFlatL2`/`IndexFlatIP` do exact brute-force search (small/medium corpora); `IndexIVFFlat`/`HNSW` trade a small accuracy loss for much faster search on millions of vectors. LangChain's `FAISS.from_documents(...)` uses a flat index by default.
-- **Local persistence** — `.save_local(folder)` writes an `index.faiss` + `index.pkl` pair; `FAISS.load_local(folder, embeddings, allow_dangerous_deserialization=True)` reloads without re-embedding anything.
-- **No metadata filtering server-side** — unlike Chroma, FAISS itself has no query language for metadata; LangChain's wrapper filters in Python after retrieving candidates, so it's less efficient for heavy metadata filtering at scale.
-- **`allow_dangerous_deserialization`** — loading a FAISS index unpickles Python objects; only load index files you created/trust.
+- **Different search modes for different sizes of data.** For a small or medium number of documents, FAISS can check every single one and get an exact answer. For millions of documents, it switches to faster approximate methods that are nearly as accurate but far quicker. This repo's examples are small enough to use the simple, exact method.
+- **Saving and loading.** `.save_local(folder)` writes your search index to a couple of files on disk; loading them back later is instant — it doesn't need to redo any of the embedding work, it just reads the saved numbers straight from disk.
+- **No built-in filtering by extra info.** Chroma lets you filter results by metadata (like "only search within category X") as part of the search itself. FAISS doesn't do this natively — LangChain's wrapper fetches candidates first and then filters them in plain Python, which works fine at small scale but isn't as efficient for huge datasets with heavy filtering.
+- **Only load files you trust.** Loading a saved FAISS index runs some of Python's built-in "reconstruct an object from a file" machinery, which is a well-known way to accidentally run malicious code if the file came from someone you don't trust. Only load index files you created yourself, or that came from someone you trust.
 
 ## Use Case
 

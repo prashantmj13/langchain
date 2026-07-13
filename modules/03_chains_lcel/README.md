@@ -2,14 +2,14 @@
 
 ## Theory
 
-LCEL (LangChain Expression Language) is the `|` pipe syntax for composing `Runnable`s: `prompt | llm | parser`. Each stage's output becomes the next stage's input. Key pieces:
+A "chain" is just a few steps hooked together, where each step's output feeds into the next step's input — like an assembly line. LangChain lets you build one by literally drawing an arrow between the steps with the `|` symbol: `prompt | llm | parser` means "fill in the prompt, send it to the model, then clean up the model's answer." Key ideas:
 
-- **`Runnable`** — the base interface (`.invoke`, `.batch`, `.stream`, `.ainvoke`) implemented by prompts, models, parsers, and retrievers alike.
-- **`RunnableLambda`** — wrap any plain Python function as a Runnable so it can slot into a pipe.
-- **Output parsers** — `StrOutputParser` extracts `.content` as a plain string; `PydanticOutputParser`/`.with_structured_output()` coerce the model's output into a typed schema.
-- **Automatic parallelism & streaming** — because every stage shares the same interface, LCEL chains get `.batch()` (parallel calls) and `.stream()` (token streaming through the whole pipeline) for free, without you writing any threading code.
+- **Everything speaks the same language.** A prompt, a model, and an output cleaner are all different things, but they all understand `.invoke()`, `.batch()`, and `.stream()` (from module 01). That's the only reason `|` can connect them — Python doesn't know anything about AI, it just knows these three pieces can be wired together the same way.
+- **Turning a plain function into a chain piece.** Sometimes you want a normal Python function (not a model or a prompt) as one of the steps — say, to uppercase some text. `RunnableLambda` is a small wrapper that lets an ordinary function join the chain, so it can sit in the middle of a `|` pipeline like everything else.
+- **Cleaning up the model's answer.** A model's raw reply is a whole message object, not just plain text. An "output parser" strips it down to what you actually want — `StrOutputParser` just grabs the plain text, and other parsers can force the answer into a specific structure (like a particular set of fields) instead of free-form prose.
+- **Speed for free.** Because every step understands `.batch()` and `.stream()`, a whole chain gets fast parallel processing and live, word-by-word output automatically — you don't have to write any extra code to get it.
 
-This is the modern replacement for the older `LLMChain` class, which is deprecated — `prompt | llm | parser` *is* the chain.
+This `prompt | llm | parser` style is the current, actively-maintained way to build chains in LangChain (there used to be an older `LLMChain` class that did something similar — it's no longer the recommended approach).
 
 ## Use Case
 

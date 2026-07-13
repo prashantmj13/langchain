@@ -2,14 +2,14 @@
 
 ## Theory
 
-Real applications rarely use just one model for everything. Common multi-model patterns:
+Real apps usually don't rely on just one AI model for everything — different jobs call for different models. A few common ways to mix models:
 
-- **Comparison** — run the same prompt against several providers to compare quality/cost/latency.
-- **Routing** — send different *kinds* of requests to different models (a cheap/fast model for simple classification, Claude for anything requiring careful reasoning).
-- **Ensembling** — ask multiple models the same question and combine/vote on their answers.
-- **Pipeline specialization** — use a cheap model for a rough draft and a stronger model to refine it (draft-and-polish).
+- **Comparing them.** Ask the same question to several different models, and look at the answers side by side, to see which one is better, faster, or cheaper for your use case.
+- **Sending different requests to different models.** A quick, cheap model can handle simple lookups; a stronger model like Claude can handle anything that needs careful reasoning. You decide which request goes where.
+- **Asking several models and taking a vote.** If you're unsure which model to trust, ask more than one the same question and go with whatever answer most of them agree on.
+- **Draft, then polish.** Use a cheap, fast model to write a rough first version, then have a stronger model clean it up — cheaper overall than having the strong model write everything from scratch.
 
-LangChain makes this trivial because every chat model is a `Runnable` with the same interface — `get_chat_model(provider=...)` from [`common/model_factory.py`](../../common/model_factory.py) is exactly this pattern formalized.
+This is easy in LangChain because every model, no matter the provider, is used the exact same way (from module 01) — so switching which model handles a given step is as simple as swapping which model object you pass in. That's exactly what `get_chat_model(provider=...)` in [`common/model_factory.py`](../../common/model_factory.py) does.
 
 ## Use Case
 

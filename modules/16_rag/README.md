@@ -2,15 +2,15 @@
 
 ## Theory
 
-RAG grounds an LLM's answer in retrieved evidence instead of relying purely on what it memorized during training. The canonical pipeline:
+RAG (Retrieval-Augmented Generation) is a fancy name for a simple idea: instead of hoping the model already knows the answer, first go find the relevant facts, hand them to the model, and then ask it to answer using those facts. Here's the whole pipeline in plain steps:
 
-1. **Load** — pull in raw source documents (files, web pages, database rows).
-2. **Split** — break long documents into chunks small enough to embed meaningfully and fit in a prompt (`RecursiveCharacterTextSplitter` is the standard default: splits on paragraph/sentence boundaries first, falling back to smaller separators).
-3. **Embed & store** — embed each chunk and put it in a vector store ([modules 09-12](../09_embeddings_theory)).
-4. **Retrieve** — given a user question, fetch the top-k most relevant chunks ([module 14](../14_retrieval)).
-5. **Generate** — stuff the retrieved chunks into a prompt as context and ask the LLM to answer *using only that context*, ideally citing which chunk each claim came from.
+1. **Load** — bring in your source material (documents, web pages, whatever you want the model to be able to answer questions about).
+2. **Split** — cut long documents into smaller chunks. This matters for two reasons: a giant document doesn't embed well as one single "meaning" (module 09), and you can only fit so much text into one prompt anyway.
+3. **Turn each chunk into an embedding and store it** — same idea as modules 09-12, just applied to your own documents.
+4. **When a question comes in, find the most relevant chunks** — this is retrieval, from module 14.
+5. **Hand those chunks to the model along with the question**, and tell it to answer *using only what you gave it* — ideally also saying which chunk it got each fact from, so you can double-check.
 
-RAG exists because of two hard limits on any LLM: a **fixed knowledge cutoff** (it doesn't know about your private data or anything after training) and a **finite context window** (you can't just paste your entire knowledge base into every prompt). Retrieval solves both by fetching only the handful of chunks relevant to *this* question.
+Why bother with all this instead of just asking the model directly? Two reasons: the model was only trained on data up to a certain point in time, so it simply doesn't know about your private documents or anything recent — and even if it did, you can't paste an entire company's worth of documents into a single prompt, there's a limit to how much text fits in one request. RAG solves both problems by fetching only the small handful of chunks that are actually relevant to *this* question.
 
 ## Use Case
 

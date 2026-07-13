@@ -2,12 +2,12 @@
 
 ## Theory
 
-An **embedding** is a fixed-length vector of floats (e.g. 1024 dimensions) that represents the *meaning* of a piece of text, produced by a neural network trained so that semantically similar texts end up as nearby vectors in that high-dimensional space. Key ideas:
+Computers can't compare the *meaning* of two pieces of text directly — they need everything turned into numbers first. An **embedding** does exactly that: it converts a piece of text into a long list of numbers (say, 1024 of them) that captures what the text *means*. Texts with similar meaning end up with similar lists of numbers, even if they don't share any of the same words.
 
-- **Semantic, not lexical, similarity.** "dog" and "puppy" land close together even though they share no characters; "dog" and "dot" land far apart despite looking similar as strings.
-- **Cosine similarity** is the standard way to compare two embeddings: `cos(θ) = (A · B) / (|A| |B|)`, ranging from -1 (opposite meaning) to 1 (identical meaning). Most embedding APIs normalize vectors to unit length, so cosine similarity reduces to a dot product.
-- **Dimensionality** is a trade-off: higher-dimensional embeddings (e.g. 1536, 3072) capture more nuance but cost more to store/search; many modern models (e.g. Voyage, OpenAI's v3 embeddings) support "Matryoshka" truncation — you can safely cut a 1024-dim vector down to 256 dims and lose relatively little quality.
-- **Embeddings are not free-text.** You cannot ask an embedding model "why are these similar" — it's a fixed-size numeric fingerprint, useful only for comparison/search, not generation.
+- **It's about meaning, not spelling.** "dog" and "puppy" end up close together, because they mean similar things — even though they don't share a single letter in the same spot. Meanwhile "dog" and "dot" end up far apart, even though they look almost identical as words, because they mean completely different things.
+- **"How similar" is a number you can calculate.** There's a standard formula (called cosine similarity) for measuring how close two of these number-lists are — it gives you a score from -1 (opposite meaning) to 1 (same meaning). You don't need to know the math, just that "closer to 1 = more similar."
+- **Longer lists capture more detail, at a cost.** A list of 1536 numbers can capture more nuance than a list of 256, but it also takes more space to store and more time to search through. Some models let you safely shorten a long list without losing much accuracy, when you need to save space.
+- **An embedding is a fingerprint, not an answer.** You can't ask an embedding "why are these two similar?" — it's just a list of numbers useful for comparing things, not for having a conversation. For that, you still need a chat model like Claude.
 
 ## Use Case
 

@@ -2,12 +2,12 @@
 
 ## Theory
 
-A **chain** follows a fixed sequence of steps you wrote in advance. An **agent** lets the LLM itself decide, at runtime, which tools to call and in what order, looping until it has enough information to answer. The core pieces:
+Everything up to this point has been a **chain**: a fixed set of steps that always run in the same order, which *you* decided ahead of time. An **agent** is different — instead of you deciding the steps, the model itself decides, on the fly, what to do next, and keeps going until it thinks it's done. Here's what makes that possible:
 
-- **Tools** — plain Python functions decorated with `@tool`, each with a name, description, and typed arguments. The description is what the model reads to decide *when* to use it — write it like documentation for a very literal colleague.
-- **Tool calling** — Claude (and other modern chat models) can emit structured "call this tool with these arguments" responses instead of plain text; LangChain parses these into `ToolCall` objects.
-- **The agent loop (ReAct pattern)** — the model reasons, decides to call a tool, receives the tool's result as a new message, and reasons again — repeating until it produces a final answer instead of another tool call.
-- **`langgraph.prebuilt.create_react_agent`** — the modern, actively-maintained way to build this loop (the older `AgentExecutor` class from core LangChain is legacy). It returns a runnable graph you `.invoke({"messages": [...]})`.
+- **Giving the model "tools" it can use.** A tool is just a regular Python function — like a calculator, or a function that looks something up — but with a name and a plain-English description attached, explaining what it does and when to use it. The model reads that description to decide whether it's useful for the current question.
+- **The model asking to use a tool.** Instead of just replying with text, the model can reply with "please run this specific tool, with these specific inputs." LangChain understands this special kind of reply and knows to actually run the corresponding function.
+- **Going back and forth until it's done.** The model can: think, ask to run a tool, receive that tool's result, think some more, maybe ask to run another tool — repeating as many times as it needs — until it finally has enough information to just answer in plain text instead of requesting another tool.
+- **The tool that builds this loop for you.** `create_react_agent` sets up this whole "think, act, look at the result, think again" loop automatically — you just give it a model and a list of tools, and it handles the back-and-forth.
 
 ## Use Case
 

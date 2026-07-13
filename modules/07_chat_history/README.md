@@ -2,11 +2,11 @@
 
 ## Theory
 
-A chat model call is stateless — Claude has no memory of your previous message unless you send the entire conversation back every time. LangChain formalizes this with:
+Claude doesn't remember anything between calls — every single `.invoke()` starts completely fresh. If it seems to "remember" what you said earlier, that's an illusion *you* create by re-sending the whole conversation so far, every single time. LangChain gives you tools to manage that instead of doing it by hand:
 
-- **`BaseChatMessageHistory`** — a store (in-memory, Redis, SQL, etc.) of messages keyed by a `session_id`.
-- **`RunnableWithMessageHistory`** — wraps any chain and automatically (1) loads prior messages for a session, (2) injects them into the prompt, (3) appends the new human/AI turn back into the store after each call.
-- **Session scoping** — every call carries a `configurable={"session_id": "..."}`, so one process can hold many independent conversations (e.g. one per logged-in user) without them bleeding into each other.
+- **A place to store the conversation.** Something needs to hold onto the growing list of messages between calls — it could just be a Python list in memory, or something more durable like a database. LangChain calls this a "message history," and each one is labeled with a `session_id` so you can tell different conversations apart.
+- **Automating the "load, add, save" cycle.** Instead of manually fetching the old messages, adding them to your prompt, calling the model, and saving the new messages back — `RunnableWithMessageHistory` wraps a chain and does all three steps for you, every time you call it.
+- **Keeping conversations separate.** By passing a different `session_id` for each user (or each conversation), one running program can juggle many completely independent conversations at once without them getting mixed up.
 
 ## Use Case
 

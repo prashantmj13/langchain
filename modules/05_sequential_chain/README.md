@@ -2,11 +2,11 @@
 
 ## Theory
 
-A general "sequential chain" differs from the [simple sequential chain (module 04)](../04_simple_sequential_chain) because stages can take **multiple** inputs and produce **multiple** named outputs that later stages pick and choose from — not just a single string handed straight down the line. The legacy `SequentialChain` class modeled this with named `input_variables`/`output_variables`; in modern LCEL you get the same effect with:
+Module 04 was a straight line: step 1's one output becomes step 2's one input. Real workflows are messier than that — a later step often needs *several* pieces of information at once, not just whatever the step right before it produced. Here, instead of passing along a single value, we pass along a small dictionary of named values that grows as it moves through the chain, and later steps can pick out whichever named values they need:
 
-- **`RunnablePassthrough`** — forward part of the original input untouched, alongside new computed values.
-- **`RunnableParallel`** (a plain `dict` in LCEL) — run several sub-chains concurrently, each writing to a different output key, so the next stage can `{review}`, `{sentiment}`, and `{reply}` all at once.
-- **`.assign()`** — the idiomatic way to add a new computed key to a dict-like running state without dropping the existing keys.
+- **Keeping the original input around.** If a later step still needs the original text (say, the customer's review) even after other steps have computed new things from it, `RunnablePassthrough` just means "copy this value forward unchanged" instead of losing it.
+- **Doing several things at once.** `RunnableParallel` (written as a plain `{...}` dictionary in a chain) runs several smaller chains at the same time, each one filling in a different named value — so a later step can use `review`, `sentiment`, and `reply` all together, computed side by side instead of one after another.
+- **Adding to what you already have.** `.assign()` is a convenient way to say "keep everything I already computed, and add one more named value to it" — so you never accidentally throw away earlier results while adding new ones.
 
 ## Use Case
 

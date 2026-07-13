@@ -2,11 +2,11 @@
 
 ## Theory
 
-Unlike stdio ([modules 21](../21_mcp_create_server)/[22](../22_mcp_stdio_client)), **streamable HTTP** transport runs the server as its own independent process (potentially on a different machine) that the client connects to over a URL, with the protocol's responses streamed back over the HTTP connection. This is what you need once a server isn't something the client can/should spawn itself — a shared team server, a server behind auth, or a server exposed to multiple clients at once.
+Modules 21-22 had the client start the server itself, and the two were tied together. That doesn't work when the server needs to be shared — say, one internal tool used by everyone's agents across a whole company. **Streamable HTTP** is the other connection method: the server runs on its own, independently, the same way a website runs on its own server, and clients connect to it over a URL — just like your web browser connects to a website — instead of the client having to start it.
 
-- **Server side** — `mcp.run(transport="streamable-http")` (or `mcp.streamable_http_app()` mounted into your own ASGI app) starts an HTTP endpoint instead of reading stdin/stdout.
-- **Client side** — `streamablehttp_client(url)` replaces `stdio_client(params)`; everything downstream (`ClientSession`, `.list_tools()`, `.call_tool()`) is identical — the transport is swappable without touching your protocol-level code.
-- **Independent lifecycles** — the server keeps running regardless of whether any particular client is connected, unlike stdio where the server dies with the client.
+- **The server just becomes a small web server.** Instead of listening on stdin/stdout, it listens on a URL, e.g. `http://localhost:8000`.
+- **The client code barely changes.** You swap out "start this program and talk to it" for "connect to this URL," but everything after that — asking what tools exist, calling a tool — works exactly the same way as the stdio client from module 22.
+- **The server doesn't care if anyone's connected.** Unlike stdio (where the server dies the moment its one client disconnects), an HTTP server keeps running in the background, ready for any client to connect to it at any time — including several clients at once.
 
 ## Use Case
 

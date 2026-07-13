@@ -2,12 +2,11 @@
 
 ## Theory
 
-This module consolidates everything from the MCP track so far — tools ([21](../21_mcp_create_server)), HTTP transport ([23](../23_mcp_http_client)), resources & prompts ([24](../24_mcp_hosting_resources_prompts)) — into one server built the way you'd actually ship it:
+This module doesn't introduce anything new — it just takes everything from the MCP modules so far (tools, resources, prompts, running over HTTP) and combines them into one server built the way you'd actually want to run it for real, not just as a teaching example:
 
-- **Structured logging** — every tool call logs its arguments and outcome, so you can debug what an agent actually did in production.
-- **Input validation & error handling** — tools raise clear, typed errors (via `ValueError`) for bad input instead of crashing the process; MCP surfaces these as tool errors the calling LLM can see and react to (e.g. retry with corrected arguments).
-- **Multiple tools + a resource + a prompt in one server** — a "job board" server: a `search_jobs` tool (reusing the sample data pattern from [module 13](../13_job_search_helper)), a resource exposing a job posting by id, and a prompt template for drafting a cover letter.
-- **HTTP transport** — served over `streamable-http`, since production servers are rarely something a single client subprocess-launches.
+- **Keeping a record of what happened.** Every time a tool is called, the server writes down what it was asked to do and what it returned — so if something goes wrong later, you can look back and see exactly what the agent did.
+- **Catching bad input cleanly instead of crashing.** If a tool is asked to do something invalid (like search with an empty question), it reports a clear error message instead of crashing the whole server — and the model on the other end can actually see that error and try again with better input.
+- **One server, several related capabilities.** This is a small "job board" server that offers a tool to search job postings, a resource to look up one specific posting, and a prompt to help draft a cover letter — all living together since they're all about the same thing (job postings).
 
 ## Use Case
 

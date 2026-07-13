@@ -2,14 +2,14 @@
 
 ## Theory
 
-Hardcoding f-strings into prompts doesn't scale — you lose reuse, validation, and composability. LangChain's prompt templates solve this:
+If you find yourself writing `f"Translate {text} into {language}"` by hand everywhere, you've just reinvented what this module gives you for free — plus some extra abilities. A **prompt template** is a prompt with blanks in it that you fill in later:
 
-- **`PromptTemplate`** — a parameterized plain-text template (`"Translate {text} into {language}"`), for legacy/completion-style calls.
-- **`ChatPromptTemplate`** — the one you'll actually use with Claude: builds a *list of messages* from templated strings, e.g. `[("system", "..."), ("human", "{question}")]`.
-- **Partial variables** — pre-fill some template variables now, leave others for later (e.g. bake in today's date, leave `question` open).
-- **Few-shot prompting** — `FewShotChatMessagePromptTemplate` injects example input/output pairs before the real question, steering the model's output format/style without fine-tuning.
+- **`PromptTemplate`** — the plain-text version: a template like `"Translate {text} into {language}"` where `{text}` and `{language}` get swapped out for real values. This is the older style, from before chat-style models were the norm.
+- **`ChatPromptTemplate`** — the one you'll actually use with Claude. Instead of one string, it builds the whole labeled message list from module 01 for you, e.g. `[("system", "..."), ("human", "{question}")]`, and fills in the blanks when you call it.
+- **Filling in some blanks now, some later.** You can lock in a value for one blank (say, today's date) while leaving another (the user's question) open until you actually need it. This is handy when part of the prompt is fixed and part changes every time.
+- **Showing examples instead of just instructions ("few-shot prompting").** Instead of telling the model what format to answer in, you can show it a few example question/answer pairs first, then ask your real question. The model picks up the pattern from the examples — often more reliably than a written instruction alone.
 
-Templates are `Runnable`s themselves — they implement `.invoke()` and can be piped with `|`, which is what makes chains (module 03) possible.
+Prompt templates plug into the same `.invoke()` / `|` system from module 01 — that's what lets you chain a template straight into a model, which is what module 03 is about.
 
 ## Use Case
 

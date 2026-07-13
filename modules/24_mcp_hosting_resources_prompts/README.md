@@ -2,12 +2,12 @@
 
 ## Theory
 
-Tools ([modules 21](../21_mcp_create_server)-[23](../23_mcp_http_client)) are for *actions* the model chooses to invoke. MCP has two other primitives for different jobs:
+So far, an MCP server has only offered tools — things the model can *do*. MCP also has two other, different kinds of things a server can offer:
 
-- **Resources** (`@mcp.resource(uri_template)`) — addressable, read-only data the host can fetch, similar in spirit to a GET endpoint. A resource has a URI (e.g. `docs://handbook/pto-policy`) and returns content; the host decides when to fetch it (sometimes automatically, sometimes because the user or model asked to see it) rather than the model "deciding to call" it the way it decides to call a tool.
-- **Prompts** (`@mcp.prompt()`) — reusable, parameterized prompt templates the server exposes for clients to use, so the *server* (which understands its own data best) owns useful prompt engineering instead of every client reinventing it. A client calls `list_prompts()`/`get_prompt(name, args)` and gets back ready-to-use messages.
+- **Resources — data you can fetch, not an action.** Think of a resource like a specific file or web page the server can hand over on request — for example, "the PTO policy section of the handbook." Nobody is "calling" it the way you call a tool; the app just fetches it and shows it to the model as background reading.
+- **Prompts — ready-made questions/instructions the server provides.** Instead of every app that connects to this server having to figure out the best way to ask it a question, the server itself can offer a ready-made template — like "summarize this section" — that any connecting app can reuse as-is.
 
-Why this split matters: tools are for the model to *act*, resources are data for the host to *load as context*, and prompts are canned *conversation starters/templates* — conflating them (e.g. making everything a tool) works but loses the semantic distinction MCP clients (like Claude Desktop) use to build UI around each (e.g. showing resources as attachable context, prompts as slash-command-like shortcuts).
+Why bother separating these from tools instead of just making everything a tool? Because they mean different things: a tool is something the model decides to *do*, a resource is *information* to look at, and a prompt is a *ready-made question*. Keeping them separate lets apps like Claude Desktop build sensible interfaces around each — for example, showing resources as things you can "attach" to a conversation, and prompts as quick shortcuts you can pick from a menu.
 
 ## Use Case
 
