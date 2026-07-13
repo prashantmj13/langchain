@@ -147,12 +147,17 @@ Each module's README also has a "Using a different model" section showing the di
 |---|--------|--------|
 | 27 | [LangSmith](modules/27_langsmith) | Tracing, `@traceable`, running a lightweight evaluation |
 
+## Projects — build these yourself
+
+Once you've been through modules 00-19 (or further), [`projects/`](projects) has 8 open-ended build briefs across DevOps automation, cloud automation, image processing, and PDF processing. Unlike the modules, these have **no solution code** — you get a problem statement, requirements, and a suggested approach, and you build it. See [`projects/README.md`](projects/README.md) for the full list.
+
 ## Repo structure
 
 ```
 langchain-repo/
 ├── common/                 # model_factory.py, embedding_factory.py — shared, provider-agnostic helpers
 ├── modules/                # one folder per topic above, each self-contained
+├── projects/                # 8 build-it-yourself project briefs (no solution code)
 ├── requirements.txt
 ├── .env.example
 └── README.md               # you are here
