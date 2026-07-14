@@ -31,6 +31,15 @@ Requires both an embeddings key (`VOYAGE_API_KEY`) and `ANTHROPIC_API_KEY`. The 
 4. Prints the top 3 matching jobs with similarity scores.
 5. Sends the resume + the #1 match to Claude and prints its fit analysis.
 
+## Classes & Methods Used
+
+| API | What It Does | Why We Use It Here |
+|---|---|---|
+| `FAISS.from_documents(docs, embedding=...)` | Embeds a list of documents and builds a new FAISS index from them in one call (same pattern as `Chroma.from_documents` in module 12, different vector store underneath). | Used in `build_job_store()` to turn the job postings into a searchable index. |
+| `.similarity_search_with_score(resume_text, k=3)` | Searches using the whole resume text as the query, returning the top 3 most similar postings plus their scores. | Used to find which job postings are the closest semantic match to the resume — this is the "matching" in "job matching." |
+| `Document(page_content=..., metadata={"source": ...})` | Wraps each job posting's text with a metadata tag naming which file it came from. | Used so the results can report *which* job posting matched, not just the raw matching text. |
+| `prompt \| llm` then `.invoke(...).content` | Builds a chain and calls it, taking just the plain-text answer. | Used in `explain_fit()` to ask Claude to explain the match in a few sentences, once we already know *which* job is the best match. |
+
 ## Using a different model
 
 - Swap the embedding provider via `EMBEDDING_PROVIDER` (Voyage/OpenAI/HuggingFace) — matching quality will vary since providers embed differently.

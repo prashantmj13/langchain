@@ -30,6 +30,16 @@ No API key needed. Leave terminal 1 running for as long as you want to keep issu
 1. `server_http.py` — the same `get_weather`/`word_count` tools from module 21, now served over `streamable-http` on `localhost:8000`.
 2. `client_http.py` — connects via `streamablehttp_client("http://127.0.0.1:8000/mcp")` instead of spawning a subprocess, then runs the identical `list_tools`/`call_tool` sequence as module 22.
 
+## Classes & Methods Used
+
+Everything here is the same as module 22 (`ClientSession`, `.initialize()`, `.list_tools()`, `.call_tool()` — see [module 22's table](../22_mcp_stdio_client#classes--methods-used)) except for the connection method:
+
+| API | What It Does | Why We Use It Here |
+|---|---|---|
+| `FastMCP("utilities-http-server", port=8000)` | Same server-building class as module 21, but given a port number. | The port is what makes this an HTTP-reachable server instead of a stdio one — the tools themselves (`get_weather`, `word_count`) are unchanged from module 21. |
+| `mcp.run(transport="streamable-http")` | Starts the server listening on an HTTP port instead of stdin/stdout. | This one argument is the entire difference between module 21's server and this one. |
+| `streamablehttp_client(url)` (used with `async with`) | Connects to an already-running MCP server at a URL, instead of starting one as a subprocess. | Replaces module 22's `stdio_client(server_params)` — same role (get connected read/write streams), different transport underneath. |
+
 ## Using a different model
 
 Still pure transport/protocol — no model involved. See [module 26](../26_mcp_implement_client) for wiring an MCP client (of either transport) into a Claude agent.

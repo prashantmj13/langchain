@@ -25,9 +25,15 @@ Each provider is tried independently and wrapped in `try/except` — set whichev
 ## Walkthrough
 
 `example.py`:
-1. Embeds the same 3 sentences with Voyage AI, OpenAI, and a local HuggingFace model (skipping any provider whose key/package isn't available).
-2. Prints each model's output vector dimensionality.
-3. Compares how each model ranks the same 3 sentences by similarity to a query, to show results are directionally consistent across providers even though dimensions/scales differ.
+1. Embeds the same 3 sentences with Voyage AI, OpenAI, and a local HuggingFace model in turn (skipping any provider whose key/package isn't available).
+2. For each provider, prints the resulting vector's dimensionality and the first 5 numbers, so you can see how differently-sized the outputs are across providers.
+
+## Classes & Methods Used
+
+| API | What It Does | Why We Use It Here |
+|---|---|---|
+| `get_embeddings(provider="voyage")` | This repo's factory function — returns an embeddings model instance for whichever provider you name. | Called once per provider in a loop, so the same script can try Voyage, OpenAI, and HuggingFace back to back without three separate scripts. |
+| `.embed_documents([...])` | Sends a list of texts to the provider and returns one vector per text (same method as module 09). | Used identically across all three providers — the whole point of this module is that this call looks the same no matter which provider is underneath. |
 
 ## Using a different model
 

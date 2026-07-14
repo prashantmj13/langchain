@@ -29,6 +29,15 @@ Requires an embeddings provider key. Writes a `faiss_index/` (or `faiss_index_so
 3. Reloads it in a fresh `FAISS.load_local(...)` call (simulating a new process) and confirms search still works without re-embedding.
 4. Adds a new document to the reloaded index at runtime and re-saves.
 
+## Classes & Methods Used
+
+| API | What It Does | Why We Use It Here |
+|---|---|---|
+| `FAISS.from_documents(docs, embedding=...)` | Embeds the documents and builds a new, in-memory FAISS index (same pattern as `Chroma`/module 12, different vector store). | Used in `build_and_save()` to create the initial index before it's ever touched disk. |
+| `.save_local(folder)` | Writes the index's data to two files (`index.faiss`, `index.pkl`) in the given folder. | Used after building and after adding a new document, so the index survives past this one script run. |
+| `FAISS.load_local(folder, embeddings, allow_dangerous_deserialization=True)` | Reads a previously-saved index back from disk, ready to search immediately. | Used in `load_from_disk()` to simulate a fresh process picking up the index without re-embedding anything — see this module's Theory for why the `allow_dangerous_deserialization` flag exists. |
+| `.add_documents([...])` | Embeds one or more new documents and adds them to an existing, already-built store. | Used to show that a FAISS store can grow after creation — you don't have to rebuild the whole index from scratch to add one more document. |
+
 ## Using a different model
 
 Only the embedding function passed to `FAISS.from_documents(...)`/`FAISS.load_local(...)` changes; swap via `common.embedding_factory.get_embeddings(provider=...)`. Note: an index built with one embedding model's vectors is **not** compatible with a different embedding model at load time (dimensions/semantics won't match) — always reload with the same provider that built the index.

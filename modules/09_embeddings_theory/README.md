@@ -27,6 +27,14 @@ python modules/09_embeddings_theory/solutions.py   # exercise solutions
 1. Defines 5 tiny toy vectors by hand and computes cosine similarity between them with plain `numpy`, to build intuition before any real embedding model is involved.
 2. Then calls a real embedding model (via `common.embedding_factory`) on 4 short sentences and prints the pairwise similarity matrix, showing that "The cat sat on the mat" is close to "A kitten was resting on the rug" but far from "The stock market fell sharply today."
 
+## Classes & Methods Used
+
+| API | What It Does | Why We Use It Here |
+|---|---|---|
+| `get_embeddings()` (this repo's `common/embedding_factory.py`) | Returns an embeddings model instance for whichever provider is configured (Voyage AI by default). | The entry point for turning text into embeddings — everything else in `real_embedding_demo()` uses its output. |
+| `.embed_documents([text1, text2, ...])` | Sends a list of texts to the embeddings provider and returns one number-list (vector) per text. | Used to embed all 4 sample sentences in a single call, so their vectors can be compared to each other. |
+| `np.dot`, `np.linalg.norm` (from `numpy`, not LangChain) | Standard vector math: dot product and vector length. | Used together inside `cosine_similarity()` to implement the similarity formula from this module's Theory section by hand, so you see exactly what it's computing. |
+
 ## Using a different model
 
 See [module 10](../10_embedding_models) for the full provider comparison (Voyage AI / OpenAI / local HuggingFace) — this module focuses on the underlying math, which is identical regardless of provider.

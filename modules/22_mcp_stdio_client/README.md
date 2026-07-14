@@ -28,6 +28,17 @@ No API key needed, and no second terminal either: `stdio_client(server_params)` 
 2. Opens a `ClientSession`, calls `.initialize()`, then `.list_tools()` and prints each tool's name/description/schema.
 3. Calls `get_weather` and `word_count` with real arguments and prints the results.
 
+## Classes & Methods Used
+
+| API | What It Does | Why We Use It Here |
+|---|---|---|
+| `StdioServerParameters(command=..., args=[...])` | Describes how to launch a server process — which command to run and with what arguments. | Used to tell the client exactly how to start module 21's `server.py` as a subprocess. |
+| `stdio_client(server_params)` (used with `async with`) | Starts the server subprocess described above and hands back read/write streams connected to it; automatically shuts the subprocess down when the `async with` block ends. | This is what actually launches and connects to the server — no server terminal needed, unlike module 23's HTTP version. |
+| `ClientSession(read, write)` (used with `async with`) | Wraps the raw read/write streams with the actual MCP protocol logic. | Provides the `.initialize()`/`.list_tools()`/`.call_tool()` methods used below — it's the object you actually talk to. |
+| `await session.initialize()` | Performs the MCP handshake — client and server agree on protocol version and capabilities. | Must be called once before any other session method will work; it's the "say hello" step. |
+| `await session.list_tools()` | Asks the server what tools it exposes, returning each one's name, description, and argument schema. | Used to show what the server offers *before* calling anything — the same discovery step a real agent would do automatically. |
+| `await session.call_tool(name, arguments)` | Asks the server to actually run one specific tool with the given arguments, and returns its result. | Used to call `get_weather` and `word_count` with real inputs and see their output. |
+
 ## Using a different model
 
 This module is pure protocol plumbing — no LLM involved yet. [Module 26](../26_mcp_implement_client) is where an actual Claude-powered agent decides which of these tools to call and with what arguments.

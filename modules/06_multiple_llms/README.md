@@ -30,6 +30,14 @@ Requires `ANTHROPIC_API_KEY`; `OPENAI_API_KEY` and a running local Ollama daemon
 2. Builds a `RunnableBranch` that routes a request to Claude for anything tagged "reasoning" and to a cheaper model for anything tagged "simple lookup." For exactly how `RunnableBranch` decides which chain to call, see [module 03's Execution Internals](../03_chains_lcel#execution-internals-the-runnable-protocol).
 3. Demonstrates a draft-and-polish pipeline: a fast/cheap model drafts, Claude edits.
 
+## Classes & Methods Used
+
+| API | What It Does | Why We Use It Here |
+|---|---|---|
+| `get_chat_model(provider="openai", model="gpt-4o-mini", temperature=0.9)` | This repo's factory function — returns a chat model instance for whichever provider/model/temperature you ask for. | Used repeatedly to get several *different* model instances in the same script (Claude, GPT-4o-mini, Ollama), instead of always getting the default. |
+| `RunnableBranch((condition, chain), default_chain)` | Checks each condition against the input in order, and runs the first chain whose condition is `True` (falling back to the default). | Used in `routing_example()` to send "reasoning" questions to Claude and everything else to a cheaper model, based on a `task_type` field in the input. |
+| `try` / `except Exception` around each provider call | Standard Python error handling — catches a failure instead of crashing. | Used around every non-Anthropic provider call so the script still runs and demonstrates the pattern even if you haven't configured `OPENAI_API_KEY` or a local Ollama install. |
+
 ## Using a different model
 
 This entire module *is* the "different model" note — it directly instantiates `ChatAnthropic`, `ChatOpenAI`, and `ChatOllama` side by side via `get_chat_model(provider=...)` rather than relying on a single global `LLM_PROVIDER`.

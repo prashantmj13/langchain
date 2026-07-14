@@ -30,6 +30,16 @@ Requires an embeddings key and `ANTHROPIC_API_KEY`. Conversation history lives i
 3. Wraps it in `RunnableWithMessageHistory`.
 4. Runs a 3-turn conversation: "How much PTO do full-time employees get?" → "How much of that carries over?" → "And what about remote work days per week?" — each follow-up only works because history reshapes the retrieval query.
 
+## Classes & Methods Used
+
+| API | What It Does | Why We Use It Here |
+|---|---|---|
+| `create_history_aware_retriever(llm, retriever, contextualize_prompt)` | Wraps a plain retriever with an LLM step that first rewrites the incoming question using chat history, *then* searches. | This is the one new piece versus module 16 — it's what makes "how much of that carries over?" resolve correctly instead of searching for the literal word "that". |
+| `create_stuff_documents_chain(llm, answer_prompt)` | Builds the "take retrieved documents, put them in the prompt, generate an answer" step (same as module 14). | Used as the second half of the pipeline — answering, once the history-aware retriever has found the right chunks. |
+| `create_retrieval_chain(history_aware_retriever, combine_docs_chain)` | Wires the retriever and answer-generation step together into one pipeline (same helper as module 14, just given a history-aware retriever instead of a plain one). | Produces the complete "rewrite → search → answer" chain in one object. |
+| `MessagesPlaceholder("chat_history")` | A spot in a prompt template that gets filled with the running list of prior messages (same as module 07). | Used in *two* prompts here — the rewriting prompt needs history to know what "that" refers to, and the answering prompt needs it too, for natural-sounding replies. |
+| `RunnableWithMessageHistory(rag_chain, get_session_history, ..., output_messages_key="answer")` | Wraps the whole RAG chain so history loads/saves automatically per session (same as module 07). | `output_messages_key="answer"` tells it which key in the chain's output dict is the actual reply to save into history — needed here because `create_retrieval_chain` returns a dict (`answer` + `context`), not a single message like module 07's plain chain did. |
+
 ## Using a different model
 
 Both the query-rewriting step and the final-answer step accept any `get_chat_model(...)`; they can even use two different models (e.g. a fast/cheap model to rewrite, Claude to generate the final answer) since they're separate `Runnable`s under the hood.

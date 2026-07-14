@@ -58,6 +58,17 @@ Requires `ANTHROPIC_API_KEY` in `.env`. Each function builds a small `prompt | l
 3. Uses `.with_structured_output(PydanticModel)` to get back a typed, validated object instead of raw text.
 4. Calls `.batch()` on three inputs at once.
 
+## Classes & Methods Used
+
+| API | What It Does | Why We Use It Here |
+|---|---|---|
+| `StrOutputParser` | Pulls just the plain-text `.content` out of an `AIMessage`, discarding the rest. | Used as the last stage of most chains here so `.invoke()` returns a plain string instead of a whole message object — simpler to work with downstream. |
+| `RunnableLambda` | Wraps an ordinary Python function so it can sit inside a `\|` chain like any other step. | Used in `chain_with_lambda()` to add a plain string-replace step after the model's answer, without writing a custom class. |
+| `\|` (the pipe operator) | Connects two `Runnable`s so the first's output feeds the second's input. | Used throughout to build `prompt \| llm \| parser` style chains — see [Execution Internals](#execution-internals-the-runnable-protocol) above for exactly what this builds. |
+| `BaseModel` / `Field` (from `pydantic`) | Define a typed data shape (here, `MovieReview`) with named, described fields. | Used in `structured_output_chain()` to describe exactly what fields we want extracted from a review, so the model's output can be validated against that shape. |
+| `.with_structured_output(Model)` | Returns a version of the model that always replies with data matching the given Pydantic model, instead of free text. | Used so `structured_output_chain()` gets back a validated `MovieReview` object directly, with no manual text-parsing needed. |
+| `.batch([...])` | Runs `.invoke()` once for each item in a list, dispatched concurrently. | Used in `batching()` to ask about 3 different things in one call, faster than calling `.invoke()` three times in a loop. |
+
 ## Using a different model
 
 Only the middle stage of the pipe changes — everything else (`prompt`, `parser`, `RunnableLambda`) is provider-agnostic:

@@ -29,8 +29,19 @@ Requires an embeddings provider key. The Chroma collection here is in-memory by 
 `example.py`:
 1. Creates an in-memory Chroma vector store from a small set of documents (with metadata like `category`).
 2. Runs `similarity_search` and `similarity_search_with_score`.
-3. Runs `max_marginal_relevance_search` and compares its result set to plain similarity search on a query where the corpus has near-duplicate documents.
-4. Deletes a document and confirms it no longer appears in search results.
+3. Runs `max_marginal_relevance_search` on a query where the corpus has near-duplicate documents, to show it picking a more varied result set than plain similarity search would.
+4. Runs a `similarity_search` filtered down to documents whose `category` metadata equals `"billing"`, to show searching within a subset instead of the whole store.
+
+## Classes & Methods Used
+
+| API | What It Does | Why We Use It Here |
+|---|---|---|
+| `Document(page_content=..., metadata={...})` | LangChain's standard wrapper for a piece of text plus any extra structured info about it. | Used to attach a `category` to each FAQ entry, so later searches can filter by it, not just by text similarity. |
+| `Chroma.from_documents(docs, embedding=...)` | Embeds a list of documents and builds a new Chroma vector store from them in one call. | The simplest way to get a populated vector store — used in `build_store()` instead of creating an empty store and adding documents separately. |
+| `.similarity_search(query, k=2)` | Returns the `k` documents most similar to the query. | The most basic vector store operation — used first to establish the baseline before showing the fancier search modes. |
+| `.similarity_search_with_score(query, k=2)` | Same as above, but also returns each result's similarity score. | Used to show that scores are available when you need to know *how* similar a result is, not just its rank. |
+| `.max_marginal_relevance_search(query, k=2, fetch_k=4)` | Returns `k` results chosen to be relevant *and* different from each other, by first considering `fetch_k` candidates. | Used to demonstrate avoiding near-duplicate results — the module's two password-reset FAQ entries would otherwise both show up for a password query. |
+| `.similarity_search(query, k=2, filter={"category": "billing"})` | Same as `.similarity_search()`, but only considers documents whose metadata matches the filter. | Used to show narrowing a search to one category instead of searching the entire store. |
 
 ## Using a different model
 

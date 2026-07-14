@@ -28,6 +28,15 @@ Requires `ANTHROPIC_API_KEY` in `.env`. The `_store` dict lives only in the runn
 3. Runs a 3-turn conversation in session `"alice"` where the third question ("What did I just ask?") only works because history is being carried.
 4. Starts a second, independent session `"bob"` to prove sessions don't leak into each other.
 
+## Classes & Methods Used
+
+| API | What It Does | Why We Use It Here |
+|---|---|---|
+| `ChatMessageHistory` | A simple, in-memory list of messages for one conversation. | Used as the actual storage for each session's message list — the thing `get_session_history()` creates/returns per `session_id`. |
+| `MessagesPlaceholder(variable_name="history")` | A spot inside a `ChatPromptTemplate` that gets filled in with a whole list of prior messages, not just one value. | Used so the prompt template has a place to insert the growing conversation history before the new question. |
+| `RunnableWithMessageHistory(chain, get_session_history, ...)` | Wraps a chain so that, on every call, it automatically loads that session's history, injects it via the placeholder above, and saves the new turn back afterward. | This is the whole point of the module — it's what turns a stateless chain into something that remembers a conversation, without you manually managing the message list. |
+| `config={"configurable": {"session_id": "alice"}}` | A per-call setting telling `RunnableWithMessageHistory` which session's history to load/save. | Used to keep Alice's and Bob's conversations separate even though they're going through the same chain object. |
+
 ## Using a different model
 
 Chat history management is entirely model-agnostic — `RunnableWithMessageHistory` wraps whatever chain you give it, Claude or otherwise. Swap the model inside the wrapped chain exactly as in [module 01](../01_langchain_basics).

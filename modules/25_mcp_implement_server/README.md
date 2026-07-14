@@ -31,6 +31,16 @@ python modules/25_mcp_implement_server/solutions_client.py   # exercise solution
 
 Run it directly to confirm startup (`python modules/25_mcp_implement_server/server.py`); [module 26](../26_mcp_implement_client) is the client that drives it with a real Claude agent.
 
+## Classes & Methods Used
+
+`FastMCP`, `@mcp.tool()`, `@mcp.resource()`, and `@mcp.prompt()` are the same building blocks from modules 21/24 — this module's point is combining all of them, plus:
+
+| API | What It Does | Why We Use It Here |
+|---|---|---|
+| `logging.basicConfig(...)` / `logger.info(...)` / `logger.warning(...)` (Python standard library, not MCP-specific) | Sets up structured, timestamped log output and writes log lines. | Used so every `search_jobs` call and every failed lookup gets a record you can look back at — the "production-style" part of this module. |
+| `raise ValueError(...)` inside a tool/resource function | Standard Python error signaling. | Used for bad input (an unknown `job_id`, an out-of-range `k`) — the MCP SDK turns this into a proper error response the calling client (and the LLM behind it) can see and react to, instead of the server crashing. |
+| `mcp.run(transport="streamable-http")` | Same as module 23 — starts the server on an HTTP port instead of stdio. | Used because a "production-style" server is expected to run independently and be reachable by more than one client, not be spawned per-client like module 21's stdio server. |
+
 ## Using a different model
 
 No model-specific code in the server — same as the rest of the MCP track, the server is provider-agnostic by design.

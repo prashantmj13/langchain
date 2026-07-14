@@ -28,6 +28,15 @@ Requires `ANTHROPIC_API_KEY`. `LANGSMITH_TRACING`/`LANGSMITH_API_KEY` are option
 3. Wraps a custom Python post-processing function with `@traceable` so it appears in the same trace.
 4. Defines a tiny 3-example evaluation dataset and runs a lightweight local evaluation (exact-substring check) over the chain's outputs, printing a pass/fail summary — a minimal stand-in for `langsmith.evaluate()` against a hosted dataset.
 
+## Classes & Methods Used
+
+| API | What It Does | Why We Use It Here |
+|---|---|---|
+| `os.getenv("LANGSMITH_TRACING")` / `os.getenv("LANGSMITH_API_KEY")` (Python standard library) | Reads environment variables, returning `None` if unset. | Used in `check_tracing_configured()` to detect whether tracing is actually turned on, so the script can explain what's missing instead of just silently not tracing. |
+| `@traceable(name="shorten_for_display")` | Marks a plain Python function so LangSmith records its inputs/outputs as part of the trace, the same way it automatically records `Runnable.invoke()` calls. | Applied to `shorten_for_display()` — a plain post-processing function, not a LangChain `Runnable` — so it shows up in the same trace as the model call before it. |
+| `prompt \| llm | StrOutputParser()` | The same chain-building pattern from module 03. | Used as the thing actually being traced/evaluated — LangSmith needs something to observe, and this is a realistic, simple example of it. |
+| A plain Python loop calling `chain.invoke(...)` and checking `expected_substring in output` | Ordinary Python control flow, not a LangSmith-specific API. | Used in `run_mini_evaluation()` as a minimal, dependency-free stand-in for LangSmith's real dataset-based evaluation feature — enough to demonstrate the *idea* of evaluation without needing a hosted dataset. |
+
 ## Using a different model
 
 Tracing/evaluation are provider-agnostic — they capture whatever `get_chat_model(...)` you're using. Comparing providers on the same evaluation dataset (Claude vs GPT-4o-mini) is itself a common LangSmith use case.

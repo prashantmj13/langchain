@@ -28,6 +28,14 @@ Requires an embeddings provider key (`VOYAGE_API_KEY` by default). The script em
 3. Ranks all 6 by cosine similarity to the query and prints the top 3, with scores.
 4. Repeats with a second, unrelated query to show ranking changes.
 
+## Classes & Methods Used
+
+| API | What It Does | Why We Use It Here |
+|---|---|---|
+| `.embed_documents(DOCUMENTS)` | Embeds the whole list of candidate documents in one call. | Used once, outside the query loop, so we don't re-embed the same fixed documents for every new query. |
+| `.embed_query(query)` | Embeds a single piece of text — the query — the same way as a document, so the two are comparable. | Used to turn the user's question into a vector we can compare against every document's vector. |
+| `sorted(..., key=..., reverse=True)` / `list.sort()` (plain Python, not LangChain) | Orders a list by a computed value, highest first. | Used to rank documents by similarity score and keep only the top `k` — this is the "search" part of similarity search, done by hand instead of by a vector database. |
+
 ## Using a different model
 
 Swap the embedding provider via `common.embedding_factory.get_embeddings(provider=...)` — the ranking logic itself never touches the provider.

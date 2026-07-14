@@ -27,7 +27,19 @@ No API key needed for the base walkthrough (exercise 4's Claude call needs `ANTH
 1. A resource `handbook://sections/{section}` returning one section of the sample handbook text (reusing the file from [module 16](../16_rag)).
 2. A prompt `summarize_section(section)` that returns a ready-made message asking the model to summarize that section.
 
-`client.py` connects over stdio and demonstrates `list_resources()`/`read_resource()` and `list_prompts()`/`get_prompt()`, printing what each returns.
+`client.py` connects over stdio and demonstrates `read_resource()` (fetching a resource by its known URI), `list_prompts()`, and `get_prompt()`, printing what each returns.
+
+## Classes & Methods Used
+
+Connection setup (`StdioServerParameters`, `stdio_client`, `ClientSession`, `.initialize()`) is the same as [module 22](../22_mcp_stdio_client#classes--methods-used). What's new here:
+
+| API | What It Does | Why We Use It Here |
+|---|---|---|
+| `@mcp.resource("handbook://sections/{section}")` | Registers the decorated function as a resource, addressable by a URI template with a `{section}` placeholder. | Used so the client can fetch one specific handbook section by URI, e.g. `handbook://sections/time-off`, instead of getting the whole handbook every time. |
+| `@mcp.prompt()` | Registers the decorated function as a reusable prompt template the server offers to clients. | Used for `summarize_section()`, so any connecting client can ask for a ready-made "summarize this section" prompt instead of writing its own. |
+| `await session.read_resource(uri)` | Fetches the content at a specific resource URI. | Used to pull the `time-off` section's text directly, by URI, on the client side. |
+| `await session.list_prompts()` | Asks the server what prompt templates it offers. | Used to show prompt discovery, the same way `list_tools()` (module 22) shows tool discovery. |
+| `await session.get_prompt(name, arguments)` | Fetches a specific prompt template, filled in with the given arguments, as ready-to-send messages. | Used to render `summarize_section` for the `remote-work` section and print the resulting message(s). |
 
 ## Using a different model
 

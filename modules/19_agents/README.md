@@ -39,6 +39,15 @@ Requires `ANTHROPIC_API_KEY`. `agent.invoke(...)` runs the full reasoning loop i
 2. Builds a ReAct agent with `create_react_agent(llm, tools)`.
 3. Asks a question that requires both tools ("How much longer is the word 'LangChain' than the sum of 3 and 4?") and prints the full message trace, showing the tool calls and their results, not just the final answer.
 
+## Classes & Methods Used
+
+| API | What It Does | Why We Use It Here |
+|---|---|---|
+| `@tool` (from `langchain_core.tools`) | Turns a plain Python function into something a model can be told about and asked to call — reads the function's type hints and docstring to build its description automatically (same idea as module 00's decorator explanation). | Applied to `add` and `get_word_length` so the agent can discover and use them, without us writing any tool-calling plumbing by hand. |
+| `create_react_agent(llm, tools=[...])` | Builds the full "think, call a tool, look at the result, think again" loop (module 19's Theory) as a ready-to-use object. | The one call that turns a model + a list of tools into a working agent — see this module's Execution Internals for exactly what happens inside `.invoke()` on the result. |
+| `agent.invoke({"messages": [("human", question)]})` | Runs the agent loop to completion and returns the full message list, not just the final answer. | Used so we can inspect every step the agent took (tool calls and results), not just its final response. |
+| `message.pretty_print()` | Prints a message object in a readable, labeled format. | Used on every message in the result to display the full back-and-forth — the question, each tool call, each tool's result, and the final answer. |
+
 ## Using a different model
 
 Tool-calling quality varies by provider and model size; swap via `get_chat_model(provider=...)` — smaller/local models (e.g. via Ollama) may need simpler tool descriptions or more explicit prompting to reliably call tools correctly.

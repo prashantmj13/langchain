@@ -28,6 +28,14 @@ Requires `ANTHROPIC_API_KEY` in `.env`. Running `example.py` builds the pipeline
 
 For exactly what `RunnablePassthrough.assign()` and the `RunnableParallel(...)` dict do at runtime — including why the `sentiment`/`summary` branches actually run concurrently rather than one after another — see [module 03's Execution Internals](../03_chains_lcel#execution-internals-the-runnable-protocol).
 
+## Classes & Methods Used
+
+| API | What It Does | Why We Use It Here |
+|---|---|---|
+| `RunnablePassthrough.assign(sentiment=..., summary=...)` | Keeps the current dict of values as-is, and adds new named keys computed by running the given chains. | Used to keep the original `review` around while adding `sentiment` and `summary`, computed in parallel, without losing `review` in the process. |
+| `RunnableParallel(review=..., sentiment=..., reply=...)` | Runs each named value concurrently and returns a dict with all the results. | Used as the final stage to assemble the exact output shape we want (`review`, `sentiment`, `summary`, `reply`) — note that `reply_chain` itself depends on `sentiment`/`summary` already being computed by the earlier `enrich` stage. |
+| A `lambda x: x["review"]` inside `RunnableParallel` | A tiny function that just picks one key out of the incoming dict. | Used to pass `review`/`sentiment`/`summary` straight through into the final output dict unchanged, alongside the newly-computed `reply`. |
+
 ## Using a different model
 
 Different sub-chains can use different providers/temperatures independently, since each is just `prompt | get_chat_model(...) | parser` — see [module 06](../06_multiple_llms).

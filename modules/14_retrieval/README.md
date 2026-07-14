@@ -27,7 +27,18 @@ Requires an embeddings key and `ANTHROPIC_API_KEY`. `raw_retriever_demo()` only 
 1. Builds a small Chroma vector store of documents (reusing the module 12 pattern).
 2. Wraps it with `.as_retriever(search_type="similarity", k=2)` and calls `.invoke(query)` directly.
 3. Builds a full `create_retrieval_chain` (retriever + Claude) and shows it returning both `answer` and `context`.
-4. Compares `search_type="similarity"` vs `"mmr"` on a query with redundant documents.
+
+`build_retriever()` accepts a `search_type` argument (`"similarity"` or `"mmr"`) so you can experiment with both — see exercise 3 for putting that to use.
+
+## Classes & Methods Used
+
+| API | What It Does | Why We Use It Here |
+|---|---|---|
+| `store.as_retriever(search_type=..., search_kwargs={"k": 2})` | Wraps a vector store as a `Runnable` retriever, so it can be `.invoke()`-d or piped like anything else from module 03. | Used to turn the Chroma store from module 12 into something `create_retrieval_chain` (and chains in general) can accept directly. |
+| `retriever.invoke(query)` | Runs the retriever's search and returns the matching `Document`s. | Used in `raw_retriever_demo()` to show the retriever working on its own, before it's wired into a full chain. |
+| `create_stuff_documents_chain(llm, prompt)` | Builds a chain that takes retrieved documents, "stuffs" their text into the prompt's `{context}` slot, and calls the model. | Used as the "answer generation" half of the retrieval chain — it's what actually turns retrieved documents into a written answer. |
+| `create_retrieval_chain(retriever, combine_docs_chain)` | Wires a retriever and a document-combining chain together: retrieve, then generate, returning both. | Used to build the complete "search then answer" pipeline in one call, instead of manually retrieving and then separately calling the combine-docs chain. |
+| `result["answer"]` / `result["context"]` | The two keys `create_retrieval_chain`'s output dict always contains — the generated answer, and the documents that were used to produce it. | Used to print both the answer and its supporting evidence, so you can verify the answer is actually grounded in what was retrieved. |
 
 ## Using a different model
 

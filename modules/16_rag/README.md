@@ -33,6 +33,16 @@ Requires an embeddings key and `ANTHROPIC_API_KEY`. The FAISS index is rebuilt i
 4. Builds a RAG chain: `{"context": retriever | format_docs, "question": RunnablePassthrough()} | prompt | llm | StrOutputParser()`. For what that dict literal and `RunnablePassthrough()` actually do at runtime, see [module 03's Execution Internals](../03_chains_lcel#execution-internals-the-runnable-protocol).
 5. Asks 2 questions, one answerable from the handbook and one that isn't, to demonstrate the model correctly saying "I don't know" for the latter.
 
+## Classes & Methods Used
+
+| API | What It Does | Why We Use It Here |
+|---|---|---|
+| `RecursiveCharacterTextSplitter(chunk_size=400, chunk_overlap=50)` | Splits a long piece of text into smaller, overlapping chunks, preferring to break at paragraph/sentence boundaries. | Used in `load_and_split()` so the handbook is cut into pieces small enough to embed meaningfully and fit in a prompt, instead of being treated as one giant blob. |
+| `FAISS.from_documents(chunks, embedding=...)` | Embeds the chunks and builds a searchable FAISS index (same as module 15). | Used to make the handbook's chunks searchable by meaning, not just by keyword. |
+| `store.as_retriever(search_kwargs={"k": 2})` | Wraps the store as a `Runnable` retriever that returns the top 2 matches per query (same as module 14). | Used so the vector store can be dropped directly into the `|` chain below, as the "find relevant chunks" step. |
+| `{"context": retriever \| format_docs, "question": RunnablePassthrough()}` | A dict stage that runs both branches, producing `context` (formatted retrieved chunks) and `question` (the original question, unchanged) side by side. | This is what actually assembles the two things the final prompt needs — see [module 03's Execution Internals](../03_chains_lcel#execution-internals-the-runnable-protocol) for exactly how this dict gets executed. |
+| `RunnablePassthrough()` | Passes its input straight through unchanged. | Used here so the original question is still available to the prompt even after the `context` branch has transformed the input in its own way. |
+
 ## Using a different model
 
 Swap the embedding provider (`common.embedding_factory`) and/or the generation model (`common.model_factory`) independently — RAG's retrieval and generation stages are decoupled by design.

@@ -42,6 +42,18 @@ Requires `ANTHROPIC_API_KEY` in `.env`. Running `example.py` executes `basic_inv
 3. Sends a `SystemMessage` + `HumanMessage` pair to show how system prompts steer behavior.
 4. Demonstrates `.stream()` for token-by-token output.
 
+## Classes & Methods Used
+
+| API | What It Does | Why We Use It Here |
+|---|---|---|
+| `ChatAnthropic` (via `get_chat_model()`) | The LangChain class that wraps Claude's API — the object every example call goes through. | It's the entry point for talking to Claude at all; every other class in this table exists to build input for it or process its output. |
+| `HumanMessage` | Represents one message from the user in a conversation. | Used to wrap the plain-text questions we send to the model, so the model can tell they came from the user rather than the system or itself. |
+| `SystemMessage` | Represents an instruction that sets the model's overall behavior, separate from the conversation itself. | Used in `system_plus_human()` to tell the model to answer tersely, as a senior engineer would — steering style without it being part of the "conversation." |
+| `.invoke(messages)` | Sends a list of messages to the model and waits for one complete response. | The basic way to get an answer: call it, get an `AIMessage` back. Used in `basic_invoke()` and `system_plus_human()`. |
+| `.stream(messages)` | Same as `.invoke()`, but returns the answer piece by piece as it's generated instead of waiting for the whole thing. | Used in `streaming()` to show output appearing token-by-token, the way it looks in a chat UI. |
+| `response.content` | The plain-text answer inside an `AIMessage`. | This is the actual text we want to print or use — the rest of the `AIMessage` object is metadata. |
+| `response.usage_metadata` | A dict of token counts (input/output) for that specific call. | Printed in `basic_invoke()` to show how you'd track usage/cost per call. |
+
 ## Using a different model
 
 ```python

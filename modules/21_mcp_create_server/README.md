@@ -24,6 +24,16 @@ No API key needed (no LLM calls here, just the MCP protocol). You normally don't
 
 `server.py` defines a tiny "utilities" server with two tools: `get_weather(city)` (a canned/mocked response — no real API call, to keep the example dependency-free) and `word_count(text)`. Run it directly to confirm it starts (`python modules/21_mcp_create_server/server.py`); [module 22](../22_mcp_stdio_client) builds the client that actually talks to it.
 
+## Classes & Methods Used
+
+These are from the `mcp` Python SDK (Anthropic's protocol library), not LangChain itself — MCP is a separate, LangChain-independent standard, which is exactly why it works the same regardless of what LLM framework ends up calling it.
+
+| API | What It Does | Why We Use It Here |
+|---|---|---|
+| `FastMCP("utilities-server")` | Creates a new MCP server object with the given name. | The starting point for any server built with this SDK — everything else (tools, resources, prompts) gets registered onto this object. |
+| `@mcp.tool()` | Registers the decorated function as a tool the server exposes, reading its type hints and docstring to build the schema a client will see. | Applied to `get_weather` and `word_count` so any MCP client can discover and call them — the MCP equivalent of LangChain's `@tool` from module 19. |
+| `mcp.run(transport="stdio")` | Starts the server, listening for a client on stdin/stdout. | Used to actually launch the server process — `transport="stdio"` picks the simplest connection method (module 20's Theory covers the alternative, HTTP). |
+
 ## Using a different model
 
 An MCP server doesn't know or care which LLM is calling it — this module has no model-specific code at all, which is the point of the protocol. See [module 26](../26_mcp_implement_client) for hooking this server up to a Claude-powered agent.

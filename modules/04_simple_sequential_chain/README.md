@@ -28,6 +28,14 @@ Requires `ANTHROPIC_API_KEY` in `.env`. The script builds `stage_1` and `stage_2
 
 Both stages are `prompt | llm | StrOutputParser()` chains; they're composed with a single `|` into one end-to-end chain, and also run manually step-by-step so you can see the intermediate output. The composed chain uses a bare `lambda` between the two stages (`stage_1 | (lambda outline_text: {"outline": outline_text}) | stage_2`) — see [module 03's Execution Internals](../03_chains_lcel#execution-internals-the-runnable-protocol) for exactly what happens when a raw function like that gets auto-wrapped into a `RunnableLambda` and dropped into a `|` pipe.
 
+## Classes & Methods Used
+
+Everything here is reused from earlier modules — `ChatPromptTemplate`, `StrOutputParser`, and `|` chaining (see modules [02](../02_prompt_templates#classes--methods-used) and [03](../03_chains_lcel#classes--methods-used) for those). The one new thing:
+
+| API | What It Does | Why We Use It Here |
+|---|---|---|
+| A bare `lambda` inside a `\|` chain | LangChain auto-wraps a plain function dropped into a pipe as a `RunnableLambda` (module 03) — you don't have to write `RunnableLambda(...)` yourself. | Used between `stage_1` and `stage_2` to reshape stage 1's plain-string output into the `{"outline": ...}` dict shape that stage 2's prompt template expects. |
+
 ## Using a different model
 
 Each stage can even use a *different* provider if you want (e.g. a cheap/fast model for the outline, Claude for the polished prose) — see [module 06](../06_multiple_llms) for that pattern. To swap both stages at once, just change the `get_chat_model()` call.

@@ -28,7 +28,16 @@ Requires `ANTHROPIC_API_KEY` in `.env`. The exercise solutions write a couple of
 1. Runs a short conversation (reusing the pattern from [module 07](../07_chat_history)).
 2. Pretty-prints the transcript to the console with role labels.
 3. Renders the same transcript as a markdown string.
-4. Serializes it to JSON via `.model_dump()` for storage/transmission.
+4. Serializes it to JSON (using each message's `.type` and `.content`) for storage/transmission, then reloads it back into real `HumanMessage`/`AIMessage` objects.
+
+## Classes & Methods Used
+
+| API | What It Does | Why We Use It Here |
+|---|---|---|
+| `message.type` | A string telling you which kind of message this is (`"human"`, `"ai"`, or `"system"`). | Used in every formatter to decide how to label/render each message (e.g. `"You"` vs. `"Assistant"` in the markdown version). |
+| `message.content` | The plain-text body of the message. | The actual text we're formatting/saving in every function in this module. |
+| `history.add_user_message(text)` / `.add_ai_message(text)` | Shortcut methods on `ChatMessageHistory` that wrap a plain string in the right message type and append it. | Used in `run_short_conversation()` as a slightly shorter way to build up history than constructing `HumanMessage`/`AIMessage` objects by hand. |
+| `HumanMessage(content=...)` / `AIMessage(content=...)` | Construct a message object directly from role + text. | Used in `messages_from_json()` to turn plain dicts (loaded from JSON) back into real LangChain message objects. |
 
 ## Using a different model
 

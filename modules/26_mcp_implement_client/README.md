@@ -33,6 +33,15 @@ Requires `ANTHROPIC_API_KEY` (the agent's LLM). The whole run is one `agent.ainv
 3. Builds a Claude-powered `create_react_agent` with those tools.
 4. Asks: *"Find a job that matches someone with LangChain and FAISS experience, then draft a short cover letter for 'Alex Chen' for that job."* — this requires the agent to call `search_jobs`, read the result, then use the `draft_cover_letter` prompt/resource information to write a letter, all through MCP.
 
+## Classes & Methods Used
+
+| API | What It Does | Why We Use It Here |
+|---|---|---|
+| `MultiServerMCPClient({"job_board": {"url": ..., "transport": "streamable_http"}})` | Configures connections to one or more MCP servers at once, by name. | Used to point at module 25's job-board server — the dict key (`"job_board"`) is just a label; the `url`/`transport` describe how to actually reach it. |
+| `await mcp_client.get_tools()` | Connects to every configured server, discovers their tools, and returns them already converted into LangChain `BaseTool` objects. | This is the bridge between MCP and LangChain — one call turns "tools living on a separate server" into "tools `create_react_agent` can use," exactly like the local `@tool`-decorated functions in module 19. |
+| `create_react_agent(llm, tools)` | Same agent-building function from module 19. | Used identically to module 19 — the agent has no idea (and doesn't need to know) that these tools came from MCP instead of being defined locally. |
+| `await agent.ainvoke({"messages": [...]})` | The async version of `agent.invoke()` (module 19) — runs the same think/call-tool/think-again loop. | `ainvoke` (not `invoke`) is used because this script is already running inside `async def main()`, needed for the MCP connection above. |
+
 ## Using a different model
 
 Swap `get_chat_model(provider=...)` exactly as in every other module — `MultiServerMCPClient`/`get_tools()` are entirely model-agnostic; only the agent's LLM changes.
