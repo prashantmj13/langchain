@@ -84,9 +84,9 @@ chain = prompt | get_chat_model(provider="openai") | StrOutputParser()
 
 ## Exercises
 
-1. Add a fourth stage to the chain that counts words in the final string and prints `"{n} words: {text}"`.
-2. Define a Pydantic model `MovieReview(title: str, rating: int, summary: str)` and use `.with_structured_output()` to extract it from a free-text review.
-3. Call `.batch()` with 5 different questions and time it against calling `.invoke()` in a plain Python `for` loop — compare wall-clock time.
-4. Use `.stream()` on the full 3-stage chain and print output as it arrives, not just at the end.
+1. **Adding your own `RunnableLambda` stage.** Take `basic_lcel_chain()`'s 3-stage chain (`prompt | llm | StrOutputParser()`) and pipe a 4th stage onto the end: a plain function (which will auto-wrap into a `RunnableLambda`, per this module's Execution Internals) that counts the words in the incoming string with `len(text.split())` and returns a new string formatted as `f"{n} words: {text}"`.
+2. **Extracting structured data from free text.** Define a Pydantic model `MovieReview` with fields `title: str`, `rating: int`, and `summary: str` (look at `MovieReview` in `example.py` for the exact pattern with `Field(description=...)`). Call `llm.with_structured_output(MovieReview)` and feed it a free-text movie review you write yourself (a couple of sentences, mentioning a title and an implied or explicit rating) — confirm you get back a real `MovieReview` object with all 3 fields correctly filled in, not just a string.
+3. **Measuring what `.batch()` actually buys you.** Build a simple chain, then call `.batch()` with a list of 5 different questions and time it with `time.perf_counter()` before/after. Separately, time a plain Python `for` loop that calls `.invoke()` once per question. Compare the two durations — `.batch()` should be noticeably faster since it dispatches all 5 calls concurrently instead of one after another (see this module's Execution Internals for why).
+4. **Streaming a whole chain, not just a raw model call.** Take the full `prompt | llm | StrOutputParser()` chain from `basic_lcel_chain()` and call `.stream({...})` on it instead of `.invoke()`. Loop over the result and print each chunk as it arrives (`print(chunk, end="", flush=True)`) — confirm you see text appearing progressively, the same way module 01's `.stream()` exercise did, but now through a full chain with a parser attached.
 
 **Solutions:** see [`solutions.py`](solutions.py) in this folder.

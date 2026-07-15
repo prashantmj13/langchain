@@ -49,9 +49,9 @@ Chat history management is entirely model-agnostic — `RunnableWithMessageHisto
 
 ## Exercises
 
-1. Add a 4th turn to Alice's session asking her to summarize the whole conversation so far.
-2. Cap history to the last 6 messages (trim older ones) so token usage doesn't grow unbounded in a long conversation -- use `trim_messages`.
-3. Swap the in-memory store for a JSON-file-backed store that persists across process restarts.
-4. Run two sessions concurrently (interleaved calls) and confirm Alice's and Bob's histories never cross-contaminate.
+1. **A 4th turn that specifically tests memory.** `example.py`'s Alice session already has 3 turns, ending with "What did I just ask you about?" Add a 4th call asking "Summarize our conversation so far in 2 sentences" — this is a stronger test than turn 3, since it requires the model to actually recall *all* prior turns, not just the most recent one.
+2. **Preventing history from growing forever.** In a long-running chat, sending the entire history on every call gets expensive and eventually hits the context window limit (module 00's glossary). `trim_messages` (from `langchain_core.messages.utils`) can cut a message list down to the last N — build a `ChatMessageHistory` with 10+ messages in it, then call `trim_messages(history.messages, max_tokens=6, strategy="last", token_counter=len)` and confirm you get back only the last 6.
+3. **Persisting history across process restarts.** `example.py`'s `_store` dict lives only in memory — it's gone the moment the script ends. Write a small class implementing `BaseChatMessageHistory` (subclass it, and implement `.messages`, `.add_message()`, `.clear()`) that reads/writes to a JSON file on disk instead of a Python dict. Confirm history survives: run your script, add some messages, then run it again and see the earlier messages still there.
+4. **Confirming sessions genuinely don't leak into each other under concurrency.** Using Python's `threading` module, start two threads that each send a message to a *different* `session_id` at roughly the same time. After both finish, check that Alice's history contains no trace of Bob's message and vice versa — this matters because a real multi-user app will have exactly this kind of concurrent access.
 
 **Solutions:** see [`solutions.py`](solutions.py) in this folder.

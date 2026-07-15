@@ -45,9 +45,11 @@ An MCP server doesn't know or care which LLM is calling it — this module has n
 
 ## Exercises
 
-1. Add a third tool, `to_uppercase(text: str) -> str`, and confirm it appears when a client lists tools.
-2. Make `get_weather` raise a clear error for an empty city string, and check how that surfaces to a client.
-3. Add a `units: str = "celsius"` optional parameter to `get_weather` and test both default and explicit values.
-4. Read the generated tool schema (via a client's `list_tools()`, see module 22) and confirm it matches your function's type hints exactly.
+You'll need a client to actually test these against — either write a small one following [module 22](../22_mcp_stdio_client)'s pattern, or just use `solutions_client.py` in this folder as a reference while you build your own version of `server.py`.
+
+1. **Adding a 3rd tool from scratch.** Following `get_weather`/`word_count`'s pattern exactly (a type-hinted function with a docstring, decorated with `@mcp.tool()`), add `to_uppercase(text: str) -> str` that returns `text.upper()`. Connect a client and call `list_tools()` — confirm your new tool shows up alongside the original two, with a description pulled from your docstring.
+2. **Making bad input fail clearly instead of silently.** Modify `get_weather` so that if `city` is an empty string, it `raise`s a `ValueError` with a clear message (e.g. `"city must not be empty."`) instead of trying to look it up. Call it from a client with `{"city": ""}` and observe how the error surfaces on the client side — is it a crash, or a structured error response?
+3. **An optional parameter with a default value.** Add `units: str = "celsius"` as a second parameter to `get_weather`, and use it to pick between two hardcoded values per city (e.g. store both a celsius and fahrenheit reading). Call the tool twice from a client — once with just `{"city": "Tokyo"}` (relying on the default) and once with `{"city": "Tokyo", "units": "fahrenheit"}` — and confirm you get different results.
+4. **Reading the schema the server actually generated.** From a client, call `list_tools()` and print `tool.inputSchema` (as JSON, e.g. with `json.dumps(tool.inputSchema, indent=2)`) for `get_weather`. Compare it line-by-line against your function's actual type hints — this is exactly what `FastMCP` builds automatically from your Python code, and it's worth seeing once so you trust it's really doing that.
 
 **Solutions:** see [`solutions_server.py`](solutions_server.py) (the extended server) and [`solutions_client.py`](solutions_client.py) (a client that verifies all four exercises) in this folder. Run `python modules/21_mcp_create_server/solutions_client.py` -- it launches `solutions_server.py` automatically over stdio.

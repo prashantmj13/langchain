@@ -47,9 +47,9 @@ Swap the embedding provider via `common.embedding_factory.get_embeddings(provide
 
 ## Exercises
 
-1. Add a 7th FAQ document and confirm it's correctly ranked against 3 different test queries.
-2. Implement Euclidean distance ranking alongside cosine similarity and check whether the top-3 ordering changes for your corpus.
-3. Add a similarity-score threshold (e.g. 0.5) below which no results are returned, and test a query that should return zero matches.
-4. Benchmark brute-force search against 10,000 randomly generated vectors and note how latency scales with corpus size.
+1. **Growing the corpus and re-testing.** Add a 7th document to `example.py`'s `DOCUMENTS` list (write your own FAQ-style sentence about a new topic, e.g. account cancellation). Run `top_k()` with 3 different test queries — including at least one that should clearly match your new document — and confirm it shows up in the results when relevant, and doesn't show up when it isn't.
+2. **Comparing distance metrics.** This module's `top_k()` ranks by cosine similarity. Write a second scoring function using Euclidean distance instead (`np.linalg.norm(a - b)` — note: for Euclidean distance, *lower* means more similar, the opposite of cosine similarity's *higher* means more similar). Rank the same corpus with both metrics for the same query and compare the top-3 results — do they come out in the same order?
+3. **Rejecting weak matches instead of always returning `k` results.** Modify `top_k()` (or write a new version) so it only returns documents whose similarity score is above a threshold you choose (start with `0.5`) — even if that means returning fewer than `k` results, or zero. Test it with a query that's completely unrelated to anything in your corpus (e.g. "what's the weather like today?") and confirm you get zero results back instead of 3 weak, irrelevant ones.
+4. **How does search time scale with corpus size?** Using `numpy`'s random number generation (`np.random.default_rng(42).random((10000, 384))` gives you 10,000 fake 384-dimensional vectors), time how long a brute-force cosine-similarity search against all 10,000 takes, using `time.perf_counter()`. Compare that to how fast it was against this module's 6-document corpus — this is the scaling problem that justifies FAISS (module 15) once your corpus gets big.
 
 **Solutions:** see [`solutions.py`](solutions.py) in this folder.

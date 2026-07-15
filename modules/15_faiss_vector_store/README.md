@@ -50,7 +50,9 @@ Only the embedding function passed to `FAISS.from_documents(...)`/`FAISS.load_lo
 
 ## Exercises
 
-1. Delete the on-disk `faiss_index/` folder and re-run the script to confirm it rebuilds cleanly from scratch.
-2. Add a `delete()` call to remove a document by id and confirm it no longer appears in search after re-saving and reloading.
-3. Try loading the saved index with a *different* embedding provider than the one that built it, and observe what goes wrong (either an error or nonsensical results).
-4. Build an index from 5,000 short synthetic strings and measure `similarity_search` latency versus the 4-document demo index.
+1. **Confirming a clean rebuild works.** Manually delete the `faiss_index/` folder this module's `example.py` creates (or use Python's `shutil.rmtree`), then re-run the script. It should recreate the folder and rebuild the index from scratch with no errors — proving there's no hidden dependency on leftover state from a previous run.
+2. **Removing a document from a saved index.** Build a store with `ids=["d1", "d2", "d3"]` passed to `.from_documents()` (so each document has a known id), call `.delete(ids=["d2"])`, then `.save_local(...)` and reload with `.load_local(...)`. Search the reloaded index and confirm the deleted document never appears in results.
+3. **What happens with a mismatched embedding provider.** Build and save an index using one embedding provider (e.g. `get_embeddings(provider="voyage")`). Then try loading it back with `FAISS.load_local(..., get_embeddings(provider="huggingface"))` — a *different* provider than the one that built it. Run a search and observe what happens: does it error, or does it return results that don't actually make sense for your query? (This module's Theory section explains why this goes wrong.)
+4. **How FAISS search time scales with corpus size.** Use `langchain_core.embeddings.DeterministicFakeEmbedding(size=384)` (a fast, dependency-free fake embedding model made for exactly this kind of test) to build a FAISS index from 5,000 short synthetic strings (e.g. `f"Document number {i}"` for `i` in `range(5000)`). Time a `similarity_search()` call against it with `time.perf_counter()`, and compare that latency to searching this module's 3-document demo index.
+
+**Solutions:** see [`solutions.py`](solutions.py) in this folder.

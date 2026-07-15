@@ -50,9 +50,9 @@ This entire module *is* the "different model" note — it directly instantiates 
 
 ## Exercises
 
-1. Add a fourth provider (Google Gemini) to the comparison and print all four answers plus each call's latency.
-2. Change the routing chain's condition so anything containing the word "code" always goes to Claude, regardless of the "reasoning"/"simple lookup" tag.
-3. Build a simple voting ensemble: ask 3 models the same yes/no question and print the majority answer.
-4. Measure the actual cost difference between the draft-and-polish pipeline and just asking Claude directly, using each provider's token usage metadata.
+1. **Add a 4th provider to `compare_providers()`.** The example already loops over `("anthropic", "openai", "ollama")`; add `"google"` to that tuple (needs `GOOGLE_API_KEY` set). For each provider, also time the call with `time.perf_counter()` and print the latency alongside the answer, so you end up comparing both *what* each model says and *how long* it took.
+2. **Adding a condition that overrides the existing routing logic.** `routing_example()`'s `RunnableBranch` currently routes purely on the `task_type` field. Add a *second* condition, checked before the existing one, that routes to Claude whenever the word `"code"` appears anywhere in the question — regardless of what `task_type` says. Test it with a question tagged `"simple lookup"` that also happens to ask for code, and confirm it still goes to Claude.
+3. **A minimal "ask 3 models, take the majority" pattern.** Pick a factual yes/no question (e.g. "Is Python a compiled language? Answer with exactly one word: yes or no."). Ask it to 3 different providers, collect the 3 one-word answers into a list, and use Python's `collections.Counter` to find and print whichever answer appears most often.
+4. **Comparing real costs, not just latency.** Run `draft_and_polish()` and sum up the token usage (`response.usage_metadata`) across both the draft and polish calls. Separately, ask Claude the same underlying question directly in one call, and note its token usage. Compare the two totals — is a "cheap draft + Claude polish" pipeline actually cheaper than just asking Claude directly for this particular question?
 
 **Solutions:** see [`solutions.py`](solutions.py) in this folder.

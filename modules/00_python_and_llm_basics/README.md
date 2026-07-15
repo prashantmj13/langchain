@@ -123,9 +123,11 @@ No API key needed — everything in this module runs offline. Each script execut
 
 ## Exercises
 
-1. Write a function `describe(name: str, age: int = 0) -> str` that returns `f"{name} is {age} years old"`, and call it once with just `name` and once with both arguments.
-2. Given `prices = {"apple": 1.5, "banana": 0.5, "cherry": 3.0}`, write a list comprehension that returns only the fruit names costing more than $1.
-3. Write a decorator `@shout` that uppercases whatever string a wrapped function returns, and apply it to a function that returns `"hello world"`.
-4. Write an `async def` function that awaits `asyncio.sleep(1)` and then prints `"done"`, and run it with `asyncio.run(...)`.
+Each exercise below targets one of the "Part 1" concepts above — do them in order, since later ones assume you're comfortable with the earlier ones.
+
+1. **Default arguments** (the pattern `get_chat_model()` uses everywhere). Write a function `describe(name: str, age: int = 0) -> str` that returns the f-string `f"{name} is {age} years old"`. Then call it twice: once as `describe("Alice")` (relying on the default `age=0`) and once as `describe("Bob", 30)` (overriding it). Confirm both calls print sensible output — that's the whole point of a default: the caller can supply it or skip it.
+2. **List comprehensions over a dict** (the pattern used to filter/transform search results throughout this repo). Given `prices = {"apple": 1.5, "banana": 0.5, "cherry": 3.0}`, write a single list comprehension that returns only the fruit *names* (not the prices) where the price is greater than $1 — expected result: `["apple", "cherry"]`. You'll need `.items()` to loop over both the key and value at once, plus an `if` condition inside the comprehension.
+3. **Decorators** (the mechanism behind `@tool` in module 19 and `@mcp.tool()` in module 21). Write a decorator named `@shout` that takes whatever string a wrapped function returns and converts it to uppercase before returning it. Apply it to a function that returns `"hello world"`, and confirm calling that function now returns `"HELLO WORLD"` instead.
+4. **`async`/`await`** (the mechanism every MCP client in this repo uses). Write an `async def` function that does two things in order: `await asyncio.sleep(1)` (simulating a 1-second wait, like a network call), then `print("done")`. Run it with `asyncio.run(your_function())` at the bottom of your script, and confirm there's a visible ~1 second pause before `"done"` prints.
 
 **Solutions:** see [`solutions.py`](solutions.py) in this folder.

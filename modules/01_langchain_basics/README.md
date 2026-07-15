@@ -84,9 +84,9 @@ All four implement the exact same `.invoke(messages)` / `.stream(messages)` inte
 
 ## Exercises
 
-1. Change the system prompt so Claude always answers in the style of a pirate, and confirm it holds across three different questions.
-2. Print `response.usage_metadata` and calculate the approximate cost of your call using Anthropic's published per-token pricing.
-3. Replace `.invoke()` with `.stream()` in the second example and print each chunk as it arrives instead of the final message.
-4. Swap `LLM_PROVIDER` to `ollama` in your `.env` (with a local model pulled) and confirm the same script runs unmodified.
+1. **System prompts control persona, not just topic.** Copy `system_plus_human()` from `example.py` and change the `SystemMessage` so Claude always answers in the voice of a pirate — something like `"You always answer in the voice of a pirate."` Ask it 3 different, unrelated questions (e.g. about Python, about cooking, about the weather) in 3 separate `.invoke()` calls, and confirm the pirate voice holds in all 3 — that's what proves the system message is steering *style*, not just answering one lucky question.
+2. **Reading and using token usage.** Take `basic_invoke()`'s response and print `response.usage_metadata` — you'll see a dict with `input_tokens` and `output_tokens`. Look up Anthropic's current per-million-token pricing at anthropic.com/pricing, and compute the approximate cost of that one call by hand (or in code): `(input_tokens / 1_000_000) * input_price + (output_tokens / 1_000_000) * output_price`.
+3. **`.stream()` returns chunks, not one final message.** Take the `system_plus_human()` example and replace `llm.invoke(messages)` with a `for chunk in llm.stream(messages):` loop, printing `chunk.content` (with `end=""` so it doesn't add a newline after every chunk) as each piece arrives, instead of printing one complete `response.content` at the end.
+4. **Confirming the provider-swap actually works.** In your `.env` file, change `LLM_PROVIDER=anthropic` to `LLM_PROVIDER=ollama` (after installing Ollama and running `ollama pull llama3.1` locally). Re-run `example.py` completely unmodified — no code changes — and confirm it now answers using your local model instead of Claude. This is the payoff of `common/model_factory.py` existing at all: one env var, zero code changes.
 
 **Solutions:** see [`solutions.py`](solutions.py) in this folder.

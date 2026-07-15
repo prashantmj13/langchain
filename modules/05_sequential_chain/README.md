@@ -48,9 +48,9 @@ Different sub-chains can use different providers/temperatures independently, sin
 
 ## Exercises
 
-1. Add a fourth parallel branch that extracts a list of complaint "categories" (e.g. `shipping`, `quality`, `price`) from the review.
-2. Change the final stage so it also outputs a `priority: high|medium|low` field using `.with_structured_output()`.
-3. Measure whether running `sentiment` and `summary` via `RunnableParallel` is actually faster than running them sequentially with two separate `.invoke()` calls.
-4. Feed 3 different reviews through `.batch()` and print a table of `review | sentiment | reply`.
+1. **Add a 4th key to the `RunnablePassthrough.assign()` stage.** `example.py`'s `enrich` step computes `sentiment` and `summary` alongside the original `review`. Add a third sub-chain, `categories`, that asks the model to list which complaint categories (pick from a fixed list like `shipping`, `quality`, `price`, `packaging`) apply to the review — then confirm your final result dict includes all 4 keys (`review`, `sentiment`, `summary`, `categories`).
+2. **Structured output *and* multiple upstream inputs, combined.** Change `reply_chain` so instead of returning plain text, it uses `.with_structured_output()` (module 03) with a Pydantic model that has both a `reply: str` field and a `priority: str` field (constrain it to `"high"`, `"medium"`, or `"low"` in the field's description). This is the same "many inputs feed one output" pattern as `reply_chain` already uses — you're just making that one output typed instead of a plain string.
+3. **Does `RunnableParallel` actually save time here?** Time `RunnableParallel(sentiment=sentiment_chain, summary=summary_chain).invoke({"review": REVIEW})` with `time.perf_counter()`. Then time calling `sentiment_chain.invoke(...)` and `summary_chain.invoke(...)` back to back in a plain sequence. Compare the two — the parallel version should be close to the duration of whichever single call is slower, not the sum of both (see module 03's Execution Internals for why).
+4. **Running the whole pipeline over multiple reviews at once.** Write 3 different sample reviews (make them genuinely different in tone/topic, not just reworded copies), pass all 3 through the full pipeline with `.batch()`, and print the results as a simple table: `review (truncated) | sentiment | reply (truncated)`.
 
 **Solutions:** see [`solutions.py`](solutions.py) in this folder.

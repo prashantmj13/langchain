@@ -51,9 +51,9 @@ Still pure transport/protocol — no model involved. See [module 26](../26_mcp_i
 
 ## Exercises
 
-1. Change the server's port from 8000 to 8010 and update the client accordingly.
-2. Start the server, then start two separate client processes calling it concurrently, and confirm both get correct independent responses.
-3. Add basic error handling to the client for "server not running" (connection refused) with a clear error message.
-4. Compare startup/teardown behavior: kill the client process (Ctrl+C) and confirm the HTTP server keeps running, unlike the stdio case in module 22 where the server dies with the client.
+1. **Changing which port the server listens on.** In `server_http.py`, change `FastMCP("utilities-http-server", port=8000)` to `port=8010`. In `client_http.py`, update `SERVER_URL` to `"http://127.0.0.1:8010/mcp"`. Restart the server and confirm the client can still connect and call tools — this is worth doing once so port numbers stop feeling like magic.
+2. **Confirming the server genuinely handles multiple clients.** With `server_http.py` running in one terminal, run `client_http.py` twice in quick succession (two separate terminal windows, or two background processes) — both should independently connect, list tools, and get correct results, without one client's calls interfering with the other's. This is the behavior stdio (module 22) can't offer, since each stdio client gets its own private server subprocess.
+3. **A clear error instead of a confusing one when the server isn't running.** Stop `server_http.py` (or just don't start it), then run `client_http.py`. You'll likely get a raw connection-refused exception. Wrap the connection attempt in a `try/except` and print a clear, specific message like `"Could not connect -- is server_http.py running on port 8000?"` instead of letting the raw traceback surface.
+4. **Watching the server survive its client disconnecting.** With `server_http.py` running, start `client_http.py`, then hit Ctrl+C on the *client* mid-run (not the server). Confirm the server terminal is still running and unaffected — then run `client_http.py` again fresh and confirm it still works, proving the server's lifecycle is genuinely independent of any one client's.
 
 **Solutions:** see [`solutions.py`](solutions.py) in this folder (start `server_http.py` first for exercises 1-2).

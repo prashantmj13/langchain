@@ -60,9 +60,9 @@ Tool-calling quality varies by provider and model size; swap via `get_chat_model
 
 ## Exercises
 
-1. Add a third tool, `reverse_string(s)`, and ask a question that requires all three tools to answer.
-2. Print each intermediate `ToolMessage` in the trace to see exactly what arguments the model chose to pass.
-3. Give the agent a bad tool (one that raises an exception for certain inputs) and observe how it recovers (or doesn't) from a tool error.
-4. Rebuild the calculator tool as `add`, `subtract`, `multiply`, `divide` (four separate tools) and ask a multi-step arithmetic question requiring several calls.
+1. **A 3-tool question, to see the loop handle more steps.** Write a third `@tool`-decorated function, `reverse_string(s: str) -> str`, following `add`/`get_word_length`'s pattern (type hints + a docstring, since those are what the model reads). Add it to `create_react_agent(llm, tools=[...])`'s tool list, then ask a question that genuinely needs all 3 — e.g. "Reverse the word 'LangChain', tell me how many letters the reversed word has, then add that to 10."
+2. **Inspecting exactly what arguments the model chose.** Run any multi-tool question and loop over `result["messages"]`. For messages that have `.tool_calls` (check `hasattr(message, "tool_calls") and message.tool_calls`), print each call's `name` and `args` — this shows you precisely what the model decided to pass to each tool, which is useful for debugging when an agent calls a tool "wrong."
+3. **What happens when a tool fails mid-loop.** Write a tool that raises an exception for certain inputs — e.g. `divide(a, b)` that raises `ValueError("Cannot divide by zero.")` when `b == 0`. Ask the agent a question that triggers this (e.g. "What is 10 divided by 0?") and read through the full message trace: does the agent notice the error and explain it to you, or does the whole thing crash?
+4. **Breaking one flexible tool into several narrow ones.** Instead of a single `add` tool, write 4 separate ones: `add`, `subtract`, `multiply`, `divide`, each taking two numbers. Ask a multi-step arithmetic question that requires chaining several of them (e.g. "Take 20, add 15, then multiply by 2, then divide by 5 — what's the final result?") and confirm the agent calls them in the right order.
 
 **Solutions:** see [`solutions.py`](solutions.py) in this folder.

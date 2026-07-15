@@ -54,9 +54,9 @@ local_emb = get_embeddings(provider="huggingface")       # no API key, runs loca
 
 ## Exercises
 
-1. Print the vector dimensionality of all three providers you have configured, and note which is largest/smallest.
-2. Time `embed_documents()` on 50 short sentences for each available provider and compare latency.
-3. Try `voyage-code-3` instead of the general-purpose Voyage model on a batch of code snippets, and compare similarity rankings against the general-purpose model.
-4. Confirm that `embed_query("some text")` and `embed_documents(["some text"])[0]` return (numerically) the same vector for a given provider.
+1. **Different providers, different output sizes.** For each provider you have API keys for (Voyage, OpenAI, and/or HuggingFace, which needs no key), embed the same single sentence with `get_embeddings(provider=...).embed_query(...)` and print `len(vector)` for each. Note which provider returns the longest vector and which returns the shortest — this is the "dimensionality" this module's Theory section talks about, made concrete.
+2. **Does provider choice affect speed, not just accuracy?** Using `time.perf_counter()`, time how long `embed_documents()` takes to embed a list of 50 short sentences, once per available provider. HuggingFace (running locally on your machine) and the API-based providers (Voyage/OpenAI, going over the network) should behave quite differently — note which is faster and think about why.
+3. **General-purpose vs. domain-specialized embeddings.** Voyage AI offers `voyage-code-3`, a model specifically tuned for code (as opposed to the general-purpose default). Embed a handful of code snippets (e.g. a Python function, a SQL query, a JS function) with both the general-purpose Voyage model and `voyage-code-3` (pass `model="voyage-code-3"` to `get_embeddings()`), and compare how each ranks the snippets' similarity to each other.
+4. **Confirming `embed_query` and `embed_documents` behave consistently.** For a single piece of text, call both `embeddings_model.embed_query("some text")` and `embeddings_model.embed_documents(["some text"])[0]` — same text, two different methods. Confirm the two vectors are (numerically) the same, which is what lets you safely mix single-query and batch embedding calls in the same pipeline.
 
 **Solutions:** see [`solutions.py`](solutions.py) in this folder.

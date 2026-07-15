@@ -51,9 +51,9 @@ OpenAI's GPT-4o multimodal content-block shape differs slightly (`{"type": "imag
 
 ## Exercises
 
-1. Swap the generated placeholder image for a real photo on your machine and ask Claude to describe it.
-2. Send two images in one message (e.g. two different placeholder colors) and ask Claude to compare them.
-3. Ask Claude to transcribe text drawn on the placeholder image and verify the transcription is exact.
-4. Try the same multimodal message with `get_chat_model(provider="openai", model="gpt-4o-mini")` and compare the response format/quality.
+1. **Using a real photo instead of a generated placeholder.** Find any photo on your machine (or take one), read its bytes with `Path("photo.jpg").read_bytes()`, base64-encode them with `base64.b64encode(...).decode("utf-8")` (same as `generate_placeholder_image()` does internally, just skipping the "generate it with Pillow" step), and send it to Claude with `describe_image()`'s pattern. Confirm the description actually matches what's in your real photo.
+2. **Sending 2 images in a single message.** Build a `HumanMessage` whose `content` list has a text block *and two* image blocks (each following the `{"type": "image", "source_type": "base64", ...}` shape from `describe_image()`) — you can generate two placeholder images with different colors/text using `generate_placeholder_image()` twice. Ask Claude to describe how the two images differ, and confirm it correctly references both.
+3. **Testing transcription accuracy specifically.** Generate a placeholder image with a short, specific piece of text drawn on it (change the string passed to `draw.text(...)`). Ask Claude to transcribe *exactly* what text it sees, nothing else. Compare its answer character-for-character against what you actually wrote — this is a good way to build intuition for where vision models are and aren't reliable.
+4. **Comparing Claude's vision output to another provider's.** Send the exact same multimodal message to `get_chat_model(provider="openai", model="gpt-4o-mini")` instead of the default Claude model. Compare the two descriptions — do they notice the same details? Is one more verbose or more accurate than the other?
 
 **Solutions:** see [`solutions.py`](solutions.py) in this folder.

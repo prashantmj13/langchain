@@ -45,9 +45,11 @@ Nothing to run here — this module is conceptual (architecture/transports/primi
 
 ## Exercises
 
-1. Sketch (on paper or in a diagram tool) an MCP setup for a scenario from your own work — what would the server wrap, and which transport would you use?
-2. Read the MCP spec's tool schema definition and identify what a tool definition requires beyond a name and a Python function signature.
-3. Compare the primitives (tools/resources/prompts) to what a plain REST API would look like for the same use case — what does MCP standardize that you'd otherwise have to design yourself?
-4. Decide, for a server you might build, whether stdio or HTTP is the right transport, and write down why.
+These are pen-and-paper exercises — no code, since this module is purely conceptual. The goal is to make sure the architecture/transport/primitives vocabulary from Theory actually sticks before you build a real server in module 21.
+
+1. **Applying the architecture diagram to something real.** Pick a real (or plausible) scenario from your own work or a hobby project — something you'd want an AI assistant to be able to look up or act on. Sketch it using this module's Host/Client/Server diagram: what would the *server* wrap (a database? an API? a filesystem?), and which transport (stdio or HTTP) makes sense for it?
+2. **What a tool definition actually needs, beyond a Python function.** Read the MCP specification's section on tool definitions (linked below). A Python function has a name and a signature; identify at least 2 things a proper MCP tool definition requires that a bare Python function doesn't automatically provide.
+3. **MCP vs. "just build a REST API."** For the scenario you sketched in exercise 1, imagine building it as a plain REST API instead of an MCP server. Write down 2-3 things MCP gives you "for free" (discovery, standardized categorization of tools/resources/prompts, etc.) that you'd otherwise have to design and document yourself in a REST API.
+4. **Choosing a transport, and being able to justify it.** For the same scenario, decide: stdio or HTTP? Write one or two sentences explaining why, based on this module's Theory section (who's going to be launching/connecting to this server, and from how many places at once).
 
 **Solutions:** see [`solutions.md`](solutions.md) in this folder (these exercises are conceptual, so there's no `solutions.py`).

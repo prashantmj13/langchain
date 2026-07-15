@@ -47,9 +47,9 @@ Each stage can even use a *different* provider if you want (e.g. a cheap/fast mo
 
 ## Exercises
 
-1. Add a third stage that takes the opening paragraph and produces a punchy one-line title for the post.
-2. Print the intermediate outline separately from the final paragraph (don't just print the end result) to confirm each stage's output.
-3. Rewrite the two-stage chain so stage 1 uses `temperature=0.9` (more creative outlines) and stage 2 uses `temperature=0.2` (more focused prose).
-4. Time how long the composed chain takes vs. calling each stage manually in sequence — they should be about the same, since LCEL doesn't add overhead here.
+1. **Extend the chain to 3 stages.** `example.py`'s pipeline is outline → opening paragraph. Add a `stage_3` that takes the opening paragraph (single input, matching this module's "single in, single out" theme) and asks for a punchy, one-line title for the post — then wire all 3 stages together the same way `example.py` composes stages 1 and 2.
+2. **Verifying each stage in isolation, not just the final result.** Run `stage_1` on its own and print the outline it produces *before* passing it to `stage_2`. This isn't just about seeing more output — it's the habit of checking each link in a chain works correctly on its own, which becomes essential once chains get longer than 2 stages.
+3. **Different temperatures per stage.** Build `stage_1` with `get_chat_model(temperature=0.9)` (more random/creative, good for brainstorming an outline) and `stage_2` with `get_chat_model(temperature=0.2)` (more focused/consistent, good for polished prose). Compare the outputs to a version where both stages use the default temperature — does the outline actually feel more varied across repeated runs?
+4. **Confirming LCEL adds no real overhead.** Using `time.perf_counter()` before/after, time the composed `stage_1 | ... | stage_2` chain's `.invoke()` call. Separately, time calling `stage_1.invoke()` then `stage_2.invoke()` manually one after another. The two durations should come out close to equal — if the composed version were noticeably slower, that would mean `|` chaining has real cost, which it doesn't (see module 03's Execution Internals for why).
 
 **Solutions:** see [`solutions.py`](solutions.py) in this folder.

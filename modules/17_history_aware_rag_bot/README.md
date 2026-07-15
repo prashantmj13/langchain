@@ -51,9 +51,9 @@ Both the query-rewriting step and the final-answer step accept any `get_chat_mod
 
 ## Exercises
 
-1. Print the *rewritten* standalone question for each follow-up turn (not just the final answer) to see exactly what the retriever searched with.
-2. Ask a follow-up that requires combining two earlier turns' context (e.g. "compare that to the remote work policy") and see whether it resolves correctly.
-3. Swap the query-rewriting LLM to a cheaper/faster model than the answer-generation LLM and compare latency without losing correctness.
-4. Rebuild this using LangGraph's `create_react_agent` with a retriever exposed as a tool instead of the `create_history_aware_retriever` helper, and compare the two approaches.
+1. **Seeing the rewritten question, not just the final answer.** `create_history_aware_retriever` rewrites your follow-up internally before searching — `example.py` never shows you that intermediate step. Build the `contextualize_prompt | llm` chain separately, call `.invoke({"chat_history": ..., "input": "How much of that carries over?"})` on it directly, and print the result — you should see something like "How much unused PTO carries over to the next year?" instead of the original vague question.
+2. **A follow-up that needs 2 earlier turns combined, not 1.** After asking about PTO and then remote work (like `example.py` does), ask a third question like "Compare those two policies — which is more generous?" This requires the rewriting step to correctly pull context from *two* prior turns, not just the most recent one — check whether it does.
+3. **Using a cheaper model for the "boring" rewriting step.** The query-rewriting step doesn't need Claude's full reasoning power — it's a mechanical rewrite, not deep reasoning. Build `create_history_aware_retriever` with a cheaper/faster model (e.g. `get_chat_model(provider="openai", model="gpt-4o-mini")`) while keeping Claude for the final answer-generation step. Time both versions and confirm answer quality doesn't noticeably drop.
+4. **Comparing the retriever-chain approach to the agent approach.** Instead of `create_history_aware_retriever`, build a [module 19](../19_agents)-style agent with `create_react_agent`, giving it the plain (non-history-aware) retriever wrapped as a `@tool`. Ask it the same 3-turn conversation from `example.py` and compare: does the agent naturally figure out to rephrase its own search queries based on context, without you needing a separate rewriting step?
 
 **Solutions:** see [`solutions.py`](solutions.py) in this folder.

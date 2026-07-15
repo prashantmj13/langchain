@@ -54,9 +54,9 @@ Swap `get_chat_model(provider=...)` exactly as in every other module — `MultiS
 
 ## Exercises
 
-1. Add a second MCP server to `MultiServerMCPClient`'s config (e.g. the module 21 stdio server) and confirm the agent can call tools from both servers in one conversation.
-2. Print the tool schemas returned by `get_tools()` to confirm they match the server's `@mcp.tool()` definitions exactly.
-3. Ask the agent a question that requires calling `search_jobs` twice with different queries, and check whether it does so correctly.
-4. Compare this agent's behavior to the module 19 local-tools agent on an equivalent task — does going through MCP add noticeable latency?
+1. **One agent, tools from two different servers.** Add a second entry to `MCP_SERVERS`, pointing at [module 21](../21_mcp_create_server)'s stdio server (using `{"command": sys.executable, "args": [path_to_server.py], "transport": "stdio"}` instead of the HTTP config). Confirm `get_tools()` now returns tools from *both* servers combined, and ask the agent a question requiring one tool from each (e.g. "what's the weather in Tokyo, and separately, find a matching job for someone with Python and SQL experience").
+2. **Confirming the MCP→LangChain tool conversion is faithful.** After calling `await mcp_client.get_tools()`, loop over the results and print each `tool.name`, `tool.description`, and (if you want to go further) `tool.args_schema.model_json_schema()`. Compare this against what module 25's `search_jobs` function actually looks like in code — confirm nothing got lost or garbled in the conversion from MCP tool to LangChain `BaseTool`.
+3. **A question requiring the same tool called twice with different arguments.** Ask the agent something like "Find the best match for someone with React experience, then separately find the best match for someone with data engineering experience" — this needs `search_jobs` called twice, with two different queries, in one conversation. Check the message trace to confirm it actually did call the tool twice rather than reusing one result for both.
+4. **MCP overhead vs. local tools.** Time this module's agent answering a question against module 19's local-tools agent answering an equivalent one, using `time.perf_counter()` around each `.invoke()`/`.ainvoke()` call. MCP adds a network/protocol round-trip per tool call that local Python function calls don't have — is the difference noticeable in practice for a single tool call?
 
 **Solutions:** see [`solutions.py`](solutions.py) in this folder (start `modules/25_mcp_implement_server/server.py` first).

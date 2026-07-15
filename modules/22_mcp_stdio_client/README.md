@@ -50,9 +50,9 @@ This module is pure protocol plumbing — no LLM involved yet. [Module 26](../26
 
 ## Exercises
 
-1. Print the full JSON schema for each tool (not just name/description) to see exactly what a client can introspect before calling.
-2. Call `get_weather` with a city not in the mocked dataset and confirm the fallback message comes through unchanged.
-3. Add error handling for the case where the server script path is wrong, and confirm you get a clear failure rather than a hang.
-4. Modify the client to call both tools concurrently with `asyncio.gather` instead of sequentially.
+1. **Seeing everything a client can discover about a tool, not just its name.** `client.py`'s `list_tools()` loop only prints `tool.name` and `tool.description`. Modify it to also print `tool.inputSchema` (as JSON via `json.dumps(tool.inputSchema, indent=2)`) for each tool — this is the same schema module 21's exercise 4 asked you to inspect, now from the "generic client" side rather than knowing the server's code.
+2. **Testing the server's fallback path deliberately.** `get_weather` in module 21's `server.py` only has mocked data for 3 cities. Call it with a city that isn't one of them (e.g. `"Atlantis"`) and confirm you get back the fallback message (`"No weather data available for '...'."`) instead of an error or empty result.
+3. **What happens when the server can't even start.** Change `SERVER_SCRIPT` in your own copy of `client.py` to point at a file that doesn't exist. Run the client and observe what happens — does it hang forever, or fail with a clear error? If it hangs, wrap the connection attempt in `asyncio.wait_for(..., timeout=10)` so it fails loudly instead.
+4. **Running two independent tool calls concurrently instead of one after another.** `client.py` currently calls `get_weather` then `word_count` sequentially, each with its own `await`. Rewrite it to fire both at once with `await asyncio.gather(session.call_tool("get_weather", {...}), session.call_tool("word_count", {...}))`, and confirm both results come back correctly (order in the returned tuple matches the order you passed the calls in).
 
 **Solutions:** see [`solutions.py`](solutions.py) in this folder.

@@ -52,9 +52,9 @@ The retriever itself only depends on the embedding provider (via the underlying 
 
 ## Exercises
 
-1. Change `k` from 2 to 4 and observe how the retrieval chain's answer changes (more context, possibly more noise).
-2. Add a `score_threshold` to the retriever and test a query that should return zero documents.
-3. Wrap the base retriever with `MultiQueryRetriever.from_llm()` using Claude to generate query variations, and compare recall against the base retriever on a vaguely-worded query.
-4. Print the `context` documents returned by `create_retrieval_chain` alongside the `answer` to verify the answer is actually grounded in them.
+1. **More retrieved context isn't automatically better.** In `retrieval_chain_demo()`, change `build_retriever()`'s `k` from 2 to 4 (so more documents get retrieved per query). Run the same question through and compare the answer to the `k=2` version — does having more context in the prompt help, or does it start pulling in less-relevant documents that dilute the answer?
+2. **Rejecting a query with no good matches, instead of forcing k results.** Build a retriever with `search_type="similarity_score_threshold"` and `search_kwargs={"k": 4, "score_threshold": 0.6}` (module 12's exercise 3 covers the same idea at the vector-store level; this applies it at the retriever level). Ask a question totally unrelated to this module's 4-document corpus and confirm you get 0 results back, not 4 weak ones.
+3. **Widening recall by rephrasing the query automatically.** `MultiQueryRetriever.from_llm(retriever=base_retriever, llm=llm)` wraps your base retriever with an LLM step that generates several differently-worded versions of the query before searching. Try it on a deliberately vague question (e.g. "how does LangChain find stuff") and compare its results to the plain base retriever's — does rephrasing surface documents the literal query missed?
+4. **Verifying the answer is actually grounded in what was retrieved, not the model's general knowledge.** Run `create_retrieval_chain`'s result and print both `result["answer"]` and `result["context"]` (the list of documents that were actually retrieved). Read through the context and check: does every claim in the answer trace back to something in the context? This is the core trust-check for any RAG system.
 
 **Solutions:** see [`solutions.py`](solutions.py) in this folder.

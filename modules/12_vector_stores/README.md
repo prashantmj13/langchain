@@ -55,9 +55,9 @@ The vector store's embedding function is whatever `common.embedding_factory.get_
 
 ## Exercises
 
-1. Add metadata filtering: search only within documents where `category == "billing"`.
-2. Compare `similarity_search` vs. `max_marginal_relevance_search` (`k=4, fetch_k=10`) on a corpus with 3 near-duplicate documents about the same topic.
-3. Persist the Chroma store to disk (`persist_directory=...`), restart the script, and confirm the data survives without re-embedding.
-4. Add a document, update its content in place, and confirm search results reflect the update (Chroma requires delete + re-add, not a true update — verify this).
+1. **Searching within a subset instead of the whole store.** `example.py`'s final demo already shows `filter={"category": "billing"}` on a `similarity_search` call. Do the same yourself: pick a different `category` value from `DOCUMENTS` (e.g. `"account"`), run a query that's relevant to that category, and confirm the filtered search only returns documents with that exact metadata value — even if a document from a different category would otherwise have scored higher.
+2. **Seeing MMR actually reduce redundancy.** Build a small corpus with 3 documents that are near-duplicates of each other (very similar wording, same topic) plus 1-2 unrelated documents. Run `similarity_search(query, k=3)` and `max_marginal_relevance_search(query, k=3, fetch_k=10)` with the same query and compare the two result sets — the plain similarity search will likely return all 3 near-duplicates; MMR should swap at least one out for something more varied.
+3. **Confirming persistence actually skips re-embedding.** Build a Chroma store with `persist_directory="./my_test_store"` (a real folder path). Run your script once to create and populate it. Then, in a *separate* run (or a fresh Python process), create a new `Chroma(...)` pointed at the same `persist_directory` and `collection_name`, and confirm `.similarity_search()` works immediately — no `.from_documents()` call needed, proving the data survived on disk.
+4. **Chroma has no in-place update — verify it yourself.** Add a document to your store with a specific `id` (pass `ids=["my-doc-1"]` to `.add_documents()`). Try changing its content by calling `.add_documents()` again with the same `id` but different `page_content` — check whether the old content is still returned by search. Then explicitly call `.delete(ids=["my-doc-1"])` followed by `.add_documents()` with the new content, and confirm *that* approach actually replaces it.
 
 **Solutions:** see [`solutions.py`](solutions.py) in this folder.

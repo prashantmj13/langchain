@@ -47,9 +47,9 @@ See [module 10](../10_embedding_models) for the full provider comparison (Voyage
 
 ## Exercises
 
-1. By hand, compute the cosine similarity between `[1, 0]` and `[0, 1]` and explain why it's 0.
-2. Add a 5th toy vector that's a scaled copy of an existing one (e.g. `2 * v1`) and confirm cosine similarity treats it as identical to `v1` (cosine similarity ignores magnitude).
-3. Embed 6 sentences from 2 different topics (3 sports, 3 cooking) and confirm same-topic pairs score higher than cross-topic pairs.
-4. Truncate a real embedding vector to its first 256 dimensions and compare similarity scores before/after truncation — how much does ranking order change?
+1. **Building intuition with the simplest possible vectors.** Using the `cosine_similarity()` function from `example.py`, compute the similarity between `[1, 0]` and `[0, 1]` (two 2D vectors pointing in completely different directions — think of them as points on an X and Y axis). You should get exactly `0.0`. Write a sentence explaining *why*, in terms of the formula: what does a dot product of 0 mean geometrically?
+2. **Confirming cosine similarity ignores vector length, only direction.** Take one of the toy vectors from `toy_vector_demo()` (e.g. `king = [0.9, 0.8, 0.1]`) and create a scaled copy: `king_doubled = 2 * king` (using `numpy`, this is just `2 * king_vector`). Compute `cosine_similarity(king, king_doubled)` — it should come out to `1.0` (identical), even though the two vectors have very different magnitudes. This demonstrates that cosine similarity only cares about *direction*, not length.
+3. **Testing that embeddings actually cluster by meaning, not just wording.** Write 6 short sentences: 3 clearly about sports (e.g. different sports, different sentence structures) and 3 clearly about cooking. Embed all 6 with `real_embedding_demo()`'s pattern, then compute cosine similarity for a same-topic pair (e.g. sports sentence 1 vs. sports sentence 2) and a cross-topic pair (sports sentence 1 vs. cooking sentence 1). Confirm the same-topic score comes out higher.
+4. **How much accuracy do you lose by shortening a vector?** Embed 2-3 sentences and get their full-length vectors (however many dimensions your provider returns — check with `len(vector)`). Compute cosine similarity using the full vectors, then recompute it using only each vector's first 256 numbers (`vector[:256]`). Compare the two similarity scores — are they close, or meaningfully different? This is what "truncating an embedding to save space" actually costs you in practice.
 
 **Solutions:** see [`solutions.py`](solutions.py) in this folder.

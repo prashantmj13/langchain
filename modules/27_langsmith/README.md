@@ -49,9 +49,9 @@ Tracing/evaluation are provider-agnostic — they capture whatever `get_chat_mod
 
 ## Exercises
 
-1. Set `LANGSMITH_TRACING=true` with a real API key, run `example.py`, and find the resulting trace in the LangSmith UI.
-2. Add a second `@traceable` function and confirm it nests correctly under the parent chain's trace in the UI.
-3. Expand the evaluation dataset to 10 examples and add a second grading function that also checks response length.
-4. Compare two prompt variants (e.g. different system messages) against the same evaluation dataset and decide which performs better.
+1. **Seeing a real trace, not just reading about tracing.** Sign up for a free LangSmith account, get an API key, and set `LANGSMITH_TRACING=true` plus `LANGSMITH_API_KEY=...` in your `.env`. Run `example.py` again (no code changes needed — that's the point of env-var-based tracing) and go to smith.langchain.com to find the trace it just generated. Click into it and identify: which step took the longest, and how many tokens the LLM call used.
+2. **Confirming nested traces actually nest.** Write a second `@traceable`-decorated function that calls the first one (`shorten_for_display`) internally — e.g. a function that first fetches some text, then calls `shorten_for_display` on it. Run it with tracing enabled and check the LangSmith UI: does the inner function's trace appear nested *under* the outer one, showing the call hierarchy?
+3. **A bigger, more rigorous evaluation.** Expand `EVAL_DATASET` from 3 examples to 10, covering more varied topics. Add a second grading function alongside the existing substring check — e.g. one that checks the response is under some word count (a proxy for "did it actually follow the 'one sentence' instruction"). Run both checks over all 10 examples and print a pass/fail summary for each.
+4. **A/B testing two different prompts.** Build two versions of `build_chain()`'s prompt with different system messages (e.g. one terse, one explaining things "for a beginner"). Run both against the same evaluation dataset from exercise 3, and compare pass rates — which system message actually produces more consistently correct/well-formatted answers?
 
 **Solutions:** see [`solutions.py`](solutions.py) in this folder.

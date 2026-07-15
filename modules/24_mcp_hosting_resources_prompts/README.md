@@ -53,9 +53,9 @@ Resources and prompts are just structured data returned by the server — whiche
 
 ## Exercises
 
-1. Add a second resource exposing the whole handbook (not just one section) under `handbook://full`.
-2. Add a prompt parameter (`tone: str = "neutral"`) to `summarize_section` and confirm both default and explicit values produce different generated messages.
-3. List all resources the server exposes and fetch each one in a loop, printing byte length of each.
-4. Extend the client to actually send a fetched prompt's messages to Claude ([common/model_factory.py](../../common/model_factory.py)) and print the model's response.
+1. **A second, differently-scoped resource.** `server.py`'s `handbook://sections/{section}` resource returns one section at a time. Add a *second* resource, registered as `@mcp.resource("handbook://full")` (no `{section}` placeholder — a fixed URI), whose function returns all sections concatenated together. From a client, `read_resource("handbook://full")` and confirm you get the whole handbook back.
+2. **Adding a parameter to a prompt template.** Give `summarize_section` a second parameter, `tone: str = "neutral"`, and use it inside the returned prompt string (e.g. `f"...in a {tone} tone..."`). From a client, call `get_prompt("summarize_section", {"section": "time-off"})` (relying on the default) and then again with `{"section": "time-off", "tone": "casual and upbeat"}` — confirm the two rendered prompt strings are visibly different.
+3. **Discovering and fetching every resource programmatically.** From a client, call `list_resources()` (note: this lists *static* resources, not templated ones like `handbook://sections/{section}` — see if you can find the related method for listing resource templates too). For each one, call `read_resource()` and print `len(content.contents[0].text.encode("utf-8"))` — the size in bytes of each resource's content.
+4. **Actually using a fetched prompt, not just printing it.** Call `get_prompt("summarize_section", {"section": "remote-work"})`, take the returned `rendered.messages`, convert them into LangChain `HumanMessage` objects (`HumanMessage(content=m.content.text)` for each), and send them to `get_chat_model()` from [`common/model_factory.py`](../../common/model_factory.py) — print Claude's actual summary, closing the loop from "server offers a prompt template" to "an LLM actually answers it."
 
 **Solutions:** see [`solutions_server.py`](solutions_server.py) and [`solutions_client.py`](solutions_client.py) in this folder. Run `python modules/24_mcp_hosting_resources_prompts/solutions_client.py` -- it launches `solutions_server.py` automatically.

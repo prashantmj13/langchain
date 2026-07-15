@@ -55,9 +55,9 @@ Swap the embedding provider (`common.embedding_factory`) and/or the generation m
 
 ## Exercises
 
-1. Change `chunk_size` from 400 to 150 and observe whether answer quality or citation granularity changes.
-2. Add a question that's only answerable by combining facts from two different chunks, and check whether `k=2` retrieval is enough or if you need `k=4`.
-3. Modify the prompt so the model must respond with `"NOT_FOUND"` (not prose) when the context doesn't contain the answer, and test it programmatically.
-4. Swap `RecursiveCharacterTextSplitter` for `CharacterTextSplitter` (naive splitting) and compare chunk boundaries on the same document.
+1. **Smaller chunks change what gets cited, and sometimes what gets found.** In `load_and_split()`, change `chunk_size` from 400 to 150 (keep `chunk_overlap=50`). Re-run the same questions from `example.py` and compare: does the answer still cite the right chunk numbers? Does having more, smaller chunks change whether the right information gets retrieved at all?
+2. **A question that needs 2 separate facts, not just 1.** Look at `sample_data/handbook.txt` and write a question that requires combining information from two different sections (e.g. comparing two different policies' numbers). Run it through the RAG chain with `k=2` (the current default) — does it retrieve both relevant chunks, or does it miss one? Try again with `k=4` and see if that fixes it.
+3. **Forcing a strict, checkable "I don't know" response.** Modify the system prompt so that when the context doesn't contain the answer, the model must respond with exactly the string `"NOT_FOUND"` — nothing else, no apologetic prose. Test it with a question you know isn't answerable from the handbook, and check programmatically (`answer.strip() == "NOT_FOUND"`) rather than just eyeballing the output.
+4. **Comparing a smart splitter to a naive one.** `RecursiveCharacterTextSplitter` tries to split on natural boundaries (paragraphs, then sentences). `CharacterTextSplitter(separator="\n", chunk_size=200, chunk_overlap=0)` just splits wherever it hits your chosen separator, with no fallback logic. Run both on the same handbook text and print the first chunk each produces — do they cut off text in noticeably different (and differently awkward) places?
 
 **Solutions:** see [`solutions.py`](solutions.py) in this folder.

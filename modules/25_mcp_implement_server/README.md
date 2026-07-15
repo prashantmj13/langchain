@@ -52,9 +52,9 @@ No model-specific code in the server — same as the rest of the MCP track, the 
 
 ## Exercises
 
-1. Add a `logging.FileHandler` so tool-call logs persist to a file instead of only stderr.
-2. Make `search_jobs` reuse `common.embedding_factory` for real semantic search instead of keyword matching, and compare result quality.
-3. Add a `k` bounds check (e.g. reject `k > 10`) that raises `ValueError` with a message explaining the limit.
-4. Add a second resource, `job://{job_id}/summary`, that returns just the first line (title) instead of the full posting.
+1. **Making logs persist across restarts.** `server.py`'s `logging.basicConfig(..., stream=sys.stderr)` only prints logs to the terminal — they're gone once the terminal scrolls past or the process exits. Add a `logging.FileHandler("server.log")` alongside the existing stderr output (`logger.addHandler(logging.FileHandler(...))`), call `search_jobs` a few times, and confirm `server.log` on disk actually contains those calls.
+2. **Upgrading from keyword matching to real semantic search.** `search_jobs` currently ranks by counting overlapping words — it'll miss a query like "someone good with LLMs" against a posting that says "large language models" but never says "LLM". Rewrite it to embed the query and each job posting with `common.embedding_factory.get_embeddings()` (module 09-13's pattern) and rank by cosine similarity instead. Compare results on a query with no literal word overlap with the right posting.
+3. **Rejecting an unreasonable `k` before doing any work.** Add a check at the top of `search_jobs`: if `k > 10`, `raise ValueError("k must be <= 10")` before any searching happens. Call it with `k=50` from a client and confirm you get a clear error back instead of the tool silently doing something unexpected.
+4. **A resource returning less than the full data.** Following `get_job_posting`'s pattern, add a second resource registered at `job://{job_id}/summary` whose function returns just `_JOBS[job_id].splitlines()[0]` (the title line) instead of the whole posting. From a client, fetch both `job://ml_engineer` and `job://ml_engineer/summary` and confirm the second is meaningfully shorter.
 
 **Solutions:** see [`solutions_server.py`](solutions_server.py) and [`solutions_client.py`](solutions_client.py) in this folder. Run `python modules/25_mcp_implement_server/solutions_client.py` -- it launches `solutions_server.py` automatically (over stdio, unlike the main `server.py`'s HTTP transport, so the whole demo runs in one process).

@@ -52,9 +52,9 @@ Requires both an embeddings key (`VOYAGE_API_KEY`) and `ANTHROPIC_API_KEY`. The 
 
 ## Exercises
 
-1. Add 3 more sample job postings covering different roles (e.g. data engineer, product manager) and confirm the matcher still ranks correctly for a matching resume.
-2. Add a second sample resume for a different role and verify it matches a *different* job than the first resume.
-3. Change the generation step to also output a `match_score: 0-100` and a bullet list of missing skills, using `.with_structured_output()`.
-4. Extend the pipeline to accept a resume PDF (via `pypdf`) instead of a plain `.txt` file.
+1. **Does the matcher scale to a bigger, more varied job board?** Write 3 new job postings as `.txt` files in `sample_data/jobs/` (following the format of the existing ones: title, a few requirements) covering different roles — e.g. data engineer, product manager, frontend engineer. Re-run `example.py` and confirm the existing resume still ranks the ML-engineer-style posting near the top, not one of your new unrelated ones.
+2. **A different resume should match a different job.** Write a second sample resume (a new `.txt` file, following `resume.txt`'s format) for a role clearly different from the ML-engineering one already there — e.g. a frontend-focused background. Run the matching pipeline against it and confirm it surfaces a *different* top match than the original resume does.
+3. **Adding a numeric score and gap analysis to the fit explanation.** `explain_fit()` currently returns free text. Define a Pydantic model with `match_score: int` (0-100) and `missing_skills: list[str]`, and use `.with_structured_output()` (module 03) instead of a plain string response — confirm the score and skills list come back as real, usable data instead of prose you'd have to parse yourself.
+4. **Accepting a real PDF resume instead of plain text.** Use `pypdf.PdfReader` to open a PDF file and extract its text (loop over `reader.pages`, calling `.extract_text()` on each and joining the results). Feed that extracted text into the existing matching pipeline exactly like `resume_text` is used now, and confirm it still finds a sensible top match.
 
 **Solutions:** see [`solutions.py`](solutions.py) in this folder.

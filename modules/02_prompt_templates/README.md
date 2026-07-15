@@ -52,9 +52,9 @@ Prompt templates are provider-agnostic — the same `ChatPromptTemplate` object 
 
 ## Exercises
 
-1. Add a third templated variable (e.g. `{tone}`) to the system message and pass different tones (`formal`, `sarcastic`) across three calls.
-2. Build a few-shot template with 5 examples that gets Claude to classify support tickets into `bug` / `feature-request` / `question`, then test it on 3 new tickets.
-3. Use `.partial()` to bake in a `current_date` value computed from `datetime.now()`, and confirm the model can answer "what is today's date" correctly.
-4. Serialize a `ChatPromptTemplate` to a dict with `.dict()` and reload it — confirm the reloaded template produces identical output.
+1. **Templates can have more than one blank.** Take `partial_template()`'s prompt and add a second placeholder, `{tone}`, to the system message — e.g. `"You always answer as {persona}, in a {tone} tone."` Call the resulting chain 3 times with the same question but different `tone` values (`"formal"`, `"sarcastic"`, `"deadpan"`), and confirm the wording actually changes each time, not just the persona.
+2. **Few-shot prompting for classification.** Build your own `FewShotChatMessagePromptTemplate` (following `few_shot_template()`'s pattern) with 5 example support tickets, each labeled `bug`, `feature-request`, or `question` — try to include at least one tricky/ambiguous one. Then feed it 3 brand-new tickets it hasn't seen and check whether the labels it assigns make sense to you.
+3. **Pre-filling a value computed at runtime, not hardcoded.** Use `.partial()` (like `partial_template()` does for `persona`) to bake in a `current_date` value — but instead of a hardcoded string, compute it with `datetime.now().strftime("%Y-%m-%d")` so it's always today's real date. Then ask the resulting chain "What is today's date?" and confirm the answer matches.
+4. **Templates can be saved and reloaded.** `ChatPromptTemplate` objects are plain Python objects, so Python's built-in `pickle` module can serialize one to bytes and reconstruct it later (`pickle.dumps(prompt)` then `pickle.loads(...)`). Do that, then call `.invoke({...})` on both the original and the reloaded copy with identical input, and confirm they produce identical output — proving the reload didn't lose anything.
 
 **Solutions:** see [`solutions.py`](solutions.py) in this folder.
