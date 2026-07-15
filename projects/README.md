@@ -11,9 +11,23 @@ The `modules/` side of this repo teaches one concept at a time, with worked exam
 
 ## Prerequisites
 
-All eight projects assume you've been through at least modules 00-03 (Python/LLM basics, prompt templates, chains). Beyond that, each project lists which specific modules it draws on.
+All thirteen projects assume you've been through at least modules 00-03 (Python/LLM basics, prompt templates, chains). Beyond that, each project lists which specific modules it draws on.
 
-## The projects
+**Brand new to Python or LangChain?** Start with the Warm-up Projects below (09-13), not the domain projects (01-08). They're smaller, need no external accounts or services beyond an Anthropic API key, and their instructions spell out every step explicitly — including exact class/function names to use and common mistakes to watch for. The domain projects (01-08) assume you can already comfortably build a `prompt | llm` chain from a one-line description; the warm-up projects are where you get that comfortable.
+
+## Warm-up Projects (start here if you're new)
+
+| # | Project | Time | New idea introduced |
+|---|---------|------|----------------------|
+| 09 | [Text Summarizer](09_text_summarizer) | 1-2h | Your first chain, start to finish |
+| 10 | [Language Translator](10_language_translator) | 1-2h | Getting input from the user at runtime (`input()`) |
+| 11 | [Recipe Idea Generator](11_recipe_idea_generator) | 1-2h | Turning user input into a list, and back into a string |
+| 12 | [Message Tone Rewriter](12_tone_rewriter) | 1-2h | Validating a user's choice against a fixed menu of options |
+| 13 | [FAQ Chatbot with Memory](13_faq_chatbot_with_memory) | 2-3h | A real chat loop, with conversation memory |
+
+Do these roughly in order — each one explicitly builds on the Python/LangChain ideas from the one before it, and 13 is noticeably bigger than 09-12.
+
+## Domain Projects
 
 | # | Project | Domain | Difficulty | Draws on |
 |---|---------|--------|------------|----------|
@@ -26,4 +40,4 @@ All eight projects assume you've been through at least modules 00-03 (Python/LLM
 | 07 | [PDF Knowledge Base Assistant](07_pdf_knowledge_base_assistant) | PDF processing | Intermediate | RAG, retrieval, chat history |
 | 08 | [Contract Diff & Risk Reviewer](08_contract_diff_reviewer) | PDF processing | Advanced | RAG, structured output, chains |
 
-Each domain has one easier, more contained project and one harder, more open-ended one — do the easier one first if the domain is new to you.
+Each domain has one easier, more contained project and one harder, more open-ended one — do the easier one first if the domain is new to you. These assume more independence than the warm-up projects: less hand-holding in "Suggested Approach," more real-world messiness to figure out yourself.

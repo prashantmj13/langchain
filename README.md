@@ -149,7 +149,7 @@ Each module's README also has a "Using a different model" section showing the di
 
 ## Projects — build these yourself
 
-Once you've been through modules 00-19 (or further), [`projects/`](projects) has 8 open-ended build briefs across DevOps automation, cloud automation, image processing, and PDF processing. Unlike the modules, these have **no solution code** — you get a problem statement, requirements, and a suggested approach, and you build it. See [`projects/README.md`](projects/README.md) for the full list.
+[`projects/`](projects) has 13 open-ended build briefs — no solution code, just a problem statement, requirements, and a suggested approach, so you build it yourself. **New to Python or LangChain?** Start with the 5 warm-up projects (09-13) — small, heavily-explained, and only need what modules 00-03 (plus 07) cover. Once you've been through modules 00-19, the 8 domain projects (01-08, spanning DevOps automation, cloud automation, image processing, and PDF processing) assume more independence. See [`projects/README.md`](projects/README.md) for the full list.
 
 ## Repo structure
 
@@ -157,7 +157,7 @@ Once you've been through modules 00-19 (or further), [`projects/`](projects) has
 langchain-repo/
 ├── common/                 # model_factory.py, embedding_factory.py — shared, provider-agnostic helpers
 ├── modules/                # one folder per topic above, each self-contained
-├── projects/                # 8 build-it-yourself project briefs (no solution code)
+├── projects/                # 13 build-it-yourself project briefs (no solution code)
 ├── requirements.txt
 ├── .env.example
 └── README.md               # you are here
