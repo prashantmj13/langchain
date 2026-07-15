@@ -1,7 +1,7 @@
-# Project 01 — CI/CD Failure Explainer
+# Project 06 — CI/CD Failure Explainer
 
-**Domain:** DevOps automation
 **Difficulty:** Beginner
+**Domain:** DevOps automation
 **Time estimate:** 2-4 hours
 
 ## The Problem

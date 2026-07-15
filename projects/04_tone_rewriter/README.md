@@ -1,10 +1,10 @@
-# Project 12 — Message Tone Rewriter
+# Project 04 — Message Tone Rewriter
 
-**Domain:** Warm-up (general LangChain basics)
 **Difficulty:** Beginner
+**Domain:** Warm-up (general LangChain basics)
 **Time estimate:** 1-2 hours
 
-**Before you start:** Complete [Project 11](../11_recipe_idea_generator) first. This project's new idea is letting the user pick from a fixed set of options and having your prompt behave differently depending on the choice — a small step toward more flexible tools.
+**Before you start:** Complete [Project 03](../03_recipe_idea_generator) first. This project's new idea is letting the user pick from a fixed set of options and having your prompt behave differently depending on the choice — a small step toward more flexible tools.
 
 ## The Problem
 

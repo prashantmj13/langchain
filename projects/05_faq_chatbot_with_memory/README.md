@@ -1,10 +1,10 @@
-# Project 13 — FAQ Chatbot with Memory
+# Project 05 — FAQ Chatbot with Memory
 
+**Difficulty:** Beginner (the last of the warm-up projects — a little more involved than 01-04)
 **Domain:** Warm-up (general LangChain basics)
-**Difficulty:** Beginner (the last of the warm-up projects — a little more involved than 09-12)
 **Time estimate:** 2-3 hours
 
-**Before you start:** Complete projects 09-12 first, and read [module 07 — Chat History](../../modules/07_chat_history) (just the theory and example, you don't need to have done its exercises). This project is where the warm-up track and the main `modules/` curriculum meet.
+**Before you start:** Complete projects 01-04 first, and read [module 07 — Chat History](../../modules/07_chat_history) (just the theory and example, you don't need to have done its exercises). This project is where the warm-up track and the main `modules/` curriculum meet.
 
 ## The Problem
 

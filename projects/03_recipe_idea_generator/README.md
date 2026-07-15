@@ -1,10 +1,10 @@
-# Project 11 — Recipe Idea Generator
+# Project 03 — Recipe Idea Generator
 
-**Domain:** Warm-up (general LangChain basics)
 **Difficulty:** Beginner
+**Domain:** Warm-up (general LangChain basics)
 **Time estimate:** 1-2 hours
 
-**Before you start:** Complete [Project 10](../10_language_translator) first. This project introduces one genuinely new idea — turning a list of things into a nicely formatted piece of the prompt — on top of everything projects 09-10 already covered.
+**Before you start:** Complete [Project 02](../02_language_translator) first. This project introduces one genuinely new idea — turning a list of things into a nicely formatted piece of the prompt — on top of everything projects 01-02 already covered.
 
 ## The Problem
 

@@ -1,7 +1,7 @@
-# Project 07 — PDF Knowledge Base Assistant
+# Project 11 — PDF Knowledge Base Assistant
 
-**Domain:** PDF processing
 **Difficulty:** Intermediate
+**Domain:** PDF processing
 **Time estimate:** 5-8 hours
 
 ## The Problem

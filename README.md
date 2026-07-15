@@ -149,7 +149,7 @@ Each module's README also has a "Using a different model" section showing the di
 
 ## Projects — build these yourself
 
-[`projects/`](projects) has 13 open-ended build briefs — no solution code, just a problem statement, requirements, and a suggested approach, so you build it yourself. **New to Python or LangChain?** Start with the 5 warm-up projects (09-13) — small, heavily-explained, and only need what modules 00-03 (plus 07) cover. Once you've been through modules 00-19, the 8 domain projects (01-08, spanning DevOps automation, cloud automation, image processing, and PDF processing) assume more independence. See [`projects/README.md`](projects/README.md) for the full list.
+[`projects/`](projects) has 13 open-ended build briefs, ordered **beginner → intermediate → expert** — no solution code, just a problem statement, requirements, and a suggested approach, so you build it yourself. **New to Python or LangChain?** Start with projects 01-05 — small, heavily-explained, and only need what modules 00-03 (plus 07) cover. From there, 06-08 (still beginner, one per domain: DevOps automation, cloud automation, image processing) need less hand-holding, then 09-11 (intermediate, adding PDF processing) and 12-13 (expert: agents, MCP, and the most open-ended briefs in the repo). See [`projects/README.md`](projects/README.md) for the full list.
 
 ## Repo structure
 

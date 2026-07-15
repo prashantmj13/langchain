@@ -1,10 +1,10 @@
-# Project 10 — Language Translator
+# Project 02 — Language Translator
 
-**Domain:** Warm-up (general LangChain basics)
 **Difficulty:** Beginner
+**Domain:** Warm-up (general LangChain basics)
 **Time estimate:** 1-2 hours
 
-**Before you start:** Complete [Project 09](../09_text_summarizer) first if you haven't — this project reuses the exact same shape of script (build a model, build a prompt, chain them, invoke), so if project 09 felt hard, do it again before this one rather than skipping ahead.
+**Before you start:** Complete [Project 01](../01_text_summarizer) first if you haven't — this project reuses the exact same shape of script (build a model, build a prompt, chain them, invoke), so if project 01 felt hard, do it again before this one rather than skipping ahead.
 
 ## The Problem
 

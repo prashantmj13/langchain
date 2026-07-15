@@ -1,7 +1,7 @@
-# Project 04 — Infrastructure-as-Code Change Reviewer
+# Project 09 — Infrastructure-as-Code Change Reviewer
 
-**Domain:** Cloud automation
 **Difficulty:** Intermediate
+**Domain:** Cloud automation
 **Time estimate:** 4-6 hours
 
 ## The Problem

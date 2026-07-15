@@ -1,7 +1,7 @@
-# Project 02 — Natural-Language Ops Assistant
+# Project 12 — Natural-Language Ops Assistant
 
+**Difficulty:** Expert
 **Domain:** DevOps automation
-**Difficulty:** Advanced
 **Time estimate:** 6-10 hours
 
 ## The Problem

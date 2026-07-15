@@ -1,7 +1,7 @@
-# Project 08 — Contract Diff & Risk Reviewer
+# Project 13 — Contract Diff & Risk Reviewer
 
+**Difficulty:** Expert
 **Domain:** PDF processing
-**Difficulty:** Advanced
 **Time estimate:** 6-10 hours
 
 ## The Problem

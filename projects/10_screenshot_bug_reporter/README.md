@@ -1,7 +1,7 @@
-# Project 06 — Screenshot Bug Reporter
+# Project 10 — Screenshot Bug Reporter
 
-**Domain:** Image processing
 **Difficulty:** Intermediate
+**Domain:** Image processing
 **Time estimate:** 4-6 hours
 
 ## The Problem

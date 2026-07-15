@@ -1,7 +1,7 @@
-# Project 05 — Receipt & Invoice Extractor
+# Project 08 — Receipt & Invoice Extractor
 
-**Domain:** Image processing
 **Difficulty:** Beginner
+**Domain:** Image processing
 **Time estimate:** 3-5 hours
 
 ## The Problem

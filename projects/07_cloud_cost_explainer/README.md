@@ -1,7 +1,7 @@
-# Project 03 — Cloud Cost Explainer
+# Project 07 — Cloud Cost Explainer
 
-**Domain:** Cloud automation
 **Difficulty:** Beginner
+**Domain:** Cloud automation
 **Time estimate:** 3-5 hours
 
 ## The Problem

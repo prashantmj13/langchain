@@ -1,7 +1,7 @@
-# Project 09 — Text Summarizer
+# Project 01 — Text Summarizer
 
-**Domain:** Warm-up (general LangChain basics)
 **Difficulty:** Beginner — start here if you're new to Python or LangChain
+**Domain:** Warm-up (general LangChain basics)
 **Time estimate:** 1-2 hours
 
 **Before you start:** Go through [module 00](../../modules/00_python_and_llm_basics), [01](../../modules/01_langchain_basics), and [02](../../modules/02_prompt_templates) first. Everything you need for this project is covered there — this project just asks you to put those pieces together yourself, with nobody handing you the finished code.
