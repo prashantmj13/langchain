@@ -37,6 +37,8 @@ Requires `ANTHROPIC_API_KEY`. `LANGSMITH_TRACING`/`LANGSMITH_API_KEY` are option
 | `prompt \| llm | StrOutputParser()` | The same chain-building pattern from module 03. | Used as the thing actually being traced/evaluated — LangSmith needs something to observe, and this is a realistic, simple example of it. |
 | A plain Python loop calling `chain.invoke(...)` and checking `expected_substring in output` | Ordinary Python control flow, not a LangSmith-specific API. | Used in `run_mini_evaluation()` as a minimal, dependency-free stand-in for LangSmith's real dataset-based evaluation feature — enough to demonstrate the *idea* of evaluation without needing a hosted dataset. |
 
+For how setting an env var causes *every* `Runnable.invoke()` in your program to start being traced with zero code changes, and how `@traceable` extends that to plain functions — see [`INTERNALS.md`](INTERNALS.md) in this folder.
+
 ## Using a different model
 
 Tracing/evaluation are provider-agnostic — they capture whatever `get_chat_model(...)` you're using. Comparing providers on the same evaluation dataset (Claude vs GPT-4o-mini) is itself a common LangSmith use case.

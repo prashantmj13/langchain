@@ -40,6 +40,8 @@ Requires `ANTHROPIC_API_KEY`. No image file is needed — `generate_placeholder_
 | `base64.b64encode(...)` (Python standard library, not LangChain) | Converts raw image bytes into a text string safe to embed inside a JSON request. | Used because the image itself is binary data, but the request to Claude's API is JSON/text — base64 is the bridge between the two. |
 | `Image.new(...)`, `ImageDraw.Draw(...)` (from Pillow, not LangChain) | Creates a blank image and draws shapes/text on it. | Used only to generate a test image on the fly, so this example needs no external image file to run. |
 
+For how multimodal content blocks actually get serialized and sent to Claude, and how base64 encoding works under the hood — see [`INTERNALS.md`](INTERNALS.md) in this folder.
+
 ## Using a different model
 
 OpenAI's GPT-4o multimodal content-block shape differs slightly (`{"type": "image_url", "image_url": {"url": f"data:image/png;base64,{data}"}}` vs. Anthropic's `{"type": "image", "source_type": "base64", ...}`); LangChain's newer standard content-block format (`{"type": "image", "source_type": "base64", "data": ..., "mime_type": ...}`) is normalized across `ChatAnthropic` and `ChatOpenAI` in recent `langchain-core` versions, so the same message often works unchanged — the README's code comment shows the raw-provider difference for when you're not going through LangChain's abstraction.

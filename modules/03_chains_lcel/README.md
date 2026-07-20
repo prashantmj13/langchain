@@ -69,6 +69,8 @@ Requires `ANTHROPIC_API_KEY` in `.env`. Each function builds a small `prompt | l
 | `.with_structured_output(Model)` | Returns a version of the model that always replies with data matching the given Pydantic model, instead of free text. | Used so `structured_output_chain()` gets back a validated `MovieReview` object directly, with no manual text-parsing needed. |
 | `.batch([...])` | Runs `.invoke()` once for each item in a list, dispatched concurrently. | Used in `batching()` to ask about 3 different things in one call, faster than calling `.invoke()` three times in a loop. |
 
+For how `StrOutputParser` and `.with_structured_output()` actually work internally — plus a quick check to validate each one — see [`INTERNALS.md`](INTERNALS.md) in this folder (the `Runnable`/`|`/`RunnableLambda` internals are already covered in this README's Execution Internals section above).
+
 ## Using a different model
 
 Only the middle stage of the pipe changes — everything else (`prompt`, `parser`, `RunnableLambda`) is provider-agnostic:

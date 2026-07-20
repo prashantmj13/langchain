@@ -54,6 +54,8 @@ Requires `ANTHROPIC_API_KEY` in `.env`. Running `example.py` executes `basic_inv
 | `response.content` | The plain-text answer inside an `AIMessage`. | This is the actual text we want to print or use — the rest of the `AIMessage` object is metadata. |
 | `response.usage_metadata` | A dict of token counts (input/output) for that specific call. | Printed in `basic_invoke()` to show how you'd track usage/cost per call. |
 
+For how `ChatAnthropic`, the message classes, and `.invoke()`/`.stream()` actually work internally — plus a quick check to validate each one — see [`INTERNALS.md`](INTERNALS.md) in this folder.
+
 ## Using a different model
 
 ```python

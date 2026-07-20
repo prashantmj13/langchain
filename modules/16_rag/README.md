@@ -43,6 +43,8 @@ Requires an embeddings key and `ANTHROPIC_API_KEY`. The FAISS index is rebuilt i
 | `{"context": retriever \| format_docs, "question": RunnablePassthrough()}` | A dict stage that runs both branches, producing `context` (formatted retrieved chunks) and `question` (the original question, unchanged) side by side. | This is what actually assembles the two things the final prompt needs — see [module 03's Execution Internals](../03_chains_lcel#execution-internals-the-runnable-protocol) for exactly how this dict gets executed. |
 | `RunnablePassthrough()` | Passes its input straight through unchanged. | Used here so the original question is still available to the prompt even after the `context` branch has transformed the input in its own way. |
 
+For how `RecursiveCharacterTextSplitter` actually decides where to cut text — plus a way to verify the overlap and chunk-size settings are behaving as expected — see [`INTERNALS.md`](INTERNALS.md) in this folder.
+
 ## Using a different model
 
 Swap the embedding provider (`common.embedding_factory`) and/or the generation model (`common.model_factory`) independently — RAG's retrieval and generation stages are decoupled by design.

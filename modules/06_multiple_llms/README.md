@@ -38,6 +38,8 @@ Requires `ANTHROPIC_API_KEY`; `OPENAI_API_KEY` and a running local Ollama daemon
 | `RunnableBranch((condition, chain), default_chain)` | Checks each condition against the input in order, and runs the first chain whose condition is `True` (falling back to the default). | Used in `routing_example()` to send "reasoning" questions to Claude and everything else to a cheaper model, based on a `task_type` field in the input. |
 | `try` / `except Exception` around each provider call | Standard Python error handling — catches a failure instead of crashing. | Used around every non-Anthropic provider call so the script still runs and demonstrates the pattern even if you haven't configured `OPENAI_API_KEY` or a local Ollama install. |
 
+For how `RunnableBranch` actually decides which chain to call internally — plus a way to debug which branch fired — see [`INTERNALS.md`](INTERNALS.md) in this folder.
+
 ## Using a different model
 
 This entire module *is* the "different model" note — it directly instantiates `ChatAnthropic`, `ChatOpenAI`, and `ChatOllama` side by side via `get_chat_model(provider=...)` rather than relying on a single global `LLM_PROVIDER`.

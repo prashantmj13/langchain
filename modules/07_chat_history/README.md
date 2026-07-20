@@ -37,6 +37,8 @@ Requires `ANTHROPIC_API_KEY` in `.env`. The `_store` dict lives only in the runn
 | `RunnableWithMessageHistory(chain, get_session_history, ...)` | Wraps a chain so that, on every call, it automatically loads that session's history, injects it via the placeholder above, and saves the new turn back afterward. | This is the whole point of the module — it's what turns a stateless chain into something that remembers a conversation, without you manually managing the message list. |
 | `config={"configurable": {"session_id": "alice"}}` | A per-call setting telling `RunnableWithMessageHistory` which session's history to load/save. | Used to keep Alice's and Bob's conversations separate even though they're going through the same chain object. |
 
+For how `RunnableWithMessageHistory`, `ChatMessageHistory`, and `MessagesPlaceholder` actually work internally — plus a quick check to confirm history is genuinely being loaded and saved — see [`INTERNALS.md`](INTERNALS.md) in this folder.
+
 ## Using a different model
 
 Chat history management is entirely model-agnostic — `RunnableWithMessageHistory` wraps whatever chain you give it, Claude or otherwise. Swap the model inside the wrapped chain exactly as in [module 01](../01_langchain_basics).

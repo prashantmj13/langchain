@@ -35,6 +35,8 @@ Each provider is tried independently and wrapped in `try/except` — set whichev
 | `get_embeddings(provider="voyage")` | This repo's factory function — returns an embeddings model instance for whichever provider you name. | Called once per provider in a loop, so the same script can try Voyage, OpenAI, and HuggingFace back to back without three separate scripts. |
 | `.embed_documents([...])` | Sends a list of texts to the provider and returns one vector per text (same method as module 09). | Used identically across all three providers — the whole point of this module is that this call looks the same no matter which provider is underneath. |
 
+For what's actually different inside `VoyageAIEmbeddings`, `OpenAIEmbeddings`, and `HuggingFaceEmbeddings` (network call vs. local model) — plus how to observe that difference directly — see [`INTERNALS.md`](INTERNALS.md) in this folder.
+
 ## Using a different model
 
 ```python

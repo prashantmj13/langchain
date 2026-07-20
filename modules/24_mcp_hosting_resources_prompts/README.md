@@ -41,6 +41,8 @@ Connection setup (`StdioServerParameters`, `stdio_client`, `ClientSession`, `.in
 | `await session.list_prompts()` | Asks the server what prompt templates it offers. | Used to show prompt discovery, the same way `list_tools()` (module 22) shows tool discovery. |
 | `await session.get_prompt(name, arguments)` | Fetches a specific prompt template, filled in with the given arguments, as ready-to-send messages. | Used to render `summarize_section` for the `remote-work` section and print the resulting message(s). |
 
+For how the `{section}` URI template actually gets matched and extracted, and how prompt arguments get threaded through to your function — see [`INTERNALS.md`](INTERNALS.md) in this folder.
+
 ## Using a different model
 
 Resources and prompts are just structured data returned by the server — whichever LLM the host is driving decides what to do with the resource content or the prompt's messages. No provider-specific code here.

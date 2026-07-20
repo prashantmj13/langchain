@@ -35,6 +35,8 @@ python modules/09_embeddings_theory/solutions.py   # exercise solutions
 | `.embed_documents([text1, text2, ...])` | Sends a list of texts to the embeddings provider and returns one number-list (vector) per text. | Used to embed all 4 sample sentences in a single call, so their vectors can be compared to each other. |
 | `np.dot`, `np.linalg.norm` (from `numpy`, not LangChain) | Standard vector math: dot product and vector length. | Used together inside `cosine_similarity()` to implement the similarity formula from this module's Theory section by hand, so you see exactly what it's computing. |
 
+For how the shared `Embeddings` interface actually works internally (and why `embed_query` and `embed_documents` return matching results) — plus a hand-checkable validation of the cosine similarity math — see [`INTERNALS.md`](INTERNALS.md) in this folder.
+
 ## Using a different model
 
 See [module 10](../10_embedding_models) for the full provider comparison (Voyage AI / OpenAI / local HuggingFace) — this module focuses on the underlying math, which is identical regardless of provider.

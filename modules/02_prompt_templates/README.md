@@ -40,6 +40,8 @@ Requires `ANTHROPIC_API_KEY` in `.env`. `example.py` runs `basic_template()`, `p
 | `FewShotChatMessagePromptTemplate` | Injects a set of example input/output message pairs into the prompt before the real question. | Used in `few_shot_template()` to teach the model the exact output format (`"sentiment: <label>"`) by example, instead of just describing the format in words. |
 | `prompt \| llm` | Chains the template into the model: fill in the template, then send the result to `.invoke()`. | Every function ends with this pattern — it's the first real use of the `|` chaining from module 03, applied here to "template then call the model." |
 
+For how `ChatPromptTemplate`, `.partial()`, and `FewShotChatMessagePromptTemplate` actually work internally — plus a quick check to validate each one — see [`INTERNALS.md`](INTERNALS.md) in this folder.
+
 ## Using a different model
 
 Prompt templates are provider-agnostic — the same `ChatPromptTemplate` object works whether the downstream model is `get_chat_model()` (Anthropic) or a directly-instantiated `ChatOpenAI`/`ChatGoogleGenerativeAI`. Only the model at the end of the pipe changes; see [module 01](../01_langchain_basics) for the swap snippet.

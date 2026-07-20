@@ -40,6 +40,8 @@ Requires an embeddings key and `ANTHROPIC_API_KEY`. `raw_retriever_demo()` only 
 | `create_retrieval_chain(retriever, combine_docs_chain)` | Wires a retriever and a document-combining chain together: retrieve, then generate, returning both. | Used to build the complete "search then answer" pipeline in one call, instead of manually retrieving and then separately calling the combine-docs chain. |
 | `result["answer"]` / `result["context"]` | The two keys `create_retrieval_chain`'s output dict always contains — the generated answer, and the documents that were used to produce it. | Used to print both the answer and its supporting evidence, so you can verify the answer is actually grounded in what was retrieved. |
 
+For how `as_retriever()`, `create_stuff_documents_chain()`, and `create_retrieval_chain()` actually work internally — plus how to verify an answer is genuinely grounded in retrieved context — see [`INTERNALS.md`](INTERNALS.md) in this folder.
+
 ## Using a different model
 
 The retriever itself only depends on the embedding provider (via the underlying vector store); the "combine documents" / generation half of `create_retrieval_chain` uses whatever `get_chat_model(...)` you pass it.

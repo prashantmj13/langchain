@@ -42,6 +42,8 @@ Requires `ANTHROPIC_API_KEY` (the agent's LLM). The whole run is one `agent.ainv
 | `create_react_agent(llm, tools)` | Same agent-building function from module 19. | Used identically to module 19 — the agent has no idea (and doesn't need to know) that these tools came from MCP instead of being defined locally. |
 | `await agent.ainvoke({"messages": [...]})` | The async version of `agent.invoke()` (module 19) — runs the same think/call-tool/think-again loop. | `ainvoke` (not `invoke`) is used because this script is already running inside `async def main()`, needed for the MCP connection above. |
 
+For exactly how `get_tools()` converts an MCP tool schema into a real LangChain `StructuredTool` — plus a way to confirm a tool call genuinely round-trips through the MCP server — see [`INTERNALS.md`](INTERNALS.md) in this folder.
+
 ## Using a different model
 
 Swap `get_chat_model(provider=...)` exactly as in every other module — `MultiServerMCPClient`/`get_tools()` are entirely model-agnostic; only the agent's LLM changes.

@@ -39,6 +39,8 @@ Requires `ANTHROPIC_API_KEY` in `.env`. The exercise solutions write a couple of
 | `history.add_user_message(text)` / `.add_ai_message(text)` | Shortcut methods on `ChatMessageHistory` that wrap a plain string in the right message type and append it. | Used in `run_short_conversation()` as a slightly shorter way to build up history than constructing `HumanMessage`/`AIMessage` objects by hand. |
 | `HumanMessage(content=...)` / `AIMessage(content=...)` | Construct a message object directly from role + text. | Used in `messages_from_json()` to turn plain dicts (loaded from JSON) back into real LangChain message objects. |
 
+For why `.type` and `.content` are reliable enough to build formatters around — see [`INTERNALS.md`](INTERNALS.md) in this folder.
+
 ## Using a different model
 
 Display formatting only touches `BaseMessage` objects, which are identical regardless of which provider produced them — no changes needed to swap models.

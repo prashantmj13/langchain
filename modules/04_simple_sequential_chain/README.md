@@ -36,6 +36,8 @@ Everything here is reused from earlier modules — `ChatPromptTemplate`, `StrOut
 |---|---|---|
 | A bare `lambda` inside a `\|` chain | LangChain auto-wraps a plain function dropped into a pipe as a `RunnableLambda` (module 03) — you don't have to write `RunnableLambda(...)` yourself. | Used between `stage_1` and `stage_2` to reshape stage 1's plain-string output into the `{"outline": ...}` dict shape that stage 2's prompt template expects. |
 
+For how composing two already-built chains (`stage_1 | ... | stage_2`) actually works internally — plus a quick check to validate it — see [`INTERNALS.md`](INTERNALS.md) in this folder.
+
 ## Using a different model
 
 Each stage can even use a *different* provider if you want (e.g. a cheap/fast model for the outline, Claude for the polished prose) — see [module 06](../06_multiple_llms) for that pattern. To swap both stages at once, just change the `get_chat_model()` call.

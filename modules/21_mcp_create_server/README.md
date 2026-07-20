@@ -34,6 +34,8 @@ These are from the `mcp` Python SDK (Anthropic's protocol library), not LangChai
 | `@mcp.tool()` | Registers the decorated function as a tool the server exposes, reading its type hints and docstring to build the schema a client will see. | Applied to `get_weather` and `word_count` so any MCP client can discover and call them — the MCP equivalent of LangChain's `@tool` from module 19. |
 | `mcp.run(transport="stdio")` | Starts the server, listening for a client on stdin/stdout. | Used to actually launch the server process — `transport="stdio"` picks the simplest connection method (module 20's Theory covers the alternative, HTTP). |
 
+For how `FastMCP` and `@mcp.tool()` actually work internally (the JSON-RPC event loop, the tool registry) — see [`INTERNALS.md`](INTERNALS.md) in this folder.
+
 ## Using a different model
 
 An MCP server doesn't know or care which LLM is calling it — this module has no model-specific code at all, which is the point of the protocol. See [module 26](../26_mcp_implement_client) for hooking this server up to a Claude-powered agent.

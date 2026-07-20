@@ -41,6 +41,8 @@ Run it directly to confirm startup (`python modules/25_mcp_implement_server/serv
 | `raise ValueError(...)` inside a tool/resource function | Standard Python error signaling. | Used for bad input (an unknown `job_id`, an out-of-range `k`) — the MCP SDK turns this into a proper error response the calling client (and the LLM behind it) can see and react to, instead of the server crashing. |
 | `mcp.run(transport="streamable-http")` | Same as module 23 — starts the server on an HTTP port instead of stdio. | Used because a "production-style" server is expected to run independently and be reachable by more than one client, not be spawned per-client like module 21's stdio server. |
 
+For exactly how a Python exception you raise inside a tool becomes a structured error the client (and an LLM agent) can see, instead of crashing the server — see [`INTERNALS.md`](INTERNALS.md) in this folder.
+
 ## Using a different model
 
 No model-specific code in the server — same as the rest of the MCP track, the server is provider-agnostic by design.

@@ -39,6 +39,8 @@ No API key needed, and no second terminal either: `stdio_client(server_params)` 
 | `await session.list_tools()` | Asks the server what tools it exposes, returning each one's name, description, and argument schema. | Used to show what the server offers *before* calling anything — the same discovery step a real agent would do automatically. |
 | `await session.call_tool(name, arguments)` | Asks the server to actually run one specific tool with the given arguments, and returns its result. | Used to call `get_weather` and `word_count` with real inputs and see their output. |
 
+For how `stdio_client` actually spawns and manages the subprocess, and how `ClientSession` matches requests to responses — plus what to check if `.initialize()` hangs — see [`INTERNALS.md`](INTERNALS.md) in this folder.
+
 ## Using a different model
 
 This module is pure protocol plumbing — no LLM involved yet. [Module 26](../26_mcp_implement_client) is where an actual Claude-powered agent decides which of these tools to call and with what arguments.

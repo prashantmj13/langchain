@@ -40,6 +40,8 @@ Requires an embeddings key and `ANTHROPIC_API_KEY`. Conversation history lives i
 | `MessagesPlaceholder("chat_history")` | A spot in a prompt template that gets filled with the running list of prior messages (same as module 07). | Used in *two* prompts here — the rewriting prompt needs history to know what "that" refers to, and the answering prompt needs it too, for natural-sounding replies. |
 | `RunnableWithMessageHistory(rag_chain, get_session_history, ..., output_messages_key="answer")` | Wraps the whole RAG chain so history loads/saves automatically per session (same as module 07). | `output_messages_key="answer"` tells it which key in the chain's output dict is the actual reply to save into history — needed here because `create_retrieval_chain` returns a dict (`answer` + `context`), not a single message like module 07's plain chain did. |
 
+For how `create_history_aware_retriever` actually decides whether/how to rewrite a question before searching — plus a way to prove the rewriting is genuinely improving retrieval, not just adding latency — see [`INTERNALS.md`](INTERNALS.md) in this folder.
+
 ## Using a different model
 
 Both the query-rewriting step and the final-answer step accept any `get_chat_model(...)`; they can even use two different models (e.g. a fast/cheap model to rewrite, Claude to generate the final answer) since they're separate `Runnable`s under the hood.

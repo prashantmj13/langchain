@@ -40,6 +40,8 @@ Everything here is the same as module 22 (`ClientSession`, `.initialize()`, `.li
 | `mcp.run(transport="streamable-http")` | Starts the server listening on an HTTP port instead of stdin/stdout. | This one argument is the entire difference between module 21's server and this one. |
 | `streamablehttp_client(url)` (used with `async with`) | Connects to an already-running MCP server at a URL, instead of starting one as a subprocess. | Replaces module 22's `stdio_client(server_params)` — same role (get connected read/write streams), different transport underneath. |
 
+For how the HTTP transport actually moves MCP messages over a real web server/HTTP connection (and how to confirm it's genuinely listening on the network) — see [`INTERNALS.md`](INTERNALS.md) in this folder.
+
 ## Using a different model
 
 Still pure transport/protocol — no model involved. See [module 26](../26_mcp_implement_client) for wiring an MCP client (of either transport) into a Claude agent.

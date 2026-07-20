@@ -43,6 +43,8 @@ Requires an embeddings provider key. The Chroma collection here is in-memory by 
 | `.max_marginal_relevance_search(query, k=2, fetch_k=4)` | Returns `k` results chosen to be relevant *and* different from each other, by first considering `fetch_k` candidates. | Used to demonstrate avoiding near-duplicate results — the module's two password-reset FAQ entries would otherwise both show up for a password query. |
 | `.similarity_search(query, k=2, filter={"category": "billing"})` | Same as `.similarity_search()`, but only considers documents whose metadata matches the filter. | Used to show narrowing a search to one category instead of searching the entire store. |
 
+For how `Chroma` and `Document` actually work internally — plus a way to confirm the metadata filter genuinely restricts the search, not just re-ranks — see [`INTERNALS.md`](INTERNALS.md) in this folder.
+
 ## Using a different model
 
 The vector store's embedding function is whatever `common.embedding_factory.get_embeddings()` returns — swap providers there; the vector store code itself is unaffected.

@@ -6,6 +6,8 @@ Every module ships with:
 - **Theory** — the core concept, explained plainly
 - **Use Case** — when you'd actually reach for this in production
 - **Walkthrough** — a runnable `example.py` (or `server.py`/`client.py` pair for MCP)
+- **Classes & Methods Used** — a table naming every specialized class/function that module's code actually calls, and why
+- **INTERNALS.md** — for modules with dedicated/specialized classes (01-19, 21-27), a companion page going one level deeper than the table: how each one works step by step under the hood, a link to its real source on GitHub, and a concrete check to confirm it's behaving correctly on your machine
 - **Using a different model** — the 2-3 line diff to swap providers
 - **Reference Docs** — links to the primary sources
 - **Exercises** — 3-4 tasks to extend what you built, each with a worked solution in `solutions.py`
@@ -156,7 +158,7 @@ Each module's README also has a "Using a different model" section showing the di
 ```
 langchain-repo/
 ├── common/                 # model_factory.py, embedding_factory.py — shared, provider-agnostic helpers
-├── modules/                # one folder per topic above, each self-contained
+├── modules/                # one folder per topic above (README.md + example.py + INTERNALS.md), each self-contained
 ├── projects/                # 13 build-it-yourself project briefs (no solution code)
 ├── requirements.txt
 ├── .env.example

@@ -38,6 +38,8 @@ Requires an embeddings provider key. Writes a `faiss_index/` (or `faiss_index_so
 | `FAISS.load_local(folder, embeddings, allow_dangerous_deserialization=True)` | Reads a previously-saved index back from disk, ready to search immediately. | Used in `load_from_disk()` to simulate a fresh process picking up the index without re-embedding anything — see this module's Theory for why the `allow_dangerous_deserialization` flag exists. |
 | `.add_documents([...])` | Embeds one or more new documents and adds them to an existing, already-built store. | Used to show that a FAISS store can grow after creation — you don't have to rebuild the whole index from scratch to add one more document. |
 
+For how the FAISS index, the save/load file format, and `.add_documents()` actually work internally — plus how to verify persistence and updates really took effect — see [`INTERNALS.md`](INTERNALS.md) in this folder.
+
 ## Using a different model
 
 Only the embedding function passed to `FAISS.from_documents(...)`/`FAISS.load_local(...)` changes; swap via `common.embedding_factory.get_embeddings(provider=...)`. Note: an index built with one embedding model's vectors is **not** compatible with a different embedding model at load time (dimensions/semantics won't match) — always reload with the same provider that built the index.

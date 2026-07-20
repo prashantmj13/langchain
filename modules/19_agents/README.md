@@ -48,6 +48,8 @@ Requires `ANTHROPIC_API_KEY`. `agent.invoke(...)` runs the full reasoning loop i
 | `agent.invoke({"messages": [("human", question)]})` | Runs the agent loop to completion and returns the full message list, not just the final answer. | Used so we can inspect every step the agent took (tool calls and results), not just its final response. |
 | `message.pretty_print()` | Prints a message object in a readable, labeled format. | Used on every message in the result to display the full back-and-forth — the question, each tool call, each tool's result, and the final answer. |
 
+For how `@tool` builds a callable schema from your function, and what `create_react_agent`'s actual LangGraph node/edge structure looks like — plus how to inspect the graph directly — see [`INTERNALS.md`](INTERNALS.md) in this folder.
+
 ## Using a different model
 
 Tool-calling quality varies by provider and model size; swap via `get_chat_model(provider=...)` — smaller/local models (e.g. via Ollama) may need simpler tool descriptions or more explicit prompting to reliably call tools correctly.

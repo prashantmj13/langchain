@@ -36,6 +36,8 @@ For exactly what `RunnablePassthrough.assign()` and the `RunnableParallel(...)` 
 | `RunnableParallel(review=..., sentiment=..., reply=...)` | Runs each named value concurrently and returns a dict with all the results. | Used as the final stage to assemble the exact output shape we want (`review`, `sentiment`, `summary`, `reply`) — note that `reply_chain` itself depends on `sentiment`/`summary` already being computed by the earlier `enrich` stage. |
 | A `lambda x: x["review"]` inside `RunnableParallel` | A tiny function that just picks one key out of the incoming dict. | Used to pass `review`/`sentiment`/`summary` straight through into the final output dict unchanged, alongside the newly-computed `reply`. |
 
+For how `RunnablePassthrough.assign()` and `RunnableParallel` actually work internally — plus a quick check to confirm the concurrency is real — see [`INTERNALS.md`](INTERNALS.md) in this folder.
+
 ## Using a different model
 
 Different sub-chains can use different providers/temperatures independently, since each is just `prompt | get_chat_model(...) | parser` — see [module 06](../06_multiple_llms).
